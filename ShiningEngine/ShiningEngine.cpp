@@ -33,7 +33,7 @@ void Shining::ShiningEngine::Run()
 		SceneManager& sceneManager = SceneManager::GetInstance();
 		InputManager& input = InputManager::GetInstance();
 
-		float realTimeElapsed{}; //this var can be [0,1] in case of small workload, integer means that elapsedTime can be 0 ms which is never desired 		
+		float realTimeElapsed{}; //this var can be [0,1] in case of small workload, integer instead of float means that elapsedTime can be 0 ms which is never accurate 		
 		auto prevTime{ high_resolution_clock::now() };
 
 		bool doContinue{ true };
@@ -42,22 +42,38 @@ void Shining::ShiningEngine::Run()
 			const auto currentTime = high_resolution_clock::now();
 			const duration<float, milli> deltaTime{ currentTime - prevTime };
 			prevTime = currentTime;
-
 			realTimeElapsed += deltaTime.count();
-		
-			doContinue = input.ProcessInput(); //detect quit
+			if (realTimeElapsed == 0)
+			{
+				std::cout << "Hold up;\n";
+			}
+			doContinue = input.ProcessInput(); //detect quit & take input
 
 			//fixed update step, variable rendering
 			while (realTimeElapsed >= MsPerFrame)
 			{				
 				sceneManager.Update(); //update game objects
 				realTimeElapsed -= MsPerFrame;
+				/*for (int i{}; i < 10000; ++i)
+				{
+					double* pDouble{ new double{5.0} };
+					delete pDouble;
+				}*/
+				
 			}
-
 			renderer.Render(); //render game objects
-			//TODO: interpolate rendering based on leftover of realTimeElapsed
 		}
-	
+
+		//renderer.Render(); //render game objects
+				//TODO: interpolate rendering based on leftover of realTimeElapsed
+
+
+				/*sceneManager.Update();
+				renderer.Render();
+				auto sleepTime = duration_cast<duration<float>>(currentTime + milliseconds(MsPerFrame) - high_resolution_clock::now());
+
+				std::this_thread::sleep_for(sleepTime);
+				std::cout << "Slept for " << sleepTime.count()*1000 << " ms\n";*/
 
 	Cleanup();
 }

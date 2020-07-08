@@ -17,7 +17,7 @@ Shining::FPSComponent::FPSComponent(const Shining::GameObject* pOwner)
 void Shining::FPSComponent::Update()
 {
 	m_ElapsedTimeMs += m_MsPerFrame;
-	
+	//++m_NrFramesRendered;
 	if (m_ElapsedTimeMs >= 1000) //1 second
 	{
 		m_ElapsedTimeMs -= 1000;
@@ -31,8 +31,4 @@ void Shining::FPSComponent::Update()
 void Shining::FPSComponent::Render(const glm::vec3& /*pos*/) /*const*/
 {
 	++m_NrFramesRendered;
-
-	//I use const cast so I can modify this member variable in a const function, without having to make the function non-const for other components
-	//++const_cast<int&>(m_NrFramesRendered);
-	//unused function
 }

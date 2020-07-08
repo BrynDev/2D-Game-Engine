@@ -6,7 +6,6 @@
 
 void Shining::Renderer::Init(SDL_Window * window)
 {
-	SDL_SetHint(SDL_HINT_RENDER_VSYNC, "0");
 	m_Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (m_Renderer == nullptr) 
 	{
