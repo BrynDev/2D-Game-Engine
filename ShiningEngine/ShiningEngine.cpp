@@ -135,6 +135,16 @@ void Shining::ShiningEngine::LoadDemoScene() const
 	scene.Add(pTestCharacter);
 }
 
+void Shining::ShiningEngine::RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept
+{
+	InputManager::GetInstance().RegisterPlayerCharacter(pPlayerCharacter);
+}
+
+void Shining::ShiningEngine::AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept
+{
+	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
+}
+
 void Shining::ShiningEngine::Cleanup()
 {
 	Renderer::GetInstance().Destroy();

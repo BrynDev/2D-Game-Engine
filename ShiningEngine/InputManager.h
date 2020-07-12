@@ -1,22 +1,18 @@
 #pragma once
 #include <XInput.h>
 #include "Singleton.h"
-#include <set>
+#include <map>
+#include <unordered_map>
+#include "GameObject.h"
+#include "ControllerInput.h"
 
 namespace Shining
 {
 	class InputHandler;
-	enum class ControllerButton
-	{
-		ButtonA,
-		ButtonB,
-		ButtonX,
-		ButtonY
-	};
+	
 	struct Controller
 	{
 		XINPUT_STATE state{};
-		//int id{-1};
 		bool isActive{false};
 	};
 
@@ -24,16 +20,17 @@ namespace Shining
 	{
 	public:
 		bool ProcessInput();
-		void CheckForNewControllers();
-		bool IsPressed(ControllerButton button) const;
-		void RegisterInputHandler(Shining::InputHandler* pHandlerToRegister);
-		void UnregisterInputHandler(Shining::InputHandler* pHandlerToUnregister);
+		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput);
+		void RegisterPlayerCharacter(GameObject* pCharacterToControl);
 		virtual ~InputManager();
 	private:
+		void CheckForNewControllers();
+
 		XINPUT_STATE m_CurrentState{};
 		Controller m_Controllers[XUSER_MAX_COUNT]{};
-		//ensure that the same handler isn't inserted twice
-		std::set<Shining::InputHandler*> m_pInputHandlers{};
+		GameObject* m_pPlayerCharacter;
+		std::unordered_map<unsigned int, Command*> m_CommandsByVKey{};
+		std::map<ControllerInput, Command*> m_CommandsByControllerInput{};
 		unsigned int m_ControllerCheckTimer{};
 	};
 

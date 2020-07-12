@@ -47,9 +47,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="InputHandler.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Command</Filter>
     </ClCompile>
@@ -101,11 +98,11 @@
     <ClInclude Include="InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="InputHandler.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerInput.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

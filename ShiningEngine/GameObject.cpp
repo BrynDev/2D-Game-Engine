@@ -38,11 +38,3 @@ void Shining::GameObject::SetPosition(float x, float y) noexcept
 	m_Transform.SetPosition(x, y, 0.0f);
 }
 
-//Add an InputHandler that controls this object, then return it so the user can add commands
-Shining::InputHandler* Shining::GameObject::AddInputHandler() noexcept
-{
-	Shining::InputHandler* pHandler{ new Shining::InputHandler(this) };
-	return pHandler;
-}
-
-

@@ -12,7 +12,8 @@ namespace Shining
 		void Cleanup();
 		void Run();
 		void SetDataPath(const std::string& pathToDataFolder) noexcept;
-
+		void RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept;
+		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept;
 		static const int GetMsPerFrame()
 		{
 			return MsPerFrame;
