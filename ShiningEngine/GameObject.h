@@ -1,7 +1,6 @@
 #pragma once
 #include "Transform.h"
 #include <vector>
-#include "InputHandler.h"
 
 namespace Shining
 {
@@ -15,7 +14,6 @@ namespace Shining
 
 		void SetPosition(float x, float y) noexcept;
 		void AddComponent(Component* pComponent) noexcept;
-		Shining::InputHandler* AddInputHandler() noexcept;
 
 		template<typename T>
 		T* GetComponent() const;

@@ -3,10 +3,6 @@
 //TEMP
 #include <iostream>
 
-JumpCommand::JumpCommand(const unsigned int keyScanCode)
-	:Command(keyScanCode)
-{
-}
 
 void JumpCommand::Execute(const Shining::GameObject* /*pTargetObject*/) const
 {
