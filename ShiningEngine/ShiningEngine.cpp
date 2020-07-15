@@ -21,61 +21,51 @@ using namespace std::chrono;
 
 void Shining::ShiningEngine::Run()
 {
+	//Initialize();
+
+	//LoadDemoScene();
+
+	Renderer& renderer = Renderer::GetInstance();
+	SceneManager& sceneManager = SceneManager::GetInstance();
+	InputManager& input = InputManager::GetInstance();
+
+	float realTimeElapsed{}; //this var can be [0,1] in case of small workload, integer instead of float means that elapsedTime can be 0 ms which is never accurate 		
+	auto prevTime{ high_resolution_clock::now() };
+
+	bool doContinue{ true };
+	while (doContinue) //game loop
+	{
+		const auto currentTime = high_resolution_clock::now();
+		const duration<float, milli> deltaTime{ currentTime - prevTime };
+		prevTime = currentTime;
+		realTimeElapsed += deltaTime.count();
+		doContinue = input.ProcessInput(); //detect quit & take input
+
+		//fixed update step, variable rendering
+		while (realTimeElapsed >= MsPerFrame)
+		{				
+			sceneManager.Update(MsPerFrame); //update game objects
+			realTimeElapsed -= MsPerFrame;
+			/*for (int i{}; i < 10000; ++i)
+			{
+				double* pDouble{ new double{5.0} };
+				delete pDouble;
+			}*/
+				
+		}
+		renderer.Render(); //render game objects
+		//TODO: interpolate rendering based on leftover of realTimeElapsed
+	}
+
+	Cleanup();
+}
+
+Shining::ShiningEngine::ShiningEngine()
+{
 	Initialize();
 
 	// tell the resource manager where he can find the game data
-
 	ResourceManager::GetInstance().Init("../Data/");
-	
-	LoadDemoScene();
-
-		Renderer& renderer = Renderer::GetInstance();
-		SceneManager& sceneManager = SceneManager::GetInstance();
-		InputManager& input = InputManager::GetInstance();
-
-		float realTimeElapsed{}; //this var can be [0,1] in case of small workload, integer instead of float means that elapsedTime can be 0 ms which is never accurate 		
-		auto prevTime{ high_resolution_clock::now() };
-
-		bool doContinue{ true };
-		while (doContinue) //game loop
-		{
-			const auto currentTime = high_resolution_clock::now();
-			const duration<float, milli> deltaTime{ currentTime - prevTime };
-			prevTime = currentTime;
-			realTimeElapsed += deltaTime.count();
-			if (realTimeElapsed == 0)
-			{
-				std::cout << "Hold up;\n";
-			}
-			doContinue = input.ProcessInput(); //detect quit & take input
-
-			//fixed update step, variable rendering
-			while (realTimeElapsed >= MsPerFrame)
-			{				
-				sceneManager.Update(); //update game objects
-				realTimeElapsed -= MsPerFrame;
-				/*for (int i{}; i < 10000; ++i)
-				{
-					double* pDouble{ new double{5.0} };
-					delete pDouble;
-				}*/
-				
-			}
-			renderer.Render(); //render game objects
-		}
-
-		//renderer.Render(); //render game objects
-				//TODO: interpolate rendering based on leftover of realTimeElapsed
-
-
-				/*sceneManager.Update();
-				renderer.Render();
-				auto sleepTime = duration_cast<duration<float>>(currentTime + milliseconds(MsPerFrame) - high_resolution_clock::now());
-
-				std::this_thread::sleep_for(sleepTime);
-				std::cout << "Slept for " << sleepTime.count()*1000 << " ms\n";*/
-
-	Cleanup();
 }
 
 void Shining::ShiningEngine::Initialize()
@@ -112,7 +102,7 @@ void Shining::ShiningEngine::LoadDemoScene() const
 	pBackground->AddComponent(new RenderComponent("background.jpg"));
 	scene.Add(pBackground);
 
-	/*Shining::GameObject* pLogo{ new Shining::GameObject() };
+	Shining::GameObject* pLogo{ new Shining::GameObject() };
 	pLogo->AddComponent(new RenderComponent("logo.png"));
 	pLogo->SetPosition(216, 180);
 	scene.Add(pLogo);
@@ -120,7 +110,7 @@ void Shining::ShiningEngine::LoadDemoScene() const
 	Shining::GameObject* pText{ new Shining::GameObject() };
 	pText->AddComponent(new TextComponent("Programming 4 Assignment", "Lingua.otf", SDL_Color{255, 255, 255}, 36));
 	pText->SetPosition(80, 20);
-	scene.Add(pText);*/
+	scene.Add(pText);
 
 	Shining::GameObject* pCounter{ new Shining::GameObject() };
 	pCounter->AddComponent(new TextComponent("00 FPS", "Lingua.otf", SDL_Color{ 255, 255, 50 }, 17));
@@ -129,10 +119,10 @@ void Shining::ShiningEngine::LoadDemoScene() const
 	scene.Add(pCounter);
 
 	//this game object is supposed to be initialized in Game.cpp but I had issues getting that to work, so I do it here to demonstrate
-	Shining::GameObject* pTestCharacter{ new Shining::GameObject() };
+	/*Shining::GameObject* pTestCharacter{ new Shining::GameObject() };
 	pTestCharacter->AddComponent(new RenderComponent{ "Bub.png", 2, 100, 2, 4 });
 	pTestCharacter->SetPosition(200, 100);
-	scene.Add(pTestCharacter);
+	scene.Add(pTestCharacter);*/
 }
 
 void Shining::ShiningEngine::RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept
@@ -145,6 +135,11 @@ void Shining::ShiningEngine::AddCommand(Command* pCommandToAdd, const unsigned i
 	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
 }
 
+Shining::Scene& Shining::ShiningEngine::CreateScene(const std::string& name)
+{
+	return SceneManager::GetInstance().CreateScene(name);
+}
+
 void Shining::ShiningEngine::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
@@ -153,9 +148,4 @@ void Shining::ShiningEngine::Cleanup()
 	SDL_Quit();
 	SceneManager::GetInstance().Destroy();
 	ResourceManager::GetInstance().Destroy();
-}
-
-void Shining::ShiningEngine::SetDataPath(const std::string& pathToDataFolder) noexcept
-{
-	ResourceManager::GetInstance().Init(pathToDataFolder);
 }

@@ -12,11 +12,11 @@ Shining::GameObject::~GameObject()
 	}
 }
 
-void Shining::GameObject::Update()
+void Shining::GameObject::Update(const float timeStep)
 {
 	for (Component* pComponent : m_pComponents)
 	{
-		pComponent->Update();
+		pComponent->Update(timeStep);
 	}
 }
 

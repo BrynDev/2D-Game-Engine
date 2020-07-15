@@ -11,7 +11,7 @@ namespace Shining
 		FPSComponent(const Shining::GameObject* pOwner);
 		virtual ~FPSComponent() = default;
 
-		virtual void Update() override;
+		virtual void Update(const float timeStep) override;
 		virtual void Render(const glm::vec3& pos) /*const*/ override;
 
 		FPSComponent(const FPSComponent& other) = delete;
@@ -20,7 +20,6 @@ namespace Shining
 		FPSComponent& operator=(FPSComponent&& other) = delete;
 	private:
 		const Shining::GameObject* m_pOwner;
-		const int m_MsPerFrame;
 		int m_NrFramesRendered;
 		int m_ElapsedTimeMs;
 	};

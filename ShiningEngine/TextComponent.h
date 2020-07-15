@@ -13,7 +13,7 @@ namespace Shining
 		virtual ~TextComponent();
 
 		virtual void Render(const glm::vec3& pos) /*const*/ override;
-		virtual void Update() override;
+		virtual void Update(const float timeStep) override;
 		void SetText(const std::string& newText);
 
 		TextComponent(const TextComponent& other) = delete;

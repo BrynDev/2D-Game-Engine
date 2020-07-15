@@ -13,7 +13,7 @@ namespace Shining
 		virtual ~RenderComponent() = default;
 
 		virtual void Render(const glm::vec3& pos) /*const*/ override;
-		virtual void Update() noexcept override;
+		virtual void Update(const float timeStep) noexcept override;
 
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;

@@ -1,23 +1,22 @@
 #pragma once
 struct SDL_Window;
-#include <vector>
+#include "Scene.h"
+
 namespace Shining
 {
 	class ShiningEngine
 	{
 	public:
-		ShiningEngine() = default;
+		ShiningEngine();
 		void Initialize();
 		void LoadDemoScene() const;
 		void Cleanup();
 		void Run();
-		void SetDataPath(const std::string& pathToDataFolder) noexcept;
+
+		//Delegate function calls to classes that aren't accessible from the game project
 		void RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept;
 		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept;
-		static const int GetMsPerFrame()
-		{
-			return MsPerFrame;
-		}
+		Scene& CreateScene(const std::string& name);
 
 		ShiningEngine(const ShiningEngine& other) = delete;
 		ShiningEngine& operator=(const ShiningEngine& rhs) = delete;

@@ -11,7 +11,7 @@ namespace Shining
 	public:
 		//void Add(SceneObject* pObject);
 		void Add(GameObject* pObject);
-		void Update();
+		void Update(const float timeStep);
 		void Render() const;
 
 		~Scene();
