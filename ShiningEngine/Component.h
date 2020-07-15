@@ -13,8 +13,8 @@ namespace Shining
 		Component() = default;
 		virtual ~Component() = default;
 
-		virtual void Update() = 0;
-		virtual void Render(const glm::vec3& pos) /*const*/ = 0;
+		virtual void Update(const float timeStep) = 0;
+		virtual void Render(const glm::vec3& pos) = 0;
 
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;

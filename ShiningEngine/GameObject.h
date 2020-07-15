@@ -9,7 +9,7 @@ namespace Shining
 	class GameObject final
 	{
 	public:
-		virtual void Update();
+		virtual void Update(const float timeStep);
 		virtual void Render() const;
 
 		void SetPosition(float x, float y) noexcept;

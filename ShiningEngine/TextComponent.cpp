@@ -4,7 +4,6 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
-//#include <SDL.h>
 #include <SDL_ttf.h>
 
 Shining::TextComponent::TextComponent(const std::string& text, const std::string& fontName, const SDL_Color& color, const int size)
@@ -31,7 +30,7 @@ void Shining::TextComponent::Render(const glm::vec3& pos) /*const*/
 	}
 }
 
-void Shining::TextComponent::Update()
+void Shining::TextComponent::Update(const float /*timeStep*/)
 {
 	//deltaTime is unused
 

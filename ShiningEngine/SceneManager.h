@@ -1,5 +1,7 @@
 #pragma once
 #include "Singleton.h"
+#include <string>
+#include <vector>
 
 namespace Shining
 {
@@ -9,7 +11,7 @@ namespace Shining
 	public:
 		Scene& CreateScene(const std::string& name);
 
-		void Update();
+		void Update(const float timeStep);
 		void Render();
 
 		void Destroy();

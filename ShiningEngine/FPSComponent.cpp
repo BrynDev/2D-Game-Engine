@@ -3,20 +3,20 @@
 #include "GameObject.h"
 #include "TextComponent.h"
 #include "ShiningEngine.h"
+#include <string>
 
 
 
 Shining::FPSComponent::FPSComponent(const Shining::GameObject* pOwner)
 	:m_pOwner{pOwner}
-	, m_MsPerFrame{ShiningEngine::GetMsPerFrame()}
 	, m_NrFramesRendered{}
 	, m_ElapsedTimeMs{}
 {
 }
 
-void Shining::FPSComponent::Update()
+void Shining::FPSComponent::Update(const float timeStep)
 {
-	m_ElapsedTimeMs += m_MsPerFrame;
+	m_ElapsedTimeMs += int(timeStep);
 	//++m_NrFramesRendered;
 	if (m_ElapsedTimeMs >= 1000) //1 second
 	{

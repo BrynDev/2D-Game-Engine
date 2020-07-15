@@ -55,7 +55,7 @@ void Shining::RenderComponent::Render(const glm::vec3& pos) /*const*/
 	
 }
 
-void Shining::RenderComponent::Update() noexcept
+void Shining::RenderComponent::Update(const float timeStep) noexcept
 {
 	if (m_NrCols == 0) 
 	{
@@ -63,7 +63,7 @@ void Shining::RenderComponent::Update() noexcept
 		return;
 	}
 
-	m_ElapsedTimeMs += ShiningEngine::GetMsPerFrame();
+	m_ElapsedTimeMs += int(timeStep);
 
 	if (m_ElapsedTimeMs >= m_MsPerFrame)
 	{

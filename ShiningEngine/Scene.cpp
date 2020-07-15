@@ -21,11 +21,11 @@ void Scene::Add(GameObject* pObject)
 	m_pGameObjects.push_back(pObject);
 }
 
-void Scene::Update()
+void Scene::Update(const float timeStep)
 {
 	for(GameObject* pObject : m_pGameObjects)
 	{
-		pObject->Update();
+		pObject->Update(timeStep);
 	}
 }
 

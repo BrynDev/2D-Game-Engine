@@ -2,11 +2,11 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void Shining::SceneManager::Update()
+void Shining::SceneManager::Update(const float timeStep)
 {
 	for(Scene* pScene : m_pScenes)
 	{
-		pScene->Update();
+		pScene->Update(timeStep);
 	}
 }
 
