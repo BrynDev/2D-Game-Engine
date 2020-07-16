@@ -5,7 +5,7 @@ int main()
 {
 	Shining::ShiningEngine engine{};	
 	Shining::GameObject* pPlayerCharacter{ new Shining::GameObject() };	 
-	pPlayerCharacter->AddComponent(new Shining::RenderComponent("Bub.png", 2, 100, 2, 4));
+	pPlayerCharacter->AddComponent(new Shining::RenderComponent("Sprite_Car.png", 2, 80, 1, 3));
 
 	Shining::Scene& scene{ engine.CreateScene("Game") };
 	scene.Add(pPlayerCharacter);
