@@ -20,13 +20,12 @@ namespace Shining
 	{
 	public:
 		bool ProcessInput();
+		void CheckForNewControllers(const float deltaTime) noexcept;
 		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput);
 		void RegisterPlayerCharacter(GameObject* pCharacterToControl);
 		virtual ~InputManager();
-	private:
-		void CheckForNewControllers();
 
-		XINPUT_STATE m_CurrentState{};
+	private:
 		Controller m_Controllers[XUSER_MAX_COUNT]{};
 		GameObject* m_pPlayerCharacter;
 		std::unordered_map<unsigned int, Command*> m_CommandsByVKey{};

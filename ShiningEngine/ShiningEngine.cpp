@@ -21,9 +21,6 @@ using namespace std::chrono;
 
 void Shining::ShiningEngine::Run()
 {
-	//Initialize();
-
-	//LoadDemoScene();
 
 	Renderer& renderer = Renderer::GetInstance();
 	SceneManager& sceneManager = SceneManager::GetInstance();
@@ -39,8 +36,10 @@ void Shining::ShiningEngine::Run()
 		const duration<float, milli> deltaTime{ currentTime - prevTime };
 		prevTime = currentTime;
 		realTimeElapsed += deltaTime.count();
-		doContinue = input.ProcessInput(); //detect quit & take input
 
+		input.CheckForNewControllers(deltaTime.count());
+		doContinue = input.ProcessInput(); //detect quit & take input
+	
 		//fixed update step, variable rendering
 		while (realTimeElapsed >= MsPerFrame)
 		{				

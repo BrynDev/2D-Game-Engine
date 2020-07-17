@@ -27,15 +27,7 @@ Shining::InputManager::~InputManager()
 
 bool Shining::InputManager::ProcessInput()
 {
-	ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
-	XInputGetState(0, &m_CurrentState);
-	++m_ControllerCheckTimer;
-	if (m_ControllerCheckTimer > 500)
-	{
-		CheckForNewControllers();
-		m_ControllerCheckTimer = 0;
-	}
-
+	
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) 
 	{
@@ -225,15 +217,22 @@ bool Shining::InputManager::ProcessInput()
 //"For performance reasons, don't call XInputGetState for an 'empty' user slot every frame. 
 //We recommend that you space out checks for new controllers every few seconds instead."
 //from https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput#multiple-controllers
-void Shining::InputManager::CheckForNewControllers()
+void Shining::InputManager::CheckForNewControllers(const float deltaTime) noexcept
 {
+	m_ControllerCheckTimer += int(deltaTime); 
+	if (m_ControllerCheckTimer < 5000) //5 seconds
+	{
+		return;
+	}
+	m_ControllerCheckTimer = 0;
+
 	for (int i{}; i < XUSER_MAX_COUNT; ++i)
 	{
 		DWORD dwordResult{};
 		dwordResult = XInputGetState(i, &m_Controllers[i].state);
 		if (dwordResult == ERROR_SUCCESS)
 		{
-			m_Controllers[i].isActive = true;		
+			m_Controllers[i].isActive = true;	
 		}
 		else
 		{
