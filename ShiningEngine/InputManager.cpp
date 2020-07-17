@@ -27,7 +27,9 @@ Shining::InputManager::~InputManager()
 
 bool Shining::InputManager::ProcessInput()
 {
-	
+	//============
+	//KEYBOARD
+	//============
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) 
 	{
@@ -48,7 +50,11 @@ bool Shining::InputManager::ProcessInput()
 			//to add later
 		}
 	}
-	
+
+
+	//============
+	//CONTROLLER
+	//============
 	const int thumbStickDeadZone{ 12000 };
 	for (int i{0}; i < XUSER_MAX_COUNT; ++i)
 	{
@@ -219,23 +225,26 @@ bool Shining::InputManager::ProcessInput()
 //from https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput#multiple-controllers
 void Shining::InputManager::CheckForNewControllers(const float deltaTime) noexcept
 {
-	m_ControllerCheckTimer += int(deltaTime); 
-	if (m_ControllerCheckTimer < 5000) //5 seconds
+	m_ControllerCheckTimer += deltaTime;
+	if (m_ControllerCheckTimer <= 5000) //5 seconds
 	{
-		return;
+		return; //early exit
 	}
 	m_ControllerCheckTimer = 0;
-
+	
 	for (int i{}; i < XUSER_MAX_COUNT; ++i)
 	{
+		//check all controller ports
 		DWORD dwordResult{};
 		dwordResult = XInputGetState(i, &m_Controllers[i].state);
 		if (dwordResult == ERROR_SUCCESS)
 		{
-			m_Controllers[i].isActive = true;	
+			//controller is connected in this port
+			m_Controllers[i].isActive = true;
 		}
 		else
 		{
+			//no controller connected in this port
 			m_Controllers[i].isActive = false;
 		}
 	}
