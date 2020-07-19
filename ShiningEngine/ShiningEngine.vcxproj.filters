@@ -50,6 +50,15 @@
     <ClCompile Include="Command.cpp">
       <Filter>Command</Filter>
     </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="TileComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -104,6 +113,15 @@
     <ClInclude Include="ControllerInput.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -138,6 +156,9 @@
     </Filter>
     <Filter Include="Command">
       <UniqueIdentifier>{b8dbcf92-3f0f-4a13-92e6-0dbd9a66462a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{de0ccc74-0327-4cad-9d10-31ccbb6cf25d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
