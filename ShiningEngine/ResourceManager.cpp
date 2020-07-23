@@ -3,7 +3,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-
 #include "Renderer.h"
 #include "Texture2D.h"
 #include "Font.h"
@@ -47,9 +46,19 @@ Shining::Texture2D* Shining::ResourceManager::LoadTexture(const std::string& fil
 {
 	const std::string fullPath{ m_DataPath + file };
 	SDL_Texture* pTexture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	if (pTexture == nullptr)
-	{	
+	try
+	{
+		if (pTexture == nullptr)
+		{
 			throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
+		}
+	}
+	catch (const std::runtime_error& exception)
+	{
+		//load a default texture instead and continue running
+		std::cout << exception.what() << std::endl;
+		const std::string defaultPath{ m_DataPath + "DefaultTexture.jpg" };
+		pTexture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), defaultPath.c_str());
 	}
 
 	//check if this texture has already been loaded
@@ -98,4 +107,10 @@ Shining::Font* Shining::ResourceManager::LoadFont(const std::string& file, unsig
 	m_FontMap.insert(std::make_pair(fullPath, pNewFont)); //add it to the map
 	return pNewFont;
 	
+}
+
+std::ifstream Shining::ResourceManager::LoadFileForReading(const std::string& file) const
+{
+	std::ifstream ifStream{ m_DataPath + file };
+	return ifStream;
 }

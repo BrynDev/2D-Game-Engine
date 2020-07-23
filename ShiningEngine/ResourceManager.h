@@ -1,6 +1,7 @@
 #pragma once
 #include "Singleton.h"
 #include <unordered_map>
+#include <fstream>
 
 namespace Shining
 {
@@ -12,6 +13,7 @@ namespace Shining
 		void Init(const std::string& data);
 		Texture2D* LoadTexture(const std::string& file);
 		Font* LoadFont(const std::string& file, unsigned int size);
+		std::ifstream LoadFileForReading(const std::string& file) const;
 
 		void Destroy();
 	private:

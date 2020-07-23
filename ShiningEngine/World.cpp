@@ -1,18 +1,29 @@
 #include "ShiningEnginePCH.h"
 #include "World.h"
 #include "TileComponent.h"
+#include "RenderComponent.h"
 
-Shining::World::World(const TileMapDescriptor& /*tileMap*/, const std::string& /*tilePlacementsCSV*/, const int /*nrTilesX*/, const int /*nrTilesY*/)
-	//:m_pTiles{ new TileComponent() }
+Shining::World::World(const std::string& textureFile, const std::string& tilePlacementsCSV, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
+	:m_pTileComponent{ nullptr }
+	,m_pRenderComponent{new RenderComponent(textureFile)}
 {
+	m_pTileComponent = new TileComponent(tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld, m_pRenderComponent);
+	m_pTileComponent->LoadTiles(tilePlacementsCSV);
 }
 
 Shining::World::~World()
 {
-	//delete m_pTiles;
+	delete m_pTileComponent;
+	delete m_pRenderComponent;
 }
 
-void Shining::World::Render() const
+void Shining::World::Update(const float /*timeStep*/)
 {
-	//m_pTiles->Render(glm::vec3{0,0,0}); //dont need to pass a position here, component takes care of it
+	//TODO
 }
+
+void Shining::World::Render() const noexcept
+{
+	m_pTileComponent->Render(glm::vec3{ 0,0,0 }); //start position
+}
+

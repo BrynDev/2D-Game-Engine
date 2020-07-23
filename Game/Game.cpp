@@ -9,7 +9,10 @@ int main()
 
 	Shining::Scene& scene{ engine.CreateScene("Game") };
 	scene.Add(pPlayerCharacter);
+	scene.InitWorld("TestTileMap.png", "TestMap.csv", 33, 33, 8, 6, 15, 10);
+
 	engine.RegisterPlayerCharacter(pPlayerCharacter);
 	engine.AddCommand(new JumpCommand(), SDLK_SPACE, Shining::ControllerInput::RightTrigger);
+
 	engine.Run();
 }

@@ -72,9 +72,14 @@ void Shining::RenderComponent::Update(const float timeStep) noexcept
 
 		if(m_CurrentFrame >= m_NrCols - 1 || m_CurrentFrame <= 0) //if this is the final frame
 		{			
-			m_IsOscillating = !m_IsOscillating;
+			m_IsOscillating = !m_IsOscillating; //"move" in the opposite direction
 		}
 
 		m_SrcRect.x = m_CurrentFrame * m_SrcRect.w;	//update source rect
 	}
+}
+
+void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept
+{
+	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
 }

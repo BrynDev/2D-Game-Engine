@@ -1,32 +1,25 @@
 #pragma once
 
-#include <vector>
-
-class TileComponent;
-
 namespace Shining
 {
-	struct TileMapDescriptor
-	{
-		const std::string path{};
-		const int tileWidth{};
-		const int tileHeight{};
-		const int nrCols{};
-		const int nrRows{};
-	};
+	class TileComponent;
+	class RenderComponent;
 
 	class World final
 	{
 	public:
-		World(const TileMapDescriptor& tileMap, const std::string& tilePlacementsCSV, const int nrTilesX, const int nrTilesY );
+	
+		World(const std::string& textureFile, const std::string& tilePlacementsCSV, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld);
 		~World();
-		void Render() const;
+		void Render() const noexcept;
+		void Update(const float timeStep);
 
 		World(const World& other) = delete;
 		World& operator=(const World& rhs) = delete;
 		World(World&& other) = delete;
 		World& operator=(World&& rhs) = delete;
 	private:
-		TileComponent* m_pTiles;
+		Shining::TileComponent* m_pTileComponent;
+		Shining::RenderComponent* m_pRenderComponent;
 	};
 }

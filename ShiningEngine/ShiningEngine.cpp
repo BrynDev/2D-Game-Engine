@@ -116,12 +116,6 @@ void Shining::ShiningEngine::LoadDemoScene() const
 	pCounter->AddComponent(new FPSComponent(pCounter));
 	pCounter->SetPosition(15, 15);
 	scene.Add(pCounter);
-
-	//this game object is supposed to be initialized in Game.cpp but I had issues getting that to work, so I do it here to demonstrate
-	/*Shining::GameObject* pTestCharacter{ new Shining::GameObject() };
-	pTestCharacter->AddComponent(new RenderComponent{ "Bub.png", 2, 100, 2, 4 });
-	pTestCharacter->SetPosition(200, 100);
-	scene.Add(pTestCharacter);*/
 }
 
 void Shining::ShiningEngine::RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept
