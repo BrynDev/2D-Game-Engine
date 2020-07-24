@@ -5,18 +5,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="FPSComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TextComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -53,32 +41,35 @@
     <ClCompile Include="World.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="TileComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="CSVParser.cpp">
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="SimpleException.cpp">
       <Filter>SimpleException</Filter>
     </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Components\TextComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSComponent.cpp">
+      <Filter>Components\FPSComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Components\RenderComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="TileComponent.cpp">
+      <Filter>Components\TileComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="StateComponent.cpp">
+      <Filter>Components\StateComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="FPSComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TextComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Managers</Filter>
@@ -119,14 +110,29 @@
     <ClInclude Include="World.h">
       <Filter>World</Filter>
     </ClInclude>
-    <ClInclude Include="TileComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="CSVParser.h">
       <Filter>World</Filter>
     </ClInclude>
     <ClInclude Include="SimpleException.h">
       <Filter>SimpleException</Filter>
+    </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Components\TextComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSComponent.h">
+      <Filter>Components\FPSComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Components\RenderComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>Components\TileComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Components\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="StateComponent.h">
+      <Filter>Components\StateComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +177,24 @@
     </Filter>
     <Filter Include="Resources\Texture2D">
       <UniqueIdentifier>{8e43e0be-68fb-4bf3-b874-cbb69e4ef872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\TextComponent">
+      <UniqueIdentifier>{1b7919a1-d868-435f-a50c-4cbf2a8b3a55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\FPSComponent">
+      <UniqueIdentifier>{dbe6e43b-f9d4-4187-b21a-caa9694283f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\RenderComponent">
+      <UniqueIdentifier>{d99df2d1-f68c-48f4-bb89-7c0a1db564c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\TileComponent">
+      <UniqueIdentifier>{506dd9bc-dff2-446e-816d-703f4313cde9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Component">
+      <UniqueIdentifier>{7b39a91a-773a-428c-b9f6-4a7bc15094d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\StateComponent">
+      <UniqueIdentifier>{5f11a224-7bb1-49a0-9ca6-38609dea02cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
