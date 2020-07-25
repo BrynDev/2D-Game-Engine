@@ -65,6 +65,9 @@
     <ClCompile Include="StateComponent.cpp">
       <Filter>Components\StateComponent</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -134,6 +137,9 @@
     <ClInclude Include="StateComponent.h">
       <Filter>Components\StateComponent</Filter>
     </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -195,6 +201,9 @@
     </Filter>
     <Filter Include="Components\StateComponent">
       <UniqueIdentifier>{5f11a224-7bb1-49a0-9ca6-38609dea02cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{ae6d3ebf-f3fe-479c-bd2e-830b4838ea61}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

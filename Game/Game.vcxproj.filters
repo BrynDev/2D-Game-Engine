@@ -8,6 +8,9 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{50e822e0-34cc-46ce-b695-6b154a88b558}</UniqueIdentifier>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{b09bb5b5-3eb5-4d7d-968a-1bea909fd66d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -16,10 +19,16 @@
     <ClCompile Include="JumpCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JumpCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

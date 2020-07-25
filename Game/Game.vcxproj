@@ -208,6 +208,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="JumpCommand.cpp" />
+    <ClCompile Include="MoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShiningEngine\ShiningEngine.vcxproj">
@@ -216,6 +217,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JumpCommand.h" />
+    <ClInclude Include="MoveState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
