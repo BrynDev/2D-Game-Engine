@@ -22,7 +22,7 @@ namespace Shining
 		TileComponent& operator=(TileComponent&& rhs) = delete;
 
 		void LoadTiles(const std::string& tilePlacementsCSV);
-		virtual void Render(const glm::vec3& pos) /*const*/ override;
+		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) override;
 		//const Tile& GetTile(const int indexX, const int indexY) const noexcept;
 		

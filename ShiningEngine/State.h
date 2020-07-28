@@ -2,6 +2,8 @@
 
 namespace Shining
 {
+	class GameObject;
+
 	class State
 	{
 	public:

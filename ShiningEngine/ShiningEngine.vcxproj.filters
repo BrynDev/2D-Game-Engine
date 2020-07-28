@@ -68,6 +68,9 @@
     <ClCompile Include="State.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsComponent.cpp">
+      <Filter>Components\PhysicsComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -140,6 +143,9 @@
     <ClInclude Include="State.h">
       <Filter>State</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsComponent.h">
+      <Filter>Components\PhysicsComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -204,6 +210,9 @@
     </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{ae6d3ebf-f3fe-479c-bd2e-830b4838ea61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\PhysicsComponent">
+      <UniqueIdentifier>{c926d2ad-cfe0-4972-a800-94a9bf71323f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

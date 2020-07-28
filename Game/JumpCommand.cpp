@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-void JumpCommand::Execute(const Shining::GameObject* /*pTargetObject*/) const
+void JumpCommand::Execute( Shining::GameObject* const /*pTargetObject*/) const noexcept
 {
 	std::cout << "Command called\n";
 	//pTargetObject->GetComponent<physics>()->jump;

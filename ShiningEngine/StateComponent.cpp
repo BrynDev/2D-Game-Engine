@@ -10,7 +10,7 @@ Shining::StateComponent::StateComponent(State* pStartingState, GameObject* pOwne
 	m_pStates.insert(pStartingState);
 }
 
-void Shining::StateComponent::Render(const glm::vec3& /*pos*/) /*const*/
+void Shining::StateComponent::Render(const glm::vec2& /*pos*/) /*const*/
 {
 	//UNUSED FUNCTION
 }
@@ -18,6 +18,11 @@ void Shining::StateComponent::Render(const glm::vec3& /*pos*/) /*const*/
 void Shining::StateComponent::Update(const float timeStep)
 {
 	m_pCurrentState->Update(m_pOwner, timeStep);
+}
+
+void Shining::StateComponent::AddState(State* pStateToAdd) noexcept
+{
+	m_pStates.insert(pStateToAdd);
 }
 
 Shining::StateComponent::~StateComponent()

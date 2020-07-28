@@ -40,7 +40,7 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 	
 }
 
-void Shining::RenderComponent::Render(const glm::vec3& pos) /*const*/
+void Shining::RenderComponent::Render(const glm::vec2& pos) /*const*/
 {
 	if (m_NrCols == 0)
 	{

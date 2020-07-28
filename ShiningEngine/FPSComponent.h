@@ -12,7 +12,7 @@ namespace Shining
 		virtual ~FPSComponent() = default;
 
 		virtual void Update(const float timeStep) override;
-		virtual void Render(const glm::vec3& pos) /*const*/ override;
+		virtual void Render(const glm::vec2& pos) /*const*/ override;
 
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;

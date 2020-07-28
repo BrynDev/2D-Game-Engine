@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObject.h" //Include this here so I don't need to include it in every derived command class
 
 namespace Shining
 {
@@ -10,7 +11,7 @@ namespace Shining
 		Command() = default;
 		virtual ~Command() = default;
 
-		virtual void Execute(const Shining::GameObject* pTargetObject) const = 0;
+		virtual void Execute(Shining::GameObject* const pTargetObject) const noexcept = 0;
 	protected:
 	};
 }

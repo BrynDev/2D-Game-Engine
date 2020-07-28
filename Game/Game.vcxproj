@@ -207,7 +207,9 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="JumpCommand.cpp" />
+    <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="MoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -216,7 +218,9 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IdleState.h" />
     <ClInclude Include="JumpCommand.h" />
+    <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MoveState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
