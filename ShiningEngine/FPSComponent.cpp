@@ -28,7 +28,7 @@ void Shining::FPSComponent::Update(const float timeStep)
 }
 
 
-void Shining::FPSComponent::Render(const glm::vec3& /*pos*/) /*const*/
+void Shining::FPSComponent::Render(const glm::vec2& /*pos*/) /*const*/
 {
 	++m_NrFramesRendered;
 }

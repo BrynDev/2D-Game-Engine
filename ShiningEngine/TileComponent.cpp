@@ -24,7 +24,7 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 //should tiles be stored as pointers?
 //consider using a fixed size allocator for tiles -> improves locality
 
-void Shining::TileComponent::Render(const glm::vec3& pos) /*const*/
+void Shining::TileComponent::Render(const glm::vec2& pos) /*const*/
 {
 	SDL_Rect destRect{int(pos.x), int(pos.y), m_TileWidth, m_TileHeight};
 	for (int row{ 0 }; row < m_NrRowsWorld; ++row)

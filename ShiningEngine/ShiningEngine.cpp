@@ -97,24 +97,24 @@ void Shining::ShiningEngine::LoadDemoScene() const
 {
 	Scene& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	Shining::GameObject* pBackground{ new Shining::GameObject()};
+	Shining::GameObject* pBackground{ new Shining::GameObject(0,0)};
 	pBackground->AddComponent(new RenderComponent("background.jpg"));
 	scene.Add(pBackground);
 
-	Shining::GameObject* pLogo{ new Shining::GameObject() };
+	Shining::GameObject* pLogo{ new Shining::GameObject(216, 180) };
 	pLogo->AddComponent(new RenderComponent("logo.png"));
-	pLogo->SetPosition(216, 180);
+	//pLogo->SetPosition(216, 180);
 	scene.Add(pLogo);
 
-	Shining::GameObject* pText{ new Shining::GameObject() };
+	Shining::GameObject* pText{ new Shining::GameObject(80,20) };
 	pText->AddComponent(new TextComponent("Programming 4 Assignment", "Lingua.otf", SDL_Color{255, 255, 255}, 36));
-	pText->SetPosition(80, 20);
+	//pText->SetPosition(80, 20);
 	scene.Add(pText);
 
-	Shining::GameObject* pCounter{ new Shining::GameObject() };
+	Shining::GameObject* pCounter{ new Shining::GameObject(15,15) };
 	pCounter->AddComponent(new TextComponent("00 FPS", "Lingua.otf", SDL_Color{ 255, 255, 50 }, 17));
 	pCounter->AddComponent(new FPSComponent(pCounter));
-	pCounter->SetPosition(15, 15);
+	//pCounter->SetPosition(15, 15);
 	scene.Add(pCounter);
 }
 
@@ -126,6 +126,11 @@ void Shining::ShiningEngine::RegisterPlayerCharacter(GameObject* pPlayerCharacte
 void Shining::ShiningEngine::AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept
 {
 	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
+}
+
+void Shining::ShiningEngine::SetNoKeysCommand(Command* pCommand) noexcept
+{
+	Shining::InputManager::GetInstance().SetNoKeysCommand(pCommand);
 }
 
 Shining::Scene& Shining::ShiningEngine::CreateScene(const std::string& name)

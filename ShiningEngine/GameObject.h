@@ -1,6 +1,11 @@
 #pragma once
-#include "Transform.h"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec2.hpp>
+#pragma warning(pop)
+
 #include <vector>
+#include <typeinfo>
 
 namespace Shining
 {
@@ -9,17 +14,17 @@ namespace Shining
 	class GameObject final
 	{
 	public:
+		GameObject(const float xPos, const float yPos);
+		virtual ~GameObject();
+
 		virtual void Update(const float timeStep);
 		virtual void Render() const;
-
 		void SetPosition(float x, float y) noexcept;
+		glm::vec2 GetPosition() const noexcept;
 		void AddComponent(Component* pComponent) noexcept;
 
 		template<typename T>
 		T* GetComponent() const;
-
-		GameObject() = default;
-		virtual ~GameObject();
 
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -27,7 +32,8 @@ namespace Shining
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		Transform m_Transform;
+		glm::vec2 m_Pos;
+		//Transform m_Transform;
 		std::vector<Shining::Component*> m_pComponents;
 	};
 }
