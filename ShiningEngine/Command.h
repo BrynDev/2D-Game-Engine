@@ -12,6 +12,7 @@ namespace Shining
 		virtual ~Command() = default;
 
 		virtual void Execute(Shining::GameObject* const pTargetObject) const noexcept = 0;
+		virtual void OnRelease(Shining::GameObject* const pTargetObject) const noexcept = 0;
 	protected:
 	};
 }

@@ -1,8 +1,11 @@
 #include "ShiningEnginePCH.h" //single include to access all engine functionality
-#include "JumpCommand.h"
-#include "MoveCommand.h"
+#include "MoveRightCommand.h"
+#include "MoveLeftCommand.h"
+#include "MoveUpCommand.h"
+#include "MoveDownCommand.h"
 #include "MoveState.h"
 #include "IdleState.h"
+#include "StartIdleCommand.h"
 
 int main()
 {
@@ -19,7 +22,11 @@ int main()
 	scene.InitWorld("TestTileMap.png", "TestMap.csv", 33, 33, 8, 6, 15, 10);
 
 	engine.RegisterPlayerCharacter(pPlayerCharacter);
-	engine.AddCommand(new JumpCommand(), SDLK_SPACE, Shining::ControllerInput::RightTrigger);
-	engine.AddCommand(new MoveCommand(), SDLK_d, Shining::ControllerInput::LeftStickRight);
+	engine.AddCommand(new MoveRightCommand(), SDLK_d, Shining::ControllerInput::LeftStickRight);
+	engine.AddCommand(new MoveLeftCommand(), SDLK_a, Shining::ControllerInput::LeftStickLeft);
+	engine.AddCommand(new MoveUpCommand(), SDLK_w, Shining::ControllerInput::LeftStickUp);
+	engine.AddCommand(new MoveDownCommand(), SDLK_s, Shining::ControllerInput::LeftStickDown);
+	engine.SetNoKeysCommand(new StartIdleCommand());
+
 	engine.Run();
 }

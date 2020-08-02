@@ -128,6 +128,11 @@ void Shining::ShiningEngine::AddCommand(Command* pCommandToAdd, const unsigned i
 	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
 }
 
+void Shining::ShiningEngine::SetNoKeysCommand(Command* pCommand) noexcept
+{
+	Shining::InputManager::GetInstance().SetNoKeysCommand(pCommand);
+}
+
 Shining::Scene& Shining::ShiningEngine::CreateScene(const std::string& name)
 {
 	return SceneManager::GetInstance().CreateScene(name);

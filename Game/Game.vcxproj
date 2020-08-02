@@ -208,9 +208,12 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IdleState.cpp" />
-    <ClCompile Include="JumpCommand.cpp" />
-    <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="MoveDownCommand.cpp" />
+    <ClCompile Include="MoveLeftCommand.cpp" />
+    <ClCompile Include="MoveRightCommand.cpp" />
     <ClCompile Include="MoveState.cpp" />
+    <ClCompile Include="MoveUpCommand.cpp" />
+    <ClCompile Include="StartIdleCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShiningEngine\ShiningEngine.vcxproj">
@@ -219,9 +222,12 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IdleState.h" />
-    <ClInclude Include="JumpCommand.h" />
-    <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="MoveDownCommand.h" />
+    <ClInclude Include="MoveLeftCommand.h" />
+    <ClInclude Include="MoveRightCommand.h" />
     <ClInclude Include="MoveState.h" />
+    <ClInclude Include="MoveUpCommand.h" />
+    <ClInclude Include="StartIdleCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

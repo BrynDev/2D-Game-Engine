@@ -16,30 +16,48 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JumpCommand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="MoveState.cpp">
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="IdleState.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="MoveCommand.cpp">
+    <ClCompile Include="MoveRightCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveLeftCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveUpCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveDownCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="StartIdleCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="JumpCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
     <ClInclude Include="MoveState.h">
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="IdleState.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="MoveCommand.h">
+    <ClInclude Include="MoveRightCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveLeftCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveUpCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveDownCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="StartIdleCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
