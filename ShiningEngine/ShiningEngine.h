@@ -16,7 +16,7 @@ namespace Shining
 		//Delegate function calls to classes that aren't accessible from the game project
 		void RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept;
 		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept;
-		void SetNoKeysCommand(Command* pCommand) noexcept; //Command to execute when no keys are pressed
+		void SetNoInputCommand(Command* pCommand) noexcept; //Command to execute when no keys are pressed
 		Scene& CreateScene(const std::string& name);
 
 		ShiningEngine(const ShiningEngine& other) = delete;

@@ -14,8 +14,6 @@
 #include "FPSComponent.h"
 #include <vector>
 
-#include <iostream> //for test
-
 using namespace std;
 using namespace std::chrono;
 
@@ -128,9 +126,9 @@ void Shining::ShiningEngine::AddCommand(Command* pCommandToAdd, const unsigned i
 	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
 }
 
-void Shining::ShiningEngine::SetNoKeysCommand(Command* pCommand) noexcept
+void Shining::ShiningEngine::SetNoInputCommand(Command* pCommand) noexcept
 {
-	Shining::InputManager::GetInstance().SetNoKeysCommand(pCommand);
+	Shining::InputManager::GetInstance().SetNoInputCommand(pCommand);
 }
 
 Shining::Scene& Shining::ShiningEngine::CreateScene(const std::string& name)

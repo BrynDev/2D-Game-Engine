@@ -23,9 +23,9 @@ Shining::InputManager::~InputManager()
 		}
 
 	}*/
-	if (m_pNoKeysCommand != nullptr)
+	if (m_pNoInputCommand != nullptr)
 	{
-		delete m_pNoKeysCommand;
+		delete m_pNoInputCommand;
 	}
 	
 }
@@ -66,7 +66,7 @@ bool Shining::InputManager::ProcessInput()
 				m_CurrentlyPressedKeys.erase(e.key.keysym.sym);
 				if (m_CurrentlyPressedKeys.empty())
 				{
-					m_pNoKeysCommand->Execute(m_pPlayerCharacter); //if no relevant buttons are currently down, execute the NoKeysCommand
+					m_pNoInputCommand->Execute(m_pPlayerCharacter); //if no relevant buttons are currently down, execute the NoInputCommand
 				}
 			}
 		}
@@ -80,518 +80,46 @@ bool Shining::InputManager::ProcessInput()
 	//============
 	//CONTROLLER
 	//============
-	const int thumbStickDeadZone{ 12000 };
 	for (int i{0}; i < XUSER_MAX_COUNT; ++i)
 	{
 		Controller controller{ m_Controllers[i] };
-		if (controller.isActive)
+		if (!controller.isActive)
 		{
-			XInputGetState(i, &controller.gamepadState);		
-			XINPUT_GAMEPAD gamepad{ controller.gamepadState.Gamepad };
-			XINPUT_GAMEPAD prevGamepad{ controller.prevGamepadState.Gamepad };
-
-			for (std::pair<ControllerInput, Command*> pair : m_CommandsByControllerInput)
-			{
-				bool wasPressedPrevFrame{ false };
-				switch (pair.first)
-				{
-				//=========
-				//BUTTONS
-				//=========
-				case ControllerInput::ButtonA:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_A) //was this button pressed previous frame?
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_A) //is this button currently being pressed?
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue; //button is being held down, no need to execute the command again
-						}
-						else //button was newly pressed this frame, execute command
-						{
-							pair.second->Execute(m_pPlayerCharacter); 
-						}
-					}
-					else if (wasPressedPrevFrame) //button was released this frame, stop the command
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::ButtonB:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_B)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_B)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::ButtonX:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_X)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_X)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::ButtonY:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_Y)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_Y)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::DPadUp:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::DPadRight:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::DPadDown:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::DPadLeft:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::LeftBumper:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::RightBumper:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::LeftTrigger:
-					if (prevGamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (prevGamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::RightTrigger:
-					if (prevGamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (prevGamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::Select:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_BACK)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_BACK)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::Start:
-					if (prevGamepad.wButtons & XINPUT_GAMEPAD_START)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.wButtons & XINPUT_GAMEPAD_START)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				//=========
-				//STICKS
-				//=========
-				case ControllerInput::LeftStickUp:
-					if (prevGamepad.sThumbLY > thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbLY > thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::LeftStickRight:
-					if (prevGamepad.sThumbLX > thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbLX > thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::LeftStickDown:
-					if (prevGamepad.sThumbLY < -thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbLY < -thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::LeftStickLeft:
-					if (prevGamepad.sThumbLX < -thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbLX < -thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::RightStickUp:
-					if (prevGamepad.sThumbRY > thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbRY > thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::RightStickRight:
-					if (prevGamepad.sThumbRX > thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbRX > thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::RightStickDown:
-					if (prevGamepad.sThumbRY < -thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbRY < -thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				case ControllerInput::RightStickLeft:
-					if (prevGamepad.sThumbRX < -thumbStickDeadZone)
-					{
-						wasPressedPrevFrame = true;
-					}
-
-					if (gamepad.sThumbRX < -thumbStickDeadZone)
-					{
-						if (wasPressedPrevFrame)
-						{
-							continue;
-						}
-						else
-						{
-							pair.second->Execute(m_pPlayerCharacter);
-						}
-					}
-					else if (wasPressedPrevFrame)
-					{
-						pair.second->OnRelease(m_pPlayerCharacter);
-					}
-					break;
-				default:
-					break;
-				}	
-			}	
-
-			m_Controllers[i].prevGamepadState = controller.gamepadState; //update prevGamepadState of this controller
+			continue; //this controller isn't being used
 		}
+
+		XInputGetState(i, &controller.gamepadState);		
+		XINPUT_GAMEPAD gamepad{ controller.gamepadState.Gamepad };
+
+		for (std::pair<ControllerInput, Command*> pair : m_CommandsByControllerInput)
+		{
+			auto foundIt{ m_CurrentControllerInputs.find(pair.first) }; //is this button being held?
+			if (foundIt != m_CurrentControllerInputs.end())
+			{
+				//this button was pressed last frame, is it currently still pressed?
+				if (IsControllerInputPressed(gamepad, pair.first))
+				{
+					//the button is still being held
+					continue;
+				}
+				else
+				{
+					//the button has been released
+					m_CurrentControllerInputs.erase(pair.first);
+					pair.second->OnRelease(m_pPlayerCharacter);
+					if (m_CurrentControllerInputs.empty())
+					{
+						//if no buttons are being held, execute the NoInputCommand
+						m_pNoInputCommand->Execute(m_pPlayerCharacter);
+					}
+				}
+			}
+			else if (IsControllerInputPressed(gamepad, pair.first)) //did the button just start being pressed?
+			{
+				pair.second->Execute(m_pPlayerCharacter);
+				m_CurrentControllerInputs.insert(pair.first);
+			}
+		}	
 	}
 	return true;
 }
@@ -626,22 +154,176 @@ void Shining::InputManager::CheckForNewControllers(const float deltaTime) noexce
 	}
 }
 
+bool Shining::InputManager::IsControllerInputPressed(const XINPUT_GAMEPAD& gamepad, const ControllerInput input) const noexcept
+{
+	bool isPressed{ false };
+	//I use these next 2 values to more accurately check the stick position, this makes the game feel nicer to control
+	const float normalizedStickThreshold{ 0.5f };
+	const float thumbstickMax{ 32767.f }; //value defined by XINPUT, source:https://docs.microsoft.com/en-us/windows/win32/api/xinput/ns-xinput-xinput_gamepad
+
+	//=========
+	//BUTTONS & TRIGGERS
+	//=========
+	switch (input)
+	{
+	case ControllerInput::ButtonA:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_A)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::ButtonB:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_B)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::ButtonX:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_X)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::ButtonY:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_Y)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::DPadUp:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::DPadRight:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::DPadDown:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::DPadLeft:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::LeftBumper:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::RightBumper:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::LeftTrigger:
+		if (gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::RightTrigger:
+		if (gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::Select:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_BACK)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::Start:
+		if (gamepad.wButtons & XINPUT_GAMEPAD_START)
+		{
+			isPressed = true;
+		}
+		break;
+		//=========
+		//STICKS
+		//=========
+	case ControllerInput::LeftStickUp:
+		if (gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && (abs(gamepad.sThumbLX) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::LeftStickRight:
+		if (gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && (abs(gamepad.sThumbLY) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::LeftStickDown:
+		if (gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && (abs(gamepad.sThumbLX) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::LeftStickLeft:
+		if (gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && (abs(gamepad.sThumbLY) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::RightStickUp:
+		if (gamepad.sThumbRY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE && (abs(gamepad.sThumbRX) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::RightStickRight:
+		if (gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE && (abs(gamepad.sThumbRY) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::RightStickDown:
+		if (gamepad.sThumbRY < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE && (abs(gamepad.sThumbRX) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	case ControllerInput::RightStickLeft:
+		if (gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE && (abs(gamepad.sThumbRY) / thumbstickMax) < normalizedStickThreshold)
+		{
+			isPressed = true;
+		}
+		break;
+	default:
+		break;
+	}
+
+	return isPressed;
+}
+
 void Shining::InputManager::AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput)
 {
 	m_CommandsByVKey.insert(std::make_pair(virtualKey, pCommandToAdd));
 	m_CommandsByControllerInput.insert(std::make_pair(controllerInput, pCommandToAdd));
 }
 
-void Shining::InputManager::SetNoKeysCommand(Command* pCommandToAdd) noexcept
+void Shining::InputManager::SetNoInputCommand(Command* pCommandToAdd) noexcept
 {
-	if (m_pNoKeysCommand == nullptr)
+	if (m_pNoInputCommand == nullptr)
 	{
-		m_pNoKeysCommand = pCommandToAdd;
+		m_pNoInputCommand = pCommandToAdd;
 	}
 	else
 	{
-		delete m_pNoKeysCommand;
-		m_pNoKeysCommand = pCommandToAdd;
+		delete m_pNoInputCommand;
+		m_pNoInputCommand = pCommandToAdd;
 	}
 }
 
