@@ -14,7 +14,6 @@ namespace Shining
 	struct Controller
 	{
 		XINPUT_STATE gamepadState{};
-		XINPUT_STATE prevGamepadState{};
 		bool isActive{false};
 	};
 
@@ -24,7 +23,7 @@ namespace Shining
 		bool ProcessInput();
 		void CheckForNewControllers(const float deltaTime) noexcept;
 		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput);
-		void SetNoKeysCommand(Command* pCommandToAdd) noexcept; //Command to be called when no keys are pressed
+		void SetNoInputCommand(Command* pCommandToAdd) noexcept; //Command to be called when no keys are pressed
 		void RegisterPlayerCharacter(GameObject* pCharacterToControl);
 		virtual ~InputManager();
 	private:
@@ -33,8 +32,11 @@ namespace Shining
 		std::unordered_map<unsigned int, Command*> m_CommandsByVKey{};
 		std::map<ControllerInput, Command*> m_CommandsByControllerInput{};
 		std::unordered_set<unsigned int> m_CurrentlyPressedKeys{}; //use a set because I want the elements to be unique
-		Command* m_pNoKeysCommand{nullptr};
+		std::unordered_set<ControllerInput> m_CurrentControllerInputs{};
+		Command* m_pNoInputCommand{nullptr};
 		float m_ControllerCheckTimer{};
+
+		bool IsControllerInputPressed(const XINPUT_GAMEPAD& gamepad, const ControllerInput input) const noexcept;
 	};
 
 }

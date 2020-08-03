@@ -26,7 +26,7 @@ int main()
 	engine.AddCommand(new MoveLeftCommand(), SDLK_a, Shining::ControllerInput::LeftStickLeft);
 	engine.AddCommand(new MoveUpCommand(), SDLK_w, Shining::ControllerInput::LeftStickUp);
 	engine.AddCommand(new MoveDownCommand(), SDLK_s, Shining::ControllerInput::LeftStickDown);
-	engine.SetNoKeysCommand(new StartIdleCommand());
+	engine.SetNoInputCommand(new StartIdleCommand());
 
 	engine.Run();
 }
