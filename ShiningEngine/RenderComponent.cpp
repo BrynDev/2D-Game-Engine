@@ -3,7 +3,6 @@
 #include "ResourceManager.h"
 #include "Texture2D.h"
 #include "Renderer.h"
-#include <SDL_Render.h>
 
 //static texture - constructor delegation
 Shining::RenderComponent::RenderComponent(const std::string& textureName)
@@ -24,6 +23,8 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 	, m_CurrentFrame{0}
 	, m_ElapsedTimeMs{0}
 	, m_IsOscillating{false}
+	, m_RotationAngle{0.f}
+	, m_FlipFlag{SDL_FLIP_NONE}
 {
 	int textureWidth{};
 	int textureHeight{};
@@ -36,8 +37,7 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 	if (nrRows > 0)
 	{
 		m_SrcRect.h = textureHeight / nrRows;
-	}
-	
+	}	
 }
 
 void Shining::RenderComponent::Render(const glm::vec2& pos) /*const*/
@@ -50,9 +50,10 @@ void Shining::RenderComponent::Render(const glm::vec2& pos) /*const*/
 	else
 	{
 		//this is a sprite
-		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, m_SrcRect, SDL_Rect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor});
-	}
-	
+		//Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, m_SrcRect, SDL_Rect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor});
+		SDL_Rect dstRect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor };
+		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, m_SrcRect, dstRect, m_RotationAngle, m_FlipFlag);
+	}	
 }
 
 void Shining::RenderComponent::Update(const float timeStep) noexcept
@@ -82,4 +83,59 @@ void Shining::RenderComponent::Update(const float timeStep) noexcept
 void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept
 {
 	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
+}
+
+void Shining::RenderComponent::SetCurrentRow(const int rowIdx, const bool setColToZero) noexcept
+{
+	m_SrcRect.y = rowIdx * m_SrcRect.h;
+	if (setColToZero)
+	{
+		m_SrcRect.x = 0;
+	}
+}
+
+void Shining::RenderComponent::SetRotationAngle(const float angleDeg) noexcept
+{
+	m_RotationAngle = angleDeg;
+}
+
+void Shining::RenderComponent::SetFlipFlag(const RenderFlipFlag flag) noexcept
+{
+	switch (flag)
+	{
+	case RenderFlipFlag::none:
+		m_FlipFlag = SDL_FLIP_NONE;
+		break;
+	case RenderFlipFlag::horizontal:
+		m_FlipFlag = SDL_FLIP_HORIZONTAL;
+		break;
+	case RenderFlipFlag::vertical:
+		m_FlipFlag = SDL_FLIP_VERTICAL;
+		break;
+	case RenderFlipFlag::diagonal:
+		m_FlipFlag = SDL_RendererFlip(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+		break;
+	default:
+		break;
+	}
+}
+
+const Shining::RenderFlipFlag Shining::RenderComponent::GetFlipFlag() const noexcept
+{
+	switch (m_FlipFlag)
+	{
+	case SDL_FLIP_NONE:
+		return RenderFlipFlag::none;
+		break;
+	case SDL_FLIP_HORIZONTAL:
+		return RenderFlipFlag::horizontal;
+		break;
+	case SDL_FLIP_VERTICAL:
+		return RenderFlipFlag::vertical;
+		break;
+	default:
+		//diagonal flipflag is marked as a bitwise or between horizontal and vertical, this isnt valid syntax in a switch case so I return diagonal like this
+		return RenderFlipFlag::diagonal;
+		break;
+	}
 }
