@@ -54,3 +54,8 @@ void Shining::Renderer::RenderTexture(const Texture2D& texture, const float x, c
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
+
+void Shining::Renderer::RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& destRect, const float angleDeg, const SDL_RendererFlip& flipFlag) const
+{	
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &destRect, angleDeg, NULL, flipFlag);
+}

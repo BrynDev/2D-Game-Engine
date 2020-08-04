@@ -1,10 +1,16 @@
 #pragma once
 #include "Component.h"
 #include <SDL_Rect.h>
+#include <SDL_Render.h>
 class Texture2D;
 
 namespace Shining
 {
+	enum class RenderFlipFlag
+	{
+		none, horizontal, vertical, diagonal
+	};
+
 	class RenderComponent final : public Shining::Component
 	{
 	public:
@@ -15,6 +21,10 @@ namespace Shining
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) noexcept override;
 		void RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept;
+		void SetCurrentRow(const int rowIdx, const bool setColToZero) noexcept;
+		void SetRotationAngle(const float angleDeg) noexcept;
+		void SetFlipFlag(const RenderFlipFlag flag) noexcept;
+		const RenderFlipFlag GetFlipFlag() const noexcept;
 
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;
@@ -24,6 +34,7 @@ namespace Shining
 		Shining::Texture2D* m_pTexture;
 		SDL_Rect m_SrcRect;
 		const int m_ScaleFactor;
+		//sprite data
 		const int m_MsPerFrame;
 		const int m_NrRows;
 		const int m_NrCols;
@@ -31,6 +42,8 @@ namespace Shining
 		int m_CurrentFrame;
 		int m_ElapsedTimeMs;
 		bool m_IsOscillating;
+		float m_RotationAngle; //rotation performed on the destination rect
+		SDL_RendererFlip m_FlipFlag; //flip performed on the texture
 	};
 }
 
