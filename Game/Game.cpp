@@ -6,6 +6,7 @@
 #include "MoveState.h"
 #include "IdleState.h"
 #include "StartIdleCommand.h"
+#include "ScoreObserver.h"
 
 int main()
 {
@@ -14,11 +15,14 @@ int main()
 	pPlayerCharacter->AddComponent(new Shining::RenderComponent("Sprite_Car.png", 2, 80, 1, 3));
 	pPlayerCharacter->AddComponent(new Shining::StateComponent(new IdleState(), pPlayerCharacter));
 	pPlayerCharacter->GetComponent<Shining::StateComponent>()->AddState(new MoveState());
-	Shining::PhysicsComponent* pPhysicsComponent{ new Shining::PhysicsComponent(pPlayerCharacter) };
-	pPlayerCharacter->AddComponent(pPhysicsComponent);
-	
+	pPlayerCharacter->AddComponent(new Shining::PhysicsComponent(pPlayerCharacter));
+
+	Shining::GameObject* pScoreboard{ new Shining::GameObject(200,30) };
+	pScoreboard->AddComponent(new Shining::TextComponent("0", "Lingua.otf", SDL_Color{ 0,0,250 }, 50));
+	pPlayerCharacter->AddObserver(new ScoreObserver(pScoreboard)); //TEST
 	Shining::Scene& scene{ engine.CreateScene("Game") };
 	scene.Add(pPlayerCharacter);
+	scene.Add(pScoreboard);
 	scene.InitWorld("TestTileMap.png", "TestMap.csv", 33, 33, 8, 6, 15, 10);
 
 	engine.RegisterPlayerCharacter(pPlayerCharacter);

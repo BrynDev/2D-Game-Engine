@@ -34,24 +34,27 @@ void Shining::TextComponent::Update(const float /*timeStep*/)
 {
 	//deltaTime is unused
 
-	if (m_NeedsUpdate)
+	if (!m_NeedsUpdate)
 	{
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), m_Color);
-		if (surf == nullptr)
-		{
-			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
-		}
-		SDL_Texture* pTexture = SDL_CreateTextureFromSurface(Shining::Renderer::GetInstance().GetSDLRenderer(), surf);
-		if (pTexture == nullptr)
-		{
-			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-		}
-		SDL_FreeSurface(surf);
-		//allocations and deletions should not be in an update function, is there an alternative to this?
-		delete m_pTexture;
-		m_pTexture = new Shining::Texture2D(pTexture);
-		m_NeedsUpdate = false;
+		return; //early exit
 	}
+
+	const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), m_Color);
+	if (surf == nullptr)
+	{
+		throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
+	}
+	SDL_Texture* pTexture = SDL_CreateTextureFromSurface(Shining::Renderer::GetInstance().GetSDLRenderer(), surf);
+	if (pTexture == nullptr)
+	{
+		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
+	}
+	SDL_FreeSurface(surf);
+	//allocations and deletions should not be in an update function, is there an alternative to this?
+	delete m_pTexture;
+	m_pTexture = new Shining::Texture2D(pTexture);
+	m_NeedsUpdate = false;
+	
 }
 
 void Shining::TextComponent::SetText(const std::string& newText)

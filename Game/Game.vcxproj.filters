@@ -11,6 +11,9 @@
     <Filter Include="States">
       <UniqueIdentifier>{b09bb5b5-3eb5-4d7d-968a-1bea909fd66d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Observer">
+      <UniqueIdentifier>{68a0fe8f-e1e6-4b30-8791-cb9f1be7d890}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -37,6 +40,9 @@
     <ClCompile Include="StartIdleCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreObserver.cpp">
+      <Filter>Observer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -59,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="StartIdleCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreObserver.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="ObserverEvents.h">
+      <Filter>Observer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
