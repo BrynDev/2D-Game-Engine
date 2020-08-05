@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
-#include <SDL.h>
+//#include <SDL.h>
+#include <SDL_Pixels.h>
 
 class Texture2D;
 class Font;

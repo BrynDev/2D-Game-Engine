@@ -15,6 +15,14 @@ Shining::GameObject::~GameObject()
 	{
 		delete pComponent;
 	}
+	const size_t nrObservers{ m_pObservers.size() };
+	for (size_t i{ 0 }; i < nrObservers; ++i)
+	{
+		if (m_pObservers[i]->DecreaseSubjectCount())
+		{
+			delete m_pObservers[i];
+		}
+	}
 }
 
 void Shining::GameObject::Update(const float timeStep)
@@ -40,16 +48,27 @@ void Shining::GameObject::Render() const
 {
 	for (/*const*/ Component* pComponent : m_pComponents)
 	{
-		//pComponent->Render(m_Transform.GetPosition());
 		pComponent->Render(m_Pos);
 	}
 }
 
-
+void Shining::GameObject::NotifyObservers(const int eventID, void* pData) noexcept
+{
+	for (Shining::Observer* pObserver : m_pObservers)
+	{
+		pObserver->Notify(this, eventID, pData);
+	}
+}
 
 void Shining::GameObject::AddComponent(Component* pComponent) noexcept
 {
 	m_pComponents.push_back(pComponent);
+}
+
+void Shining::GameObject::AddObserver(Observer* pObserver) noexcept
+{
+	m_pObservers.push_back(pObserver);
+	pObserver->IncreaseSubjectCount();
 }
 
 

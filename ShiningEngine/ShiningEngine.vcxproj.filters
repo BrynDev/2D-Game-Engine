@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
@@ -70,6 +69,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
       <Filter>Components\PhysicsComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Observer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +148,9 @@
     <ClInclude Include="PhysicsComponent.h">
       <Filter>Components\PhysicsComponent</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -213,6 +218,9 @@
     </Filter>
     <Filter Include="Components\PhysicsComponent">
       <UniqueIdentifier>{c926d2ad-cfe0-4972-a800-94a9bf71323f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Observer">
+      <UniqueIdentifier>{fd39e735-8138-409e-9c5e-25f59d904b43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

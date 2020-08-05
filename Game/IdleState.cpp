@@ -1,4 +1,6 @@
 #include "IdleState.h"
+#include "ObserverEvents.h" //TEST
+#include "ShiningEnginePCH.h"
 
 IdleState::IdleState()
 	:State()
@@ -7,7 +9,7 @@ IdleState::IdleState()
 
 void IdleState::Update(Shining::GameObject* const /*pOwner*/, const float /*timeStep*/) noexcept
 {
-	//unused function
+	//empty
 }
 
 void IdleState::OnEntry(Shining::GameObject* const /*pOwner*/) noexcept
@@ -15,7 +17,8 @@ void IdleState::OnEntry(Shining::GameObject* const /*pOwner*/) noexcept
 	//unused function
 }
 
-void IdleState::OnExit(Shining::GameObject* const /*pOwner*/) noexcept
+void IdleState::OnExit(Shining::GameObject* const pOwner) noexcept
 {
+	pOwner->NotifyObservers(int(ObservedEvents::gemPickup)); //TEST
 	//unused function
 }
