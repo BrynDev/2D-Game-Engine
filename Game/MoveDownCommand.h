@@ -1,5 +1,6 @@
 #pragma once
 #include "Command.h"
+
 class MoveDownCommand final : public Shining::Command
 {
 public:

@@ -39,7 +39,7 @@ void Shining::GameObject::SetPosition(float x, float y) noexcept
 	m_Pos.y = y;
 }
 
-glm::vec2 Shining::GameObject::GetPosition() const noexcept
+const glm::vec2& Shining::GameObject::GetPosition() const noexcept
 {
 	return m_Pos;
 }

@@ -21,7 +21,7 @@ namespace Shining
 		virtual void Update(const float timeStep);
 		virtual void Render() const;
 		void SetPosition(float x, float y) noexcept;
-		glm::vec2 GetPosition() const noexcept;
+		const glm::vec2& GetPosition() const noexcept;
 		void NotifyObservers(const int eventID, void* pData = nullptr) noexcept;
 		void AddComponent(Component* pComponent) noexcept;
 		void AddObserver(Observer* pObserver) noexcept;

@@ -25,6 +25,8 @@ namespace Shining
 		void SetRotationAngle(const float angleDeg) noexcept;
 		void SetFlipFlag(const RenderFlipFlag flag) noexcept;
 		const RenderFlipFlag GetFlipFlag() const noexcept;
+		int GetSpriteWidth() const noexcept;
+		int GetSpriteHeight() const noexcept;
 
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;

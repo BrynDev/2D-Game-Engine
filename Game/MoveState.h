@@ -1,5 +1,5 @@
 #pragma once
-#include "ShiningEnginePCH.h"
+#include "State.h"
 
 class MoveState : public Shining::State
 {
