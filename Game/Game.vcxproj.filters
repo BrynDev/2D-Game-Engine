@@ -14,6 +14,9 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{68a0fe8f-e1e6-4b30-8791-cb9f1be7d890}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Collision behavior">
+      <UniqueIdentifier>{18730ce0-bd4b-41d5-aa74-e711b3243a9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -43,6 +46,9 @@
     <ClCompile Include="ScoreObserver.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerCollision.cpp">
+      <Filter>Collision behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -69,7 +75,10 @@
     <ClInclude Include="ScoreObserver.h">
       <Filter>Observer</Filter>
     </ClInclude>
-    <ClInclude Include="ObserverEvents.h">
+    <ClInclude Include="PlayerCollision.h">
+      <Filter>Collision behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
       <Filter>Observer</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,8 @@
 #include "IdleState.h"
 #include "StartIdleCommand.h"
 #include "ScoreObserver.h"
+#include "PlayerCollision.h"
+#include "Enums.h"
 
 int main()
 {
@@ -16,14 +18,15 @@ int main()
 	pPlayerCharacter->AddComponent(new Shining::StateComponent(new IdleState(), pPlayerCharacter));
 	pPlayerCharacter->GetComponent<Shining::StateComponent>()->AddState(new MoveState());
 	pPlayerCharacter->AddComponent(new Shining::PhysicsComponent(pPlayerCharacter));
-	pPlayerCharacter->AddComponent(new Shining::CollisionComponent(&(pPlayerCharacter->GetPosition()), pPlayerCharacter->GetComponent<Shining::RenderComponent>(), 0, true)); //TEST / replace tag value with enum
+	pPlayerCharacter->AddComponent(new Shining::CollisionComponent(pPlayerCharacter, pPlayerCharacter->GetComponent<Shining::RenderComponent>(), int(CollisionTags::player), true)); //TEST / replace tag value with enum
 
 	Shining::GameObject* pCollisionTest{ new Shining::GameObject(200,150) };
 	pCollisionTest->AddComponent(new Shining::RenderComponent("DefaultTexture.jpg"));
-	pCollisionTest->AddComponent(new Shining::CollisionComponent(&(pCollisionTest->GetPosition()), pCollisionTest->GetComponent<Shining::RenderComponent>(), 1, true));
-	pCollisionTest->GetComponent<Shining::CollisionComponent>()->AddTargetTag(0);
-	pCollisionTest->GetComponent<Shining::CollisionComponent>()->AddTargetTag(2);
+	pCollisionTest->AddComponent(new Shining::CollisionComponent(pCollisionTest, pCollisionTest->GetComponent<Shining::RenderComponent>(), int(CollisionTags::gem), true));
+	pCollisionTest->GetComponent<Shining::CollisionComponent>()->AddTargetTag(int(CollisionTags::player));
 
+	Shining::CollisionBehavior* pBehavior{ new PlayerCollision() };
+	pPlayerCharacter->GetComponent<Shining::CollisionComponent>()->SetBehavior(pBehavior);
 
 	Shining::GameObject* pScoreboard{ new Shining::GameObject(200,30) };
 	pScoreboard->AddComponent(new Shining::TextComponent("0", "Lingua.otf", SDL_Color{ 0,0,250 }, 50));

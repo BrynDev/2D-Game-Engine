@@ -79,6 +79,12 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Managers\CollisionManager</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionBehavior.cpp">
+      <Filter>CollisionBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="NullCollision.cpp">
+      <Filter>CollisionBehavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -163,6 +169,12 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Managers\CollisionManager</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionBehavior.h">
+      <Filter>CollisionBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="NullCollision.h">
+      <Filter>CollisionBehavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -245,6 +257,9 @@
     </Filter>
     <Filter Include="Managers\CollisionManager">
       <UniqueIdentifier>{a664bb25-ca6d-4dd2-a5fb-b4a33e463e0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CollisionBehavior">
+      <UniqueIdentifier>{c15b6564-217b-4271-8e74-7e3c1d7029f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

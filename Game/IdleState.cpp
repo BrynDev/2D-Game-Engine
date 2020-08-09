@@ -1,5 +1,5 @@
 #include "IdleState.h"
-#include "ObserverEvents.h" //TEST
+#include "Enums.h" //TEST
 #include "ShiningEnginePCH.h"
 
 IdleState::IdleState()
@@ -14,11 +14,10 @@ void IdleState::Update(Shining::GameObject* const /*pOwner*/, const float /*time
 
 void IdleState::OnEntry(Shining::GameObject* const /*pOwner*/) noexcept
 {
-	//unused function
+	//empty
 }
 
-void IdleState::OnExit(Shining::GameObject* const pOwner) noexcept
+void IdleState::OnExit(Shining::GameObject* const /*pOwner*/) noexcept
 {
-	pOwner->NotifyObservers(int(ObservedEvents::gemPickup)); //TEST
-	//unused function
+	//empty
 }

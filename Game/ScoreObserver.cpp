@@ -1,5 +1,5 @@
 #include "ScoreObserver.h"
-#include "ObserverEvents.h"
+#include "Enums.h"
 #include "ShiningEnginePCH.h"
 
 ScoreObserver::ScoreObserver(Shining::GameObject* pObjectToModify)

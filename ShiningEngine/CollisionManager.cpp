@@ -3,7 +3,7 @@
 #include <algorithm>
 
 
-bool Shining::CollisionManager::IsColliding(const SDL_Rect& boundingBox, const int tagToCollideWith, const bool isStatic) const noexcept
+bool Shining::CollisionManager::IsColliding(const SDL_Rect& boundingBox, const int currentTag, const int tagToCollideWith, const bool isStatic) const noexcept
 {
 	using mapIt = std::multimap<int, CollisionComponent*>::const_iterator;
 
@@ -26,6 +26,7 @@ bool Shining::CollisionManager::IsColliding(const SDL_Rect& boundingBox, const i
 				otherBox.y + otherBox.h >= boundingBox.y //bottomB >= topA
 				)
 			{
+				it->second->ResolveCollision(currentTag); //resolve collision for other object, then return true and resolve collision for the calling object
 				return true;
 			}
 		}
