@@ -33,11 +33,19 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 	{
 		m_SrcRect.w = textureWidth / nrCols;
 	}
+	else
+	{
+		m_SrcRect.w = textureWidth;
+	}
 	
 	if (nrRows > 0)
 	{
 		m_SrcRect.h = textureHeight / nrRows;
 	}	
+	else
+	{
+		m_SrcRect.h = textureHeight;
+	}
 }
 
 void Shining::RenderComponent::Render(const glm::vec2& pos) /*const*/
@@ -138,4 +146,14 @@ const Shining::RenderFlipFlag Shining::RenderComponent::GetFlipFlag() const noex
 		return RenderFlipFlag::diagonal;
 		break;
 	}
+}
+
+int Shining::RenderComponent::GetSpriteWidth() const noexcept
+{
+	return m_SrcRect.w * m_ScaleFactor;
+}
+
+int Shining::RenderComponent::GetSpriteHeight() const noexcept
+{
+	return m_SrcRect.h * m_ScaleFactor;
 }

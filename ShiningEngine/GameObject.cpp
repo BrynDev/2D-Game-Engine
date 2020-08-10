@@ -6,6 +6,9 @@
 
 Shining::GameObject::GameObject(const float xPos, const float yPos)
 	:m_Pos{xPos, yPos}
+	, m_pComponents{}
+	, m_pObservers{}
+	, m_IsActive{true}
 {
 }
 
@@ -27,10 +30,25 @@ Shining::GameObject::~GameObject()
 
 void Shining::GameObject::Update(const float timeStep)
 {
-	for (Component* pComponent : m_pComponents)
+	if (m_IsActive)
 	{
-		pComponent->Update(timeStep);
+		for (Component* pComponent : m_pComponents)
+		{
+			pComponent->Update(timeStep);
+		}
+	}	
+}
+
+void Shining::GameObject::Render() const
+{
+	if (m_IsActive)
+	{
+		for (/*const*/ Component* pComponent : m_pComponents)
+		{
+			pComponent->Render(m_Pos);
+		}
 	}
+
 }
 
 void Shining::GameObject::SetPosition(float x, float y) noexcept
@@ -39,17 +57,9 @@ void Shining::GameObject::SetPosition(float x, float y) noexcept
 	m_Pos.y = y;
 }
 
-glm::vec2 Shining::GameObject::GetPosition() const noexcept
+const glm::vec2& Shining::GameObject::GetPosition() const noexcept
 {
 	return m_Pos;
-}
-
-void Shining::GameObject::Render() const
-{
-	for (/*const*/ Component* pComponent : m_pComponents)
-	{
-		pComponent->Render(m_Pos);
-	}
 }
 
 void Shining::GameObject::NotifyObservers(const int eventID, void* pData) noexcept
@@ -69,6 +79,11 @@ void Shining::GameObject::AddObserver(Observer* pObserver) noexcept
 {
 	m_pObservers.push_back(pObserver);
 	pObserver->IncreaseSubjectCount();
+}
+
+void Shining::GameObject::SetActive(const bool isActive) noexcept
+{
+	m_IsActive = isActive;
 }
 
 

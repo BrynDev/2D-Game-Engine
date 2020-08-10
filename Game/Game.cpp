@@ -7,6 +7,9 @@
 #include "IdleState.h"
 #include "StartIdleCommand.h"
 #include "ScoreObserver.h"
+#include "PlayerCollision.h"
+#include "PickupCollision.h"
+#include "Enums.h"
 
 int main()
 {
@@ -16,13 +19,27 @@ int main()
 	pPlayerCharacter->AddComponent(new Shining::StateComponent(new IdleState(), pPlayerCharacter));
 	pPlayerCharacter->GetComponent<Shining::StateComponent>()->AddState(new MoveState());
 	pPlayerCharacter->AddComponent(new Shining::PhysicsComponent(pPlayerCharacter));
+	const int moveSpeed{150};
+	pPlayerCharacter->GetComponent<Shining::PhysicsComponent>()->SetSpeed(moveSpeed, moveSpeed);
+	pPlayerCharacter->AddComponent(new Shining::CollisionComponent(pPlayerCharacter, pPlayerCharacter->GetComponent<Shining::RenderComponent>(), int(CollisionTags::player), true)); //TEST / replace tag value with enum
+
+	Shining::GameObject* pCollisionTest{ new Shining::GameObject(200,150) };
+	pCollisionTest->AddComponent(new Shining::RenderComponent("DefaultTexture.jpg"));
+	pCollisionTest->AddComponent(new Shining::CollisionComponent(pCollisionTest, pCollisionTest->GetComponent<Shining::RenderComponent>(), int(CollisionTags::gem), true));
+	pCollisionTest->GetComponent<Shining::CollisionComponent>()->AddTargetTag(int(CollisionTags::player));
+
+	Shining::CollisionBehavior* pPlayerCollision{ new PlayerCollision() };
+	pPlayerCharacter->GetComponent<Shining::CollisionComponent>()->SetBehavior(pPlayerCollision);
+	Shining::CollisionBehavior* pPickupCollision{ new PickupCollision() };
+	pCollisionTest->GetComponent<Shining::CollisionComponent>()->SetBehavior(pPickupCollision);
 
 	Shining::GameObject* pScoreboard{ new Shining::GameObject(200,30) };
 	pScoreboard->AddComponent(new Shining::TextComponent("0", "Lingua.otf", SDL_Color{ 0,0,250 }, 50));
-	pPlayerCharacter->AddObserver(new ScoreObserver(pScoreboard)); //TEST
+	pPlayerCharacter->AddObserver(new ScoreObserver(pScoreboard));
 	Shining::Scene& scene{ engine.CreateScene("Game") };
 	scene.Add(pPlayerCharacter);
 	scene.Add(pScoreboard);
+	scene.Add(pCollisionTest);
 	scene.InitWorld("TestTileMap.png", "TestMap.csv", 33, 33, 8, 6, 15, 10);
 
 	engine.RegisterPlayerCharacter(pPlayerCharacter);

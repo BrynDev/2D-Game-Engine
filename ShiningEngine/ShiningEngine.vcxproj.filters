@@ -4,12 +4,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
@@ -23,13 +17,13 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Texture2D.cpp">
-      <Filter>Resources\Texture2D</Filter>
+      <Filter>Resource wrappers\Texture2D</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Transform</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
-      <Filter>Resources\Font</Filter>
+      <Filter>Resource wrappers\Font</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Input</Filter>
@@ -73,17 +67,29 @@
     <ClCompile Include="Observer.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Components\CollisionComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Managers\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Managers\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Managers\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionBehavior.cpp">
+      <Filter>CollisionBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="NullCollision.cpp">
+      <Filter>CollisionBehavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="GameObject.h">
       <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Renderer</Filter>
@@ -98,13 +104,13 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
-      <Filter>Resources\Texture2D</Filter>
+      <Filter>Resource wrappers\Texture2D</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Transform</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
-      <Filter>Resources\Font</Filter>
+      <Filter>Resource wrappers\Font</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Input</Filter>
@@ -151,6 +157,24 @@
     <ClInclude Include="Observer.h">
       <Filter>Observer</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Components\CollisionComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Managers\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Managers\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Managers\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionBehavior.h">
+      <Filter>CollisionBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="NullCollision.h">
+      <Filter>CollisionBehavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -186,15 +210,6 @@
     <Filter Include="SimpleException">
       <UniqueIdentifier>{225020bc-113e-43d5-ab6e-4639afbfbb82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{8602fae0-9bb1-4f4e-b285-704c2666fffc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Font">
-      <UniqueIdentifier>{d3a2915c-c144-439a-ba67-3c4ae46f71ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Texture2D">
-      <UniqueIdentifier>{8e43e0be-68fb-4bf3-b874-cbb69e4ef872}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components\TextComponent">
       <UniqueIdentifier>{1b7919a1-d868-435f-a50c-4cbf2a8b3a55}</UniqueIdentifier>
     </Filter>
@@ -221,6 +236,30 @@
     </Filter>
     <Filter Include="Observer">
       <UniqueIdentifier>{fd39e735-8138-409e-9c5e-25f59d904b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\CollisionComponent">
+      <UniqueIdentifier>{c1fd7f84-e21e-4592-abcf-2826b2da23d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource wrappers">
+      <UniqueIdentifier>{8602fae0-9bb1-4f4e-b285-704c2666fffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource wrappers\Font">
+      <UniqueIdentifier>{d3a2915c-c144-439a-ba67-3c4ae46f71ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource wrappers\Texture2D">
+      <UniqueIdentifier>{8e43e0be-68fb-4bf3-b874-cbb69e4ef872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\ResourceManager">
+      <UniqueIdentifier>{788073bf-06c8-4d73-bdbd-05bf8a286e27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\SceneManager">
+      <UniqueIdentifier>{49e5dc9d-b0ee-4697-af28-4a22e7cf0af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\CollisionManager">
+      <UniqueIdentifier>{a664bb25-ca6d-4dd2-a5fb-b4a33e463e0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CollisionBehavior">
+      <UniqueIdentifier>{c15b6564-217b-4271-8e74-7e3c1d7029f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

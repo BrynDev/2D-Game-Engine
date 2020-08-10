@@ -1,5 +1,6 @@
 #include "MoveState.h"
 #include "IdleState.h"
+#include "ShiningEnginePCH.h"
 
 
 MoveState::MoveState()
