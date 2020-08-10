@@ -67,9 +67,3 @@ const glm::vec2& Shining::PhysicsComponent::GetDirection() const noexcept
 {
 	return m_Direction;
 }
-
-const bool Shining::PhysicsComponent::IsNotMoving() const noexcept
-{
-	//
-	return((m_Speed.x < FLT_EPSILON && m_Speed.x > -FLT_EPSILON) && (m_Speed.y < FLT_EPSILON && m_Speed.y > -FLT_EPSILON));
-}

@@ -23,7 +23,6 @@ namespace Shining
 
 		const glm::vec2& GetSpeed() const noexcept;
 		const glm::vec2& GetDirection() const noexcept;
-		const bool IsNotMoving() const noexcept;
 	private:
 		GameObject* m_pOwner;
 		glm::vec2 m_Speed;

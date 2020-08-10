@@ -49,6 +49,9 @@
     <ClCompile Include="PlayerCollision.cpp">
       <Filter>Collision behavior</Filter>
     </ClCompile>
+    <ClCompile Include="PickupCollision.cpp">
+      <Filter>Collision behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -80,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="PickupCollision.h">
+      <Filter>Collision behavior</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

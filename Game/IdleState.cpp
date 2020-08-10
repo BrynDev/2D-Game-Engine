@@ -1,5 +1,4 @@
 #include "IdleState.h"
-#include "Enums.h" //TEST
 #include "ShiningEnginePCH.h"
 
 IdleState::IdleState()

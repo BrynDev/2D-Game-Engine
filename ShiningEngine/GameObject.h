@@ -25,6 +25,7 @@ namespace Shining
 		void NotifyObservers(const int eventID, void* pData = nullptr) noexcept;
 		void AddComponent(Component* pComponent) noexcept;
 		void AddObserver(Observer* pObserver) noexcept;
+		void SetActive(const bool isActive) noexcept;
 
 		template<typename T>
 		T* GetComponent() const;
@@ -38,6 +39,7 @@ namespace Shining
 		glm::vec2 m_Pos;
 		std::vector<Shining::Component*> m_pComponents;
 		std::vector<Observer*> m_pObservers;
+		bool m_IsActive;
 	};
 }
 
