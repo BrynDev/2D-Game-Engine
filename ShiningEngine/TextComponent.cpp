@@ -57,6 +57,11 @@ void Shining::TextComponent::Update(const float /*timeStep*/)
 	
 }
 
+void Shining::TextComponent::SwapBuffer() noexcept
+{
+
+}
+
 void Shining::TextComponent::SetText(const std::string& newText)
 {
 	m_Text = newText;

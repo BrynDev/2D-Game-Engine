@@ -93,6 +93,11 @@ void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rec
 	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
 }
 
+void Shining::RenderComponent::SwapBuffer() noexcept
+{
+	//variables modified here aren't read outside of this class, no need to swap buffers
+}
+
 void Shining::RenderComponent::SetCurrentRow(const int rowIdx, const bool setColToZero) noexcept
 {
 	m_SrcRect.y = rowIdx * m_SrcRect.h;

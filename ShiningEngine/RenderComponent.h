@@ -20,6 +20,7 @@ namespace Shining
 
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) noexcept override;
+		virtual void SwapBuffer() noexcept override;
 		void RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept;
 		void SetCurrentRow(const int rowIdx, const bool setColToZero) noexcept;
 		void SetRotationAngle(const float angleDeg) noexcept;

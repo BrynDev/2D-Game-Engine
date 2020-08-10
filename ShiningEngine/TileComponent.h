@@ -16,16 +16,18 @@ namespace Shining
 	public:
 		TileComponent(const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld, const RenderComponent* pWeakRenderComponent);
 		virtual ~TileComponent();
-		TileComponent(const TileComponent& other) = delete;
-		TileComponent& operator=(const TileComponent& rhs) = delete;
-		TileComponent(TileComponent&& other) = delete;
-		TileComponent& operator=(TileComponent&& rhs) = delete;
+		
 
 		void LoadTiles(const std::string& tilePlacementsCSV);
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) override;
+		virtual void SwapBuffer() noexcept override;
 		//const Tile& GetTile(const int indexX, const int indexY) const noexcept;
 		
+		TileComponent(const TileComponent& other) = delete;
+		TileComponent& operator=(const TileComponent& rhs) = delete;
+		TileComponent(TileComponent&& other) = delete;
+		TileComponent& operator=(TileComponent&& rhs) = delete;
 	private:
 		std::vector<std::vector<Tile>> m_pTiles; //2D grid of tiles
 		const Shining::RenderComponent* m_pWeakRenderComponent;

@@ -57,6 +57,11 @@ void Shining::CollisionComponent::ResolveCollision(const int collidedTag) noexce
 	m_pCollisionBehavior->ResolveCollision(m_pOwner, collidedTag);
 }
 
+void Shining::CollisionComponent::SwapBuffer() noexcept
+{
+	//no swap necessary
+}
+
 void Shining::CollisionComponent::AddTargetTag(const int tag) noexcept
 {
 	if (tag == m_Tag)

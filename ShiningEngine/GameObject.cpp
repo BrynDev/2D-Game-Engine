@@ -5,10 +5,12 @@
 #include "Component.h"
 
 Shining::GameObject::GameObject(const float xPos, const float yPos)
-	:m_Pos{xPos, yPos}
+	:m_CurrentPos{xPos, yPos}
+	, m_NextPos{0,0}
 	, m_pComponents{}
 	, m_pObservers{}
 	, m_IsActive{true}
+	, m_NeedsSwap{false}
 {
 }
 
@@ -45,21 +47,35 @@ void Shining::GameObject::Render() const
 	{
 		for (/*const*/ Component* pComponent : m_pComponents)
 		{
-			pComponent->Render(m_Pos);
+			pComponent->Render(m_CurrentPos);
 		}
 	}
 
 }
 
+void Shining::GameObject::SwapBuffer() noexcept
+{
+	if (m_NeedsSwap)
+	{
+		m_CurrentPos = m_NextPos;
+		m_NeedsSwap = false;
+	}
+	for (Component* pComponent : m_pComponents)
+	{
+		pComponent->SwapBuffer();
+	}
+}
+
 void Shining::GameObject::SetPosition(float x, float y) noexcept
 {
-	m_Pos.x = x;
-	m_Pos.y = y;
+	m_NextPos.x = x;
+	m_NextPos.y = y;
+	m_NeedsSwap = true;
 }
 
 const glm::vec2& Shining::GameObject::GetPosition() const noexcept
 {
-	return m_Pos;
+	return m_CurrentPos;
 }
 
 void Shining::GameObject::NotifyObservers(const int eventID, void* pData) noexcept

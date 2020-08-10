@@ -21,7 +21,6 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 	}
 }
 
-//should tiles be stored as pointers?
 //consider using a fixed size allocator for tiles -> improves locality
 
 void Shining::TileComponent::Render(const glm::vec2& pos) /*const*/
@@ -50,6 +49,16 @@ void Shining::TileComponent::Render(const glm::vec2& pos) /*const*/
 void Shining::TileComponent::Update(const float /*timeStep*/)
 {
 	//TODO
+}
+
+/*const Shining::Tile& Shining::TileComponent::GetTile(const int indexX, const int indexY) const noexcept
+{
+	return m_pTiles[indexX][indexY];
+}*/
+
+void Shining::TileComponent::SwapBuffer() noexcept
+{
+	//currently not needed, probably later
 }
 
 void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
@@ -90,11 +99,6 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 		}
 	}
 }
-
-/*const Shining::Tile& Shining::TileComponent::GetTile(const int indexX, const int indexY) const noexcept
-{
-	return m_pTiles[indexX][indexY];
-}*/
 
 Shining::TileComponent::~TileComponent()
 {

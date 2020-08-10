@@ -16,10 +16,10 @@ void MoveState::Update(Shining::GameObject* const pOwner, const float timeStep) 
 
 void MoveState::OnEntry(Shining::GameObject* const /*pOwner*/) noexcept
 {
-
+	//empty
 }
 
 void MoveState::OnExit(Shining::GameObject* const /*pOwner*/) noexcept
 {
-
+	//empty
 }
