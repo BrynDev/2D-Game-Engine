@@ -4,9 +4,6 @@
 
 Shining::PhysicsComponent::PhysicsComponent(GameObject* const pOwner)
 	:m_pOwner{pOwner}
-	,m_pOwnerCurrentPos{&pOwner->GetPosition()}
-	//, m_Speed{0,0}
-	//, m_Direction{0,0}
 	, m_NeedsSwap{false}
 {
 	m_MoveInfo[0] = MoveInfo{};
@@ -28,7 +25,8 @@ void Shining::PhysicsComponent::Update(const float /*timeStep*/) noexcept
 void Shining::PhysicsComponent::MoveOwner(const float timeStep) noexcept
 {
 	
-	const glm::vec2 oldPos{ *m_pOwnerCurrentPos };
+	const glm::vec2& oldPos{ m_pOwner->GetPosition() };
+
 	const glm::vec2 newPos{ oldPos.x + (m_pCurrentMoveInfo->direction.x * (timeStep / 1000.f) * m_pCurrentMoveInfo->speed.x), oldPos.y + (m_pCurrentMoveInfo->direction.y * (timeStep / 1000.f) * m_pCurrentMoveInfo->speed.y) };
 	m_pOwner->SetPosition(newPos.x, newPos.y);
 }

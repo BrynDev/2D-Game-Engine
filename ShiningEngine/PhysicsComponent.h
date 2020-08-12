@@ -15,6 +15,7 @@ namespace Shining
 		virtual void Render(const glm::vec2& pos) /*const*/ noexcept override;
 		virtual void SwapBuffer() noexcept override;
 		void MoveOwner(const float timeStep) noexcept;
+		//void MoveBackwards()
 		void SetSpeed(const float speedX, const float speedY) noexcept;
 		void SetSpeedX(const float speedX) noexcept;
 		void SetSpeedY(const float speedY) noexcept;
@@ -32,7 +33,6 @@ namespace Shining
 		};
 		MoveInfo m_MoveInfo[2]; //used for double buffered update, I know I only need 2
 		GameObject* const m_pOwner;
-		const glm::vec2* m_pOwnerCurrentPos; //store a pointer to the pos so I don't need to access it from the owner on every update
 		MoveInfo* m_pNextMoveInfo;
 		MoveInfo* m_pCurrentMoveInfo;
 		//glm::vec2 m_Speed;

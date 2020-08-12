@@ -19,11 +19,11 @@ int main()
 	pPlayerCharacter->AddComponent(new Shining::StateComponent(new IdleState(), pPlayerCharacter));
 	pPlayerCharacter->GetComponent<Shining::StateComponent>()->AddState(new MoveState());
 	pPlayerCharacter->AddComponent(new Shining::PhysicsComponent(pPlayerCharacter));
-	pPlayerCharacter->AddComponent(new Shining::CollisionComponent(pPlayerCharacter, pPlayerCharacter->GetComponent<Shining::RenderComponent>(), int(CollisionTags::player), true)); //TEST / replace tag value with enum
+	pPlayerCharacter->AddComponent(new Shining::CollisionComponent(pPlayerCharacter, pPlayerCharacter->GetComponent<Shining::RenderComponent>(), int(CollisionTags::player))); //TEST / replace tag value with enum
 
 	Shining::GameObject* pCollisionTest{ new Shining::GameObject(200,150) };
 	pCollisionTest->AddComponent(new Shining::RenderComponent("blah.png", 2));
-	pCollisionTest->AddComponent(new Shining::CollisionComponent(pCollisionTest, pCollisionTest->GetComponent<Shining::RenderComponent>(), int(CollisionTags::gem), true));
+	pCollisionTest->AddComponent(new Shining::CollisionComponent(pCollisionTest, pCollisionTest->GetComponent<Shining::RenderComponent>(), int(CollisionTags::gem)));
 	pCollisionTest->GetComponent<Shining::CollisionComponent>()->AddTargetTag(int(CollisionTags::player));
 
 	Shining::CollisionBehavior* pPlayerCollision{ new PlayerCollision() };

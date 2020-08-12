@@ -5,19 +5,17 @@
 
 Shining::NullCollision Shining::CollisionComponent::m_NullBehavior;
 
-Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const Shining::RenderComponent* const pComponent, const int tag, const bool isStatic)
-	:CollisionComponent(pOwner, pComponent->GetSpriteWidth(), pComponent->GetSpriteHeight(), tag, isStatic)
+Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const Shining::RenderComponent* const pComponent, const int tag)
+	:CollisionComponent(pOwner, pComponent->GetSpriteWidth(), pComponent->GetSpriteHeight(), tag)
 {
 }
 
-Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const int width, const int height, const int tag, const bool isStatic)
+Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const int width, const int height, const int tag)
 	:Component()
 	, m_pOwner{pOwner}
-	, m_pOwnerPos{ &(pOwner->GetPosition()) }
 	, m_BoxWidth{ width }
 	, m_BoxHeight{ height }
 	, m_Tag{tag}
-	, m_IsStatic{ isStatic }
 	, m_pCollisionBehavior{&m_NullBehavior}
 {
 	//register to collision manager
@@ -26,22 +24,32 @@ Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwne
 
 const SDL_Rect Shining::CollisionComponent::GetBoundingBox() const noexcept
 {
-	return SDL_Rect{ int(m_pOwnerPos->x), int(m_pOwnerPos->y), m_BoxWidth, m_BoxHeight };
+	const glm::vec2& ownerPos{ m_pOwner->GetPosition() };
+	return SDL_Rect{ int(ownerPos.x), int(ownerPos.y), m_BoxWidth, m_BoxHeight };
 }
 
 void Shining::CollisionComponent::Update(const float /*timeStep*/)
 {
-	SDL_Rect boundingBox{ int(m_pOwnerPos->x), int(m_pOwnerPos->y), m_BoxWidth, m_BoxHeight };
+	SDL_Rect boundingBox{ GetBoundingBox() };
 	const Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
 
 	for (const int targetTag : m_TagsToCollideWith) //for every tag that's relevant to this object
 	{
 
-		if (instance.IsColliding(boundingBox, m_Tag, targetTag, m_IsStatic))
+		/*if (instance.IsColliding(boundingBox, m_Tag, targetTag))
 		{
 			ResolveCollision(targetTag);
 			break;
+		}*/
+		Shining::CollisionComponent* const pCollidingObject{ instance.GetCollidingObject(boundingBox, targetTag) };
+		if (pCollidingObject == nullptr)
+		{
+			//no collision happened
+			return;
 		}
+
+		ResolveCollision(targetTag);
+		pCollidingObject->ResolveCollision(m_Tag);
 	}
 	
 }

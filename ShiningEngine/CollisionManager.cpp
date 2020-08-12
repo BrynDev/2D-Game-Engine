@@ -3,36 +3,63 @@
 #include <algorithm>
 
 
-bool Shining::CollisionManager::IsColliding(const SDL_Rect& boundingBox, const int currentTag, const int tagToCollideWith, const bool isStatic) const noexcept
+/*bool Shining::CollisionManager::IsColliding(const SDL_Rect& boundingBox, const int currentTag, const int tagToCollideWith) const noexcept
 {
 	using mapIt = std::multimap<int, CollisionComponent*>::const_iterator;
 
-	if (isStatic)
+	
+	//AABB collision method
+	std::pair<mapIt, mapIt> range{ m_pCollidersByTag.equal_range(tagToCollideWith) };
+	if (std::distance(range.first, range.second) == 0) //check if this key exists within the multimap
 	{
-		//AABB collision method
-		std::pair<mapIt, mapIt> range{ m_pCollidersByTag.equal_range(tagToCollideWith) };
-		if (std::distance(range.first, range.second) == 0) //check if this key exists within the multimap
+		//this key is not present in the multimap
+		return false;
+	}
+	for (mapIt it{ range.first }; it != range.second; ++it)
+	{
+		const SDL_Rect otherBox{ it->second->GetBoundingBox() };
+		if (
+			boundingBox.x + boundingBox.w >= otherBox.x && //rightA >= leftB
+			otherBox.x + otherBox.w >= boundingBox.x && //rightB >= leftA
+			boundingBox.y + boundingBox.h >= otherBox.y && //bottomA >= topB
+			otherBox.y + otherBox.h >= boundingBox.y //bottomB >= topA
+			)
 		{
-			//this key is not present in the multimap
-			return false;
-		}
-		for (mapIt it{ range.first }; it != range.second; ++it)
-		{
-			const SDL_Rect otherBox{ it->second->GetBoundingBox() };
-			if (
-				boundingBox.x + boundingBox.w >= otherBox.x && //rightA >= leftB
-				otherBox.x + otherBox.w >= boundingBox.x && //rightB >= leftA
-				boundingBox.y + boundingBox.h >= otherBox.y && //bottomA >= topB
-				otherBox.y + otherBox.h >= boundingBox.y //bottomB >= topA
-				)
-			{
-				it->second->ResolveCollision(currentTag); //resolve collision for other object, then return true and resolve collision for the calling object
-				return true;
-			}
+			it->second->ResolveCollision(currentTag); //resolve collision for other object, then return true and resolve collision for the calling object
+			return true;
 		}
 	}
-	//todo: dynamic collision method
+	
+	
 	return false;
+}*/
+
+Shining::CollisionComponent* const Shining::CollisionManager::GetCollidingObject(const SDL_Rect& boundingBox, const int tagToCollideWith) const noexcept
+{
+	using mapIt = std::multimap<int, CollisionComponent*>::const_iterator;
+
+	//AABB collision method
+	std::pair<mapIt, mapIt> range{ m_pCollidersByTag.equal_range(tagToCollideWith) };
+	if (std::distance(range.first, range.second) == 0) //check if this key exists within the multimap
+	{
+		//this key is not present in the multimap
+		return nullptr;
+	}
+	for (mapIt it{ range.first }; it != range.second; ++it)
+	{
+		const SDL_Rect otherBox{ it->second->GetBoundingBox() };
+		if (
+			boundingBox.x + boundingBox.w >= otherBox.x && //rightA >= leftB
+			otherBox.x + otherBox.w >= boundingBox.x && //rightB >= leftA
+			boundingBox.y + boundingBox.h >= otherBox.y && //bottomA >= topB
+			otherBox.y + otherBox.h >= boundingBox.y //bottomB >= topA
+			)
+		{
+			//it->second->ResolveCollision(currentTag); //resolve collision for other object, then return true and resolve collision for the calling object
+			return it->second;
+		}
+	}
+	return nullptr;
 }
 
 void Shining::CollisionManager::RegisterCollisionComponent(CollisionComponent* const pComponent, const int tag) noexcept
