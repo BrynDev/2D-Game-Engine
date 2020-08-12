@@ -16,10 +16,12 @@ namespace Shining
 	{
 	public:
 		GameObject(const float xPos, const float yPos);
-		virtual ~GameObject();
+		~GameObject();
 
-		virtual void Update(const float timeStep);
-		virtual void Render() const;
+		void Update(const float timeStep);
+		void Render() const;
+		void SwapBuffer() noexcept;
+
 		void SetPosition(float x, float y) noexcept;
 		const glm::vec2& GetPosition() const noexcept;
 		void NotifyObservers(const int eventID, void* pData = nullptr) noexcept;
@@ -36,10 +38,12 @@ namespace Shining
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		glm::vec2 m_Pos;
+		glm::vec2 m_CurrentPos;
+		glm::vec2 m_NextPos;
 		std::vector<Shining::Component*> m_pComponents;
 		std::vector<Observer*> m_pObservers;
 		bool m_IsActive;
+		bool m_NeedsSwap;
 	};
 }
 

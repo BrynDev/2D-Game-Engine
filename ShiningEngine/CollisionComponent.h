@@ -17,6 +17,7 @@ namespace Shining
 
 		virtual void Update(const float timeStep) override;
 		virtual void Render(const glm::vec2& pos) override;
+		virtual void SwapBuffer() noexcept override;
 		const SDL_Rect GetBoundingBox() const noexcept;
 		void ResolveCollision(const int collidedTag) noexcept;
 		void AddTargetTag(const int tag) noexcept;

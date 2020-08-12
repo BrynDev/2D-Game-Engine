@@ -29,6 +29,16 @@ void Shining::StateComponent::Update(const float timeStep)
 	m_pCurrentState->Update(m_pOwner, timeStep);
 }
 
+void Shining::StateComponent::SwapBuffer() noexcept
+{
+	if (m_NeedsSwap)
+	{
+		m_pCurrentState = m_pNextState;
+		m_pCurrentState->OnEntry(m_pOwner);
+		m_NeedsSwap = false;
+	}	
+}
+
 void Shining::StateComponent::AddState(State* pStateToAdd) noexcept
 {
 	m_pStates.insert(pStateToAdd);

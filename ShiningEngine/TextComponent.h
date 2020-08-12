@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-//#include <SDL.h>
 #include <SDL_Pixels.h>
 
 class Texture2D;
@@ -15,6 +14,7 @@ namespace Shining
 
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) override;
+		virtual void SwapBuffer() noexcept override;
 		void SetText(const std::string& newText);
 
 		TextComponent(const TextComponent& other) = delete;

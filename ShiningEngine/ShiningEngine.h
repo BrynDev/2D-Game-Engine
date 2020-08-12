@@ -9,7 +9,6 @@ namespace Shining
 	public:
 		ShiningEngine();
 		void Initialize();
-		void LoadDemoScene() const;
 		void Cleanup();
 		void Run();
 

@@ -23,14 +23,15 @@ Scene::~Scene()
 	}
 }
 
-void Scene::Add(GameObject* pObject)
-{
-	m_pGameObjects.push_back(pObject);
-}
-
 void Scene::Update(const float timeStep)
 {
 	m_pWorld->Update(timeStep);
+
+	for (GameObject* pObject : m_pGameObjects)
+	{
+		pObject->SwapBuffer();
+	}
+
 	for(GameObject* pObject : m_pGameObjects)
 	{
 		pObject->Update(timeStep);
@@ -46,6 +47,12 @@ void Scene::Render() const noexcept
 		pObject->Render();
 	}
 }
+
+void Scene::Add(GameObject* pObject)
+{
+	m_pGameObjects.push_back(pObject);
+}
+
 
 void Scene::InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
 {

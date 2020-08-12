@@ -14,12 +14,13 @@ namespace Shining
 	class RenderComponent final : public Shining::Component
 	{
 	public:
-		RenderComponent(const std::string& textureName);
+		RenderComponent(const std::string& textureName, const int spriteScaleFactor);
 		RenderComponent(const std::string& textureName, const int spriteScaleFactor, const int msPerFrame, const int nrRows, const int nrCols);
 		virtual ~RenderComponent() = default;
 
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) noexcept override;
+		virtual void SwapBuffer() noexcept override;
 		void RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept;
 		void SetCurrentRow(const int rowIdx, const bool setColToZero) noexcept;
 		void SetRotationAngle(const float angleDeg) noexcept;

@@ -5,8 +5,8 @@
 #include "Renderer.h"
 
 //static texture - constructor delegation
-Shining::RenderComponent::RenderComponent(const std::string& textureName)
-	:RenderComponent(textureName, 1, 0 ,0 ,0)
+Shining::RenderComponent::RenderComponent(const std::string& textureName, const int spriteScaleFactor)
+	:RenderComponent(textureName, spriteScaleFactor, 0, 0, 0)
 {
 }
 
@@ -91,6 +91,11 @@ void Shining::RenderComponent::Update(const float timeStep) noexcept
 void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept
 {
 	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
+}
+
+void Shining::RenderComponent::SwapBuffer() noexcept
+{
+	//variables modified here aren't read outside of this class, no need to swap buffers
 }
 
 void Shining::RenderComponent::SetCurrentRow(const int rowIdx, const bool setColToZero) noexcept

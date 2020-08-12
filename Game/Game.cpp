@@ -19,12 +19,10 @@ int main()
 	pPlayerCharacter->AddComponent(new Shining::StateComponent(new IdleState(), pPlayerCharacter));
 	pPlayerCharacter->GetComponent<Shining::StateComponent>()->AddState(new MoveState());
 	pPlayerCharacter->AddComponent(new Shining::PhysicsComponent(pPlayerCharacter));
-	const int moveSpeed{150};
-	pPlayerCharacter->GetComponent<Shining::PhysicsComponent>()->SetSpeed(moveSpeed, moveSpeed);
 	pPlayerCharacter->AddComponent(new Shining::CollisionComponent(pPlayerCharacter, pPlayerCharacter->GetComponent<Shining::RenderComponent>(), int(CollisionTags::player), true)); //TEST / replace tag value with enum
 
 	Shining::GameObject* pCollisionTest{ new Shining::GameObject(200,150) };
-	pCollisionTest->AddComponent(new Shining::RenderComponent("DefaultTexture.jpg"));
+	pCollisionTest->AddComponent(new Shining::RenderComponent("blah.png", 2));
 	pCollisionTest->AddComponent(new Shining::CollisionComponent(pCollisionTest, pCollisionTest->GetComponent<Shining::RenderComponent>(), int(CollisionTags::gem), true));
 	pCollisionTest->GetComponent<Shining::CollisionComponent>()->AddTargetTag(int(CollisionTags::player));
 
@@ -48,6 +46,30 @@ int main()
 	engine.AddCommand(new MoveUpCommand(), SDLK_w, Shining::ControllerInput::LeftStickUp);
 	engine.AddCommand(new MoveDownCommand(), SDLK_s, Shining::ControllerInput::LeftStickDown);
 	engine.SetNoInputCommand(new StartIdleCommand());
+
+	/*Shining::GameObject* pPacman{ new Shining::GameObject(2,0) };
+	Shining::GameObject* pGhost{ new Shining::GameObject(0,0) };
+	pGhost->SetPosition(1, 0);
+	if (pPacman->GetPosition().x - pGhost->GetPosition().x <= 1)
+	{
+		std::cout << "Pac caught\n";
+	}
+	pPacman->SetPosition(3, 0);
+
+	glm::vec2 pacman{ 2,0 };
+	glm::vec2 ghost{ 0,0 };
+	
+	ghost.x += 1;
+	if (pacman.x - ghost.x <= 1)
+	{
+		std::cout << "Pac caught\n";
+	}
+	
+	pacman.x += 1;
+	delete pPacman;
+	delete pGhost;*/
+	
+
 
 	engine.Run();
 }

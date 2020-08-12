@@ -21,6 +21,7 @@ namespace Shining
 
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) override;
+		virtual void SwapBuffer() noexcept override;
 		void AddState(State* pStateToAdd) noexcept;
 
 		//data variable used to optionally pass aditional data to the state, left to the user
@@ -31,6 +32,7 @@ namespace Shining
 		State* m_pCurrentState;
 		State* m_pNextState;
 		GameObject* m_pOwner;
+		bool m_NeedsSwap;
 	};
 }
 
@@ -49,9 +51,10 @@ void Shining::StateComponent::ChangeState(/*const glm::vec4& data*/) noexcept
 		if (typeid(T) == typeid(*pState))
 		{
 			m_pCurrentState->OnExit(m_pOwner);
-			m_pCurrentState = pState;
-			m_pCurrentState->OnEntry(m_pOwner);
-			//m_pNextState = pState;
+			//m_pCurrentState = pState;
+			//m_pCurrentState->OnEntry(m_pOwner); //OnEntry of new state gets called in this component's SwapBuffer function
+			m_pNextState = pState;
+			m_NeedsSwap = true;
 			return;
 		}
 	}
