@@ -46,9 +46,6 @@
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Components\RenderComponent</Filter>
     </ClCompile>
-    <ClCompile Include="TileComponent.cpp">
-      <Filter>Components\TileComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Components\Component</Filter>
     </ClCompile>
@@ -81,6 +78,9 @@
     </ClCompile>
     <ClCompile Include="NullCollision.cpp">
       <Filter>CollisionBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="TileComponent.cpp">
+      <Filter>World\TileComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,9 +133,6 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Components\RenderComponent</Filter>
     </ClInclude>
-    <ClInclude Include="TileComponent.h">
-      <Filter>Components\TileComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Components\Component</Filter>
     </ClInclude>
@@ -168,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="NullCollision.h">
       <Filter>CollisionBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="TileComponent.h">
+      <Filter>World\TileComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +210,6 @@
     <Filter Include="Components\RenderComponent">
       <UniqueIdentifier>{d99df2d1-f68c-48f4-bb89-7c0a1db564c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\TileComponent">
-      <UniqueIdentifier>{506dd9bc-dff2-446e-816d-703f4313cde9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Components\Component">
       <UniqueIdentifier>{7b39a91a-773a-428c-b9f6-4a7bc15094d7}</UniqueIdentifier>
     </Filter>
@@ -251,6 +248,9 @@
     </Filter>
     <Filter Include="CollisionBehavior">
       <UniqueIdentifier>{c15b6564-217b-4271-8e74-7e3c1d7029f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\TileComponent">
+      <UniqueIdentifier>{506dd9bc-dff2-446e-816d-703f4313cde9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

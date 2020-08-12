@@ -14,7 +14,7 @@ namespace Shining
 	class RenderComponent final : public Shining::Component
 	{
 	public:
-		RenderComponent(const std::string& textureName);
+		RenderComponent(const std::string& textureName, const int spriteScaleFactor);
 		RenderComponent(const std::string& textureName, const int spriteScaleFactor, const int msPerFrame, const int nrRows, const int nrCols);
 		virtual ~RenderComponent() = default;
 

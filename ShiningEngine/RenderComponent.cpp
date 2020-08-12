@@ -5,8 +5,8 @@
 #include "Renderer.h"
 
 //static texture - constructor delegation
-Shining::RenderComponent::RenderComponent(const std::string& textureName)
-	:RenderComponent(textureName, 1, 0 ,0 ,0)
+Shining::RenderComponent::RenderComponent(const std::string& textureName, const int spriteScaleFactor)
+	:RenderComponent(textureName, spriteScaleFactor, 0, 0, 0)
 {
 }
 

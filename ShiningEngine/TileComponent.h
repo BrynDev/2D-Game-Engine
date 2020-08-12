@@ -1,16 +1,12 @@
 #pragma once
 #include "Component.h"
 #include <vector>
+#include <unordered_map> //TEST
 
 namespace Shining
 {
 	class RenderComponent;
-
-	struct Tile
-	{
-		int id;
-	};
-
+	
 	class TileComponent final : public Shining::Component
 	{
 	public:
@@ -22,14 +18,31 @@ namespace Shining
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) override;
 		virtual void SwapBuffer() noexcept override;
-		//const Tile& GetTile(const int indexX, const int indexY) const noexcept;
-		
+	
 		TileComponent(const TileComponent& other) = delete;
 		TileComponent& operator=(const TileComponent& rhs) = delete;
 		TileComponent(TileComponent&& other) = delete;
 		TileComponent& operator=(TileComponent&& rhs) = delete;
-	private:
+	private:	
+		struct SharedTileInfo
+		{
+			SharedTileInfo(const glm::vec2& textureCoord, const bool hasCollision)
+				:texCoord{textureCoord}
+				, hasCollision{hasCollision}
+			{
+			}
+			const glm::vec2 texCoord;
+			const bool hasCollision;
+		};
+		struct Tile
+		{
+			const SharedTileInfo* pSharedInfo;
+			 //glm::vec2 worldPos;
+		};
+
 		std::vector<std::vector<Tile>> m_pTiles; //2D grid of tiles
+		//std::unordered_map<int, SharedTileInfo> m_TileInfoByID;
+		std::unordered_map<int, const SharedTileInfo* const> m_TileInfoByID;
 		const Shining::RenderComponent* m_pWeakRenderComponent;
 		const int m_TileWidth;
 		const int m_TileHeight;

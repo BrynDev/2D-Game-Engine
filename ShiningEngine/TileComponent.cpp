@@ -19,9 +19,11 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 	{
 		m_pTiles[row].resize(nrColsWorld);
 	}
-}
 
-//consider using a fixed size allocator for tiles -> improves locality
+	//the first tile in the tileset is considered empty and has no collision, all other tiles do
+	SharedTileInfo* pEmptyTileInfo{ new SharedTileInfo(glm::vec2{0,0},false) };
+	m_TileInfoByID.insert(std::make_pair(0, pEmptyTileInfo));
+}
 
 void Shining::TileComponent::Render(const glm::vec2& pos) /*const*/
 {
@@ -30,13 +32,9 @@ void Shining::TileComponent::Render(const glm::vec2& pos) /*const*/
 	{
 		for (int col{ 0 }; col < m_NrColsWorld; ++col)
 		{
-			int currentTileId{ m_pTiles[row][col].id };
-			
-			//calculate source rect offsets
-			const int yOffset{ currentTileId / m_NrColsTexture };
-			const int xOffset{ currentTileId % m_NrColsTexture };
+			glm::vec2 texCoord{ m_pTiles[row][col].pSharedInfo->texCoord };
 
-			SDL_Rect srcRect{ xOffset * m_TileWidth, yOffset * m_TileHeight, m_TileWidth, m_TileHeight };
+			SDL_Rect srcRect{ int(texCoord.x), int(texCoord.y), m_TileWidth, m_TileHeight };
 			m_pWeakRenderComponent->RenderTile(srcRect, destRect);
 
 			destRect.x += m_TileWidth;
@@ -50,11 +48,6 @@ void Shining::TileComponent::Update(const float /*timeStep*/)
 {
 	//TODO
 }
-
-/*const Shining::Tile& Shining::TileComponent::GetTile(const int indexX, const int indexY) const noexcept
-{
-	return m_pTiles[indexX][indexY];
-}*/
 
 void Shining::TileComponent::SwapBuffer() noexcept
 {
@@ -75,13 +68,15 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 		std::cout << exception.GetMessage() << std::endl;
 
 		//fill the tile array with default values
+		int idx{ 0 };
 		for (int row{ 0 }; row < m_NrRowsWorld; ++row)
 		{
 			for (int col{ 0 }; col < m_NrColsWorld; ++col)
 			{
-
-				m_pTiles[row][col] = Tile{0}; 
-				
+		
+				//Tile defaultTile{ m_TileInfoByID[0] };
+				m_pTiles[row][col] = Tile{m_TileInfoByID[0]};
+				++idx;
 			}
 		}
 		return; //exit this function
@@ -93,8 +88,26 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 	{
 		for (int col{ 0 }; col < m_NrColsWorld; ++col)
 		{
-			
-			m_pTiles[row][col] = Tile{ tileIDs[idx] };
+			const int currentTileID{ tileIDs[idx] };
+
+			//check if this ID has already been loaded
+			auto foundIt{ m_TileInfoByID.find(currentTileID) };
+			if (foundIt != m_TileInfoByID.end())
+			{
+				//this type of tile is already in the map
+				m_pTiles[row][col] = Tile{ foundIt->second };
+			}
+			else
+			{
+				//this is a new type of tile
+				//calculate texPos
+				const int texXPos{ (currentTileID % m_NrColsTexture) * m_TileWidth };
+				const int texYPos{ (currentTileID / m_NrColsTexture) * m_TileHeight };
+				//add the TileInfo to the map
+				SharedTileInfo* pInfo{ new SharedTileInfo(glm::vec2(texXPos, texYPos), true) };
+				m_TileInfoByID.insert(std::make_pair(currentTileID, pInfo));
+				m_pTiles[row][col] = Tile{ pInfo };
+			}
 			++idx;
 		}
 	}
@@ -102,13 +115,8 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 
 Shining::TileComponent::~TileComponent()
 {
-	/*const size_t nrRows{ m_pTiles.size() };
-	const size_t nrCols{ m_pTiles[0].size() };
-	for (unsigned int i{ 0 }; i < nrRows; ++i)
+	for (auto pair : m_TileInfoByID)
 	{
-		for (unsigned int j{ 0 }; j < nrCols; ++j)
-		{
-			delete m_pTiles[i][j];
-		}
-	}*/
+		delete pair.second;
+	}
 }
