@@ -8,8 +8,8 @@ void PlayerCollision::ResolveCollision(Shining::GameObject* const pObject, const
 	{
 		case int(CollisionTags::gem):
 		{
-			pObject->NotifyObservers(int(ObservedEvents::gemPickup));
-			//pObject->GetComponent<Shining::PhysicsComponent>()->
+			//pObject->NotifyObservers(int(ObservedEvents::gemPickup));
+			pObject->GetComponent<Shining::PhysicsComponent>()->BlockMovement();
 			break;
 		}
 		default:

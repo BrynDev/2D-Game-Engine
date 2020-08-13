@@ -92,7 +92,7 @@ void Shining::ShiningEngine::RegisterPlayerCharacter(GameObject* pPlayerCharacte
 	InputManager::GetInstance().RegisterPlayerCharacter(pPlayerCharacter);
 }
 
-void Shining::ShiningEngine::AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept
+void Shining::ShiningEngine::AddCommand(Command* const pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept
 {
 	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
 }

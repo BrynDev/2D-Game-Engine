@@ -50,16 +50,17 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 
 void Shining::RenderComponent::Render(const glm::vec2& pos) /*const*/
 {
+	SDL_Rect dstRect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor };
 	if (m_NrCols == 0)
 	{
 		//this is a static texture
-		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, dstRect);
 	}
 	else
 	{
 		//this is a sprite
 		//Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, m_SrcRect, SDL_Rect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor});
-		SDL_Rect dstRect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor };
+		
 		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, m_SrcRect, dstRect, m_RotationAngle, m_FlipFlag);
 	}	
 }

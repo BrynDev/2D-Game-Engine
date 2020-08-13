@@ -24,7 +24,8 @@ Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwne
 
 const SDL_Rect Shining::CollisionComponent::GetBoundingBox() const noexcept
 {
-	const glm::vec2& ownerPos{ m_pOwner->GetPosition() };
+	//const glm::vec2& ownerPos{ m_pOwner->GetPosition() };	
+	const glm::vec2& ownerPos{ m_pOwner->GetNextPosition() }; //check if object will collide next frame
 	return SDL_Rect{ int(ownerPos.x), int(ownerPos.y), m_BoxWidth, m_BoxHeight };
 }
 
@@ -35,12 +36,6 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 
 	for (const int targetTag : m_TagsToCollideWith) //for every tag that's relevant to this object
 	{
-
-		/*if (instance.IsColliding(boundingBox, m_Tag, targetTag))
-		{
-			ResolveCollision(targetTag);
-			break;
-		}*/
 		Shining::CollisionComponent* const pCollidingObject{ instance.GetCollidingObject(boundingBox, targetTag) };
 		if (pCollidingObject == nullptr)
 		{
@@ -51,7 +46,6 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 		ResolveCollision(targetTag);
 		pCollidingObject->ResolveCollision(m_Tag);
 	}
-	
 }
 
 void Shining::CollisionComponent::Render(const glm::vec2& /*pos*/)

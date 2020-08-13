@@ -11,65 +11,79 @@
 #include "PickupCollision.h"
 #include "Enums.h"
 
+//"Perform every explicit resource allocation(e.g., new) in its own statement that immediately gives the
+//allocated resource to a manager object(e.g., sharedptr); 
+//otherwise, you can leak resources because the order of evaluation of a function's parameters is undefined.
+// - "CPP Coding Standards - 101 Rules Guidelines and Best Practices 2005", item 13 - Herb Sutter, Andrei Alexandrescu
+
 int main()
 {
 	Shining::ShiningEngine engine{};	
-	Shining::GameObject* pPlayerCharacter{ new Shining::GameObject(50,50) };	 
-	pPlayerCharacter->AddComponent(new Shining::RenderComponent("Sprite_Car.png", 2, 80, 1, 3));
-	pPlayerCharacter->AddComponent(new Shining::StateComponent(new IdleState(), pPlayerCharacter));
-	pPlayerCharacter->GetComponent<Shining::StateComponent>()->AddState(new MoveState());
-	pPlayerCharacter->AddComponent(new Shining::PhysicsComponent(pPlayerCharacter));
-	pPlayerCharacter->AddComponent(new Shining::CollisionComponent(pPlayerCharacter, pPlayerCharacter->GetComponent<Shining::RenderComponent>(), int(CollisionTags::player))); //TEST / replace tag value with enum
+	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(50,50) };
+	{
+		//init player components
+		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("Sprite_Car.png", 2, 80, 1, 3) };
+		pPlayerCharacter->AddComponent(pPlayerRender);
+	
+		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(new IdleState(), pPlayerCharacter) };
+		pPlayerState->AddState(new MoveState());
+		pPlayerCharacter->AddComponent(pPlayerState);
 
-	Shining::GameObject* pCollisionTest{ new Shining::GameObject(200,150) };
-	pCollisionTest->AddComponent(new Shining::RenderComponent("blah.png", 2));
-	pCollisionTest->AddComponent(new Shining::CollisionComponent(pCollisionTest, pCollisionTest->GetComponent<Shining::RenderComponent>(), int(CollisionTags::gem)));
-	pCollisionTest->GetComponent<Shining::CollisionComponent>()->AddTargetTag(int(CollisionTags::player));
+		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter) };
+		pPlayerCharacter->AddComponent(pPlayerPhysics);
 
-	Shining::CollisionBehavior* pPlayerCollision{ new PlayerCollision() };
-	pPlayerCharacter->GetComponent<Shining::CollisionComponent>()->SetBehavior(pPlayerCollision);
-	Shining::CollisionBehavior* pPickupCollision{ new PickupCollision() };
-	pCollisionTest->GetComponent<Shining::CollisionComponent>()->SetBehavior(pPickupCollision);
+		Shining::CollisionComponent* const pPlayerCollision{ new Shining::CollisionComponent(pPlayerCharacter, pPlayerRender, int(CollisionTags::player)) };
+		Shining::CollisionBehavior* const pPlayerCollisionBehavior{ new PlayerCollision() };
+		pPlayerCollision->SetBehavior(pPlayerCollisionBehavior);
+	
+		pPlayerCharacter->AddComponent(pPlayerCollision);
+	}
+	
+	Shining::GameObject* pGemTest{ new Shining::GameObject(200,150) };
+	{
+		//init gem test components
+		Shining::RenderComponent* const pGemRender{ new Shining::RenderComponent("blah.png", 2) };
+		pGemTest->AddComponent(pGemRender);
+
+		Shining::CollisionComponent* const pGemCollision{ new Shining::CollisionComponent(pGemTest, pGemRender, int(CollisionTags::gem)) };
+		pGemCollision->AddTargetTag(int(CollisionTags::player));
+		Shining::CollisionBehavior* const pPickupCollision{ new PickupCollision() };
+		pGemCollision->SetBehavior(pPickupCollision);
+		pGemTest->AddComponent(pGemCollision);
+	}
 
 	Shining::GameObject* pScoreboard{ new Shining::GameObject(200,30) };
-	pScoreboard->AddComponent(new Shining::TextComponent("0", "Lingua.otf", SDL_Color{ 0,0,250 }, 50));
-	pPlayerCharacter->AddObserver(new ScoreObserver(pScoreboard));
+	{
+		//init scoreboard components
+		Shining::TextComponent* const pScoreboardText{ new Shining::TextComponent("0", "Lingua.otf", SDL_Color{ 0,0,250 }, 50) };
+		pScoreboard->AddComponent(pScoreboardText);
+
+		ScoreObserver* pScoreObserver{ new ScoreObserver(pScoreboard) };
+		pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
+	}
+
+	//create scenes
 	Shining::Scene& scene{ engine.CreateScene("Game") };
 	scene.Add(pPlayerCharacter);
 	scene.Add(pScoreboard);
-	scene.Add(pCollisionTest);
+	scene.Add(pGemTest);
 	scene.InitWorld("TestTileMap.png", "TestMap.csv", 33, 33, 8, 6, 15, 10);
 
-	engine.RegisterPlayerCharacter(pPlayerCharacter);
-	engine.AddCommand(new MoveRightCommand(), SDLK_d, Shining::ControllerInput::LeftStickRight);
-	engine.AddCommand(new MoveLeftCommand(), SDLK_a, Shining::ControllerInput::LeftStickLeft);
-	engine.AddCommand(new MoveUpCommand(), SDLK_w, Shining::ControllerInput::LeftStickUp);
-	engine.AddCommand(new MoveDownCommand(), SDLK_s, Shining::ControllerInput::LeftStickDown);
-	engine.SetNoInputCommand(new StartIdleCommand());
-
-	/*Shining::GameObject* pPacman{ new Shining::GameObject(2,0) };
-	Shining::GameObject* pGhost{ new Shining::GameObject(0,0) };
-	pGhost->SetPosition(1, 0);
-	if (pPacman->GetPosition().x - pGhost->GetPosition().x <= 1)
 	{
-		std::cout << "Pac caught\n";
+		//setup input and commands
+		engine.RegisterPlayerCharacter(pPlayerCharacter);
+		MoveRightCommand* const pMoveRight{ new MoveRightCommand() };
+		MoveLeftCommand* const pMoveLeft{ new MoveLeftCommand() };
+		MoveUpCommand* const pMoveUp{ new MoveUpCommand() };
+		MoveDownCommand* const pMoveDown{ new MoveDownCommand() };
+		StartIdleCommand* const pStartIdle{ new StartIdleCommand() };
+
+		engine.AddCommand(pMoveRight, SDLK_d, Shining::ControllerInput::LeftStickRight);
+		engine.AddCommand(pMoveLeft, SDLK_a, Shining::ControllerInput::LeftStickLeft);
+		engine.AddCommand(pMoveUp, SDLK_w, Shining::ControllerInput::LeftStickUp);
+		engine.AddCommand(pMoveDown, SDLK_s, Shining::ControllerInput::LeftStickDown);
+		engine.SetNoInputCommand(pStartIdle);
 	}
-	pPacman->SetPosition(3, 0);
 
-	glm::vec2 pacman{ 2,0 };
-	glm::vec2 ghost{ 0,0 };
-	
-	ghost.x += 1;
-	if (pacman.x - ghost.x <= 1)
-	{
-		std::cout << "Pac caught\n";
-	}
-	
-	pacman.x += 1;
-	delete pPacman;
-	delete pGhost;*/
-	
-
-
-	engine.Run();
+	engine.Run(); //here we go
 }
