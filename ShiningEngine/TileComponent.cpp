@@ -2,6 +2,7 @@
 #include "TileComponent.h"
 #include "CSVParser.h"
 #include "SimpleException.h"
+#include "CollisionManager.h"
 
 Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld, const RenderComponent* pWeakRenderComponent)
 	:Component()
@@ -14,10 +15,10 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 	, m_pWeakRenderComponent{pWeakRenderComponent}
 {
 	//resize the 2D vector that represents the tiles
-	m_pTiles.resize(nrRowsWorld);
+	m_Tiles.resize(nrRowsWorld);
 	for (int row{ 0 }; row < nrRowsWorld; ++row)
 	{
-		m_pTiles[row].resize(nrColsWorld);
+		m_Tiles[row].resize(nrColsWorld);
 	}
 
 	//the first tile in the tileset is considered empty and has no collision, all other tiles do
@@ -25,22 +26,23 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 	m_TileInfoByID.insert(std::make_pair(0, pEmptyTileInfo));
 }
 
-void Shining::TileComponent::Render(const glm::vec2& pos) /*const*/
+void Shining::TileComponent::Render(const glm::vec2& /*pos*/) /*const*/
 {
-	SDL_Rect destRect{int(pos.x), int(pos.y), m_TileWidth, m_TileHeight};
+	const int scale{ 2 };
+	SDL_Rect destRect{0, 0, m_TileWidth * scale, m_TileHeight * scale};
 	for (int row{ 0 }; row < m_NrRowsWorld; ++row)
 	{
 		for (int col{ 0 }; col < m_NrColsWorld; ++col)
 		{
-			glm::vec2 texCoord{ m_pTiles[row][col].pSharedInfo->texCoord };
+			glm::vec2 texCoord{ m_Tiles[row][col].pSharedInfo->texCoord };
 
 			SDL_Rect srcRect{ int(texCoord.x), int(texCoord.y), m_TileWidth, m_TileHeight };
 			m_pWeakRenderComponent->RenderTile(srcRect, destRect);
 
-			destRect.x += m_TileWidth;
+			destRect.x += m_TileWidth * scale;
 		}
-		destRect.x = int(pos.x);
-		destRect.y += m_TileHeight;
+		destRect.x = 0;
+		destRect.y += m_TileHeight * scale;
 	}
 }
 
@@ -52,6 +54,11 @@ void Shining::TileComponent::Update(const float /*timeStep*/)
 void Shining::TileComponent::SwapBuffer() noexcept
 {
 	//currently not needed, probably later
+}
+
+void Shining::TileComponent::BreakTile(const int row, const int col) noexcept
+{
+	m_Tiles[row][col].pSharedInfo = m_TileInfoByID[0]; //ID at index 0 is the designated "empty" tile
 }
 
 void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
@@ -75,7 +82,7 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 			{
 		
 				//Tile defaultTile{ m_TileInfoByID[0] };
-				m_pTiles[row][col] = Tile{m_TileInfoByID[0]};
+				m_Tiles[row][col] = Tile{m_TileInfoByID[0]};
 				++idx;
 			}
 		}
@@ -95,7 +102,7 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 			if (foundIt != m_TileInfoByID.end())
 			{
 				//this type of tile is already in the map
-				m_pTiles[row][col] = Tile{ foundIt->second };
+				m_Tiles[row][col] = Tile{ foundIt->second };
 			}
 			else
 			{
@@ -106,12 +113,36 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 				//add the TileInfo to the map
 				SharedTileInfo* pInfo{ new SharedTileInfo(glm::vec2(texXPos, texYPos), true) };
 				m_TileInfoByID.insert(std::make_pair(currentTileID, pInfo));
-				m_pTiles[row][col] = Tile{ pInfo };
+				m_Tiles[row][col] = Tile{ pInfo };
 			}
 			++idx;
 		}
 	}
 }
+
+void Shining::TileComponent::RegisterCollision() noexcept
+{
+	Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
+	const int scale{ 2 };
+	SDL_Rect destRect{ 0, 0, m_TileWidth * scale, m_TileHeight * scale };
+	for (int row{ 0 }; row < m_NrRowsWorld; ++row)
+	{
+		for (int col{ 0 }; col < m_NrColsWorld; ++col)
+		{
+			if (m_Tiles[row][col].pSharedInfo->hasCollision)
+			{
+				instance.AddWorldTile(destRect, row, col);
+			}
+
+			destRect.x += m_TileWidth * scale;
+		}
+		destRect.x = 0;
+		destRect.y += m_TileHeight * scale;
+	}
+
+	instance.RegisterWorldTileComponent(this); //register this world so the collision component can break tiles if it needs to
+}
+
 
 Shining::TileComponent::~TileComponent()
 {

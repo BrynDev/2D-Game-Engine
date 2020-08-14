@@ -12,5 +12,7 @@ enum class CollisionTags
 {
 	player = 0,
 	enemy = 1,
-	gem = 2
+	gem = 2,
+	goldBag = 3,
+	wall = 4
 };

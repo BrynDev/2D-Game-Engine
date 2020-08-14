@@ -23,17 +23,25 @@ void Shining::PhysicsComponent::Update(const float /*timeStep*/) noexcept
 }
 
 void Shining::PhysicsComponent::MoveOwner(const float timeStep) noexcept
-{
-	
+{	
 	const glm::vec2& oldPos{ m_pOwner->GetPosition() };
-
-	const glm::vec2 newPos{ oldPos.x + (m_pCurrentMoveInfo->direction.x * (timeStep / 1000.f) * m_pCurrentMoveInfo->speed.x), oldPos.y + (m_pCurrentMoveInfo->direction.y * (timeStep / 1000.f) * m_pCurrentMoveInfo->speed.y) };
+	const glm::vec2& direction{ m_pCurrentMoveInfo->direction };
+	const glm::vec2& speed{ m_pCurrentMoveInfo->speed };
+	const glm::vec2 newPos{ oldPos.x + (direction.x * (timeStep / 1000.f) * speed.x), oldPos.y + (direction.y * (timeStep / 1000.f) * speed.y) };
 	m_pOwner->SetPosition(newPos.x, newPos.y);
+	return;
+}
+
+void Shining::PhysicsComponent::BlockMovement() noexcept
+{
+	const glm::vec2& oldPos{ m_pOwner->GetPosition() };
+	m_pOwner->SetPosition(oldPos.x, oldPos.y);
 }
 
 void Shining::PhysicsComponent::SwapBuffer() noexcept
 {
 	//swap the pointers, can/should this be done atomically?
+	
 	if (m_NeedsSwap)
 	{
 		MoveInfo* pTemp{ m_pCurrentMoveInfo };

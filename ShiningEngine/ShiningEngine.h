@@ -7,8 +7,8 @@ namespace Shining
 	class ShiningEngine
 	{
 	public:
-		ShiningEngine();
-		void Initialize();
+		ShiningEngine(const std::string& windowName, const int windowWidth, const int windowHeight);
+		void Initialize(const std::string& windowName, const int windowWidth, const int windowHeight);
 		void Cleanup();
 		void Run();
 

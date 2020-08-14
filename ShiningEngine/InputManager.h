@@ -29,8 +29,8 @@ namespace Shining
 	private:
 		Controller m_Controllers[XUSER_MAX_COUNT]{};
 		GameObject* m_pPlayerCharacter{nullptr};
-		std::unordered_map<unsigned int, Command*> m_CommandsByVKey{};
-		std::map<ControllerInput, Command*> m_CommandsByControllerInput{};
+		std::unordered_map<unsigned int, Command* const> m_CommandsByVKey{};
+		std::map<ControllerInput, Command* const> m_CommandsByControllerInput{};
 		std::unordered_set<unsigned int> m_CurrentlyPressedKeys{}; //use a set because I want the elements to be unique
 		std::unordered_set<ControllerInput> m_CurrentControllerInputs{};
 		Command* m_pNoInputCommand{nullptr};

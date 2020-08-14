@@ -10,7 +10,6 @@ Shining::InputManager::~InputManager()
 		if (pair.second != nullptr)
 		{
 			delete pair.second;
-			pair.second = nullptr;
 		}
 		
 	}
@@ -308,7 +307,7 @@ bool Shining::InputManager::IsControllerInputPressed(const XINPUT_GAMEPAD& gamep
 	return isPressed;
 }
 
-void Shining::InputManager::AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput)
+void Shining::InputManager::AddCommand(Command* const pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput)
 {
 	m_CommandsByVKey.insert(std::make_pair(virtualKey, pCommandToAdd));
 	m_CommandsByControllerInput.insert(std::make_pair(controllerInput, pCommandToAdd));

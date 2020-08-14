@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <SDL_Rect.h>
 #include <SDL_Render.h>
+
 class Texture2D;
 
 namespace Shining

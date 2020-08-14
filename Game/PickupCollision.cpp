@@ -5,9 +5,11 @@ void PickupCollision::ResolveCollision(Shining::GameObject* const pObject, const
 {
 	switch (collidedTag)
 	{
-		case int(CollisionTags::player):
-			pObject->SetActive(false);
+	case int(CollisionTags::player):
+		//pObject->SetActive(true);
+		pObject->SetActive(false);
 		break;
+
 	default:
 		break;
 	}

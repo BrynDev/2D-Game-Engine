@@ -25,7 +25,7 @@ namespace Shining
 
 		void RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& destRect) const; //render at given position with custom source rect (used for tiles)
 		void RenderTexture(const Texture2D& texture, float x, float y) const; //render at given position
-		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const; //render at given position with custom width and height (scaling)
+		void RenderTexture(const Texture2D& texture, const SDL_Rect& destRect) const; //render at given destRect
 		void RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& destRect, const float angleDeg, const SDL_RendererFlip& flipFlag) const; //uses RenderCopyEX
 
 		SDL_Renderer* GetSDLRenderer() const noexcept { return m_Renderer; }

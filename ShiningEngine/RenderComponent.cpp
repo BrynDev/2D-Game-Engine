@@ -24,7 +24,7 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 	, m_ElapsedTimeMs{0}
 	, m_IsOscillating{false}
 	, m_RotationAngle{0.f}
-	, m_FlipFlag{SDL_FLIP_NONE}
+	, m_FlipFlag{SDL_FLIP_NONE} //unable to surpress this warning in this version of visual studio
 {
 	int textureWidth{};
 	int textureHeight{};
@@ -50,18 +50,24 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 
 void Shining::RenderComponent::Render(const glm::vec2& pos) /*const*/
 {
+	SDL_Rect dstRect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor };
 	if (m_NrCols == 0)
 	{
 		//this is a static texture
-		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, dstRect);
 	}
 	else
 	{
 		//this is a sprite
 		//Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, m_SrcRect, SDL_Rect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor});
-		SDL_Rect dstRect{ int(pos.x), int(pos.y), m_SrcRect.w * m_ScaleFactor, m_SrcRect.h * m_ScaleFactor };
+		
 		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, m_SrcRect, dstRect, m_RotationAngle, m_FlipFlag);
 	}	
+}
+
+void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept
+{
+	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
 }
 
 void Shining::RenderComponent::Update(const float timeStep) noexcept
@@ -86,11 +92,6 @@ void Shining::RenderComponent::Update(const float timeStep) noexcept
 
 		m_SrcRect.x = m_CurrentFrame * m_SrcRect.w;	//update source rect
 	}
-}
-
-void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept
-{
-	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
 }
 
 void Shining::RenderComponent::SwapBuffer() noexcept
