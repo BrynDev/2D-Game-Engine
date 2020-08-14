@@ -18,11 +18,14 @@
 
 int main()
 {
-	Shining::ShiningEngine engine{};	
-	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(50,50) };
+	const int windowWidth{ 600 };
+	const int windowHeight{ 400 };
+	Shining::ShiningEngine engine{"Digger", windowWidth, windowHeight };
+
+	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(0,50) };
 	{
 		//init player components
-		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("Sprite_Car.png", 2, 80, 1, 3) };
+		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
 		pPlayerCharacter->AddComponent(pPlayerRender);
 	
 		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(new IdleState(), pPlayerCharacter) };
@@ -32,7 +35,7 @@ int main()
 		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter) };
 		pPlayerCharacter->AddComponent(pPlayerPhysics);
 
-		Shining::CollisionComponent* const pPlayerCollision{ new Shining::CollisionComponent(pPlayerCharacter, pPlayerRender, int(CollisionTags::player)) };
+		Shining::CollisionComponent* const pPlayerCollision{ new Shining::CollisionComponent(pPlayerCharacter, pPlayerRender, int(CollisionTags::player), true, true) };
 		Shining::CollisionBehavior* const pPlayerCollisionBehavior{ new PlayerCollision() };
 		pPlayerCollision->SetBehavior(pPlayerCollisionBehavior);
 	
@@ -42,10 +45,10 @@ int main()
 	Shining::GameObject* pGemTest{ new Shining::GameObject(200,150) };
 	{
 		//init gem test components
-		Shining::RenderComponent* const pGemRender{ new Shining::RenderComponent("blah.png", 2) };
+		Shining::RenderComponent* const pGemRender{ new Shining::RenderComponent("Emerald.png", 2) };
 		pGemTest->AddComponent(pGemRender);
 
-		Shining::CollisionComponent* const pGemCollision{ new Shining::CollisionComponent(pGemTest, pGemRender, int(CollisionTags::gem)) };
+		Shining::CollisionComponent* const pGemCollision{ new Shining::CollisionComponent(pGemTest, pGemRender, int(CollisionTags::gem), false, false) };
 		pGemCollision->AddTargetTag(int(CollisionTags::player));
 		Shining::CollisionBehavior* const pPickupCollision{ new PickupCollision() };
 		pGemCollision->SetBehavior(pPickupCollision);
@@ -62,20 +65,55 @@ int main()
 		pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
 	}
 
+	const int wallSize{ 10 };
+	const int wallOffset{ 2 }; //small offset that makes wall collision less strict
+	Shining::GameObject* pLeftWall{ new Shining::GameObject(-wallSize - wallOffset, 0) };
+	{
+		Shining::CollisionComponent* pLeftWallCollision{ new Shining::CollisionComponent(pLeftWall, wallSize, windowHeight, int(CollisionTags::wall), false, false) };
+		pLeftWallCollision->AddTargetTag(int(CollisionTags::player));
+		pLeftWall->AddComponent(pLeftWallCollision);
+	}
+
+	Shining::GameObject* pRightWall{ new Shining::GameObject(windowWidth + wallOffset, 0) };
+	{
+		Shining::CollisionComponent* pRightWallCollision{ new Shining::CollisionComponent(pRightWall, wallSize, windowHeight, int(CollisionTags::wall), false, false) };
+		pRightWallCollision->AddTargetTag(int(CollisionTags::player));
+		pRightWall->AddComponent(pRightWallCollision);
+	}
+
+	Shining::GameObject* pBottomWall{ new Shining::GameObject(0, windowHeight + wallOffset) };
+	{
+		Shining::CollisionComponent* pBottomWallCollision{ new Shining::CollisionComponent(pBottomWall, windowWidth, wallSize, int(CollisionTags::wall), false, false) };
+		pBottomWallCollision->AddTargetTag(int(CollisionTags::player));
+		pRightWall->AddComponent(pBottomWallCollision);
+	}
+
+	Shining::GameObject* pTopWall{ new Shining::GameObject(0, -wallSize - wallOffset) };
+	{
+		Shining::CollisionComponent* pTopWallCollision{ new Shining::CollisionComponent(pTopWall, windowWidth, wallSize, int(CollisionTags::wall), false, false) };
+		pTopWallCollision->AddTargetTag(int(CollisionTags::player));
+		pRightWall->AddComponent(pTopWallCollision);
+	}
+
 	//create scenes
 	Shining::Scene& scene{ engine.CreateScene("Game") };
 	scene.Add(pPlayerCharacter);
 	scene.Add(pScoreboard);
 	scene.Add(pGemTest);
-	scene.InitWorld("TestTileMap.png", "TestMap.csv", 33, 33, 8, 6, 15, 10);
+	scene.Add(pLeftWall);
+	scene.Add(pRightWall);
+	scene.Add(pBottomWall);
+	scene.Add(pTopWall);
+	scene.InitWorld("Tileset.png", "Level_1.csv", 20, 20, 4, 1, 15, 10);
 
 	{
 		//setup input and commands
+		const float playerMoveSpeed{ 100.f };
 		engine.RegisterPlayerCharacter(pPlayerCharacter);
-		MoveRightCommand* const pMoveRight{ new MoveRightCommand() };
-		MoveLeftCommand* const pMoveLeft{ new MoveLeftCommand() };
-		MoveUpCommand* const pMoveUp{ new MoveUpCommand() };
-		MoveDownCommand* const pMoveDown{ new MoveDownCommand() };
+		MoveRightCommand* const pMoveRight{ new MoveRightCommand(playerMoveSpeed) };
+		MoveLeftCommand* const pMoveLeft{ new MoveLeftCommand(playerMoveSpeed) };
+		MoveUpCommand* const pMoveUp{ new MoveUpCommand(playerMoveSpeed) };
+		MoveDownCommand* const pMoveDown{ new MoveDownCommand(playerMoveSpeed) };
 		StartIdleCommand* const pStartIdle{ new StartIdleCommand() };
 
 		engine.AddCommand(pMoveRight, SDLK_d, Shining::ControllerInput::LeftStickRight);

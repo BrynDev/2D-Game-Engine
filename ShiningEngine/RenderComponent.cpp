@@ -24,7 +24,7 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 	, m_ElapsedTimeMs{0}
 	, m_IsOscillating{false}
 	, m_RotationAngle{0.f}
-	, m_FlipFlag{SDL_FLIP_NONE}
+	, m_FlipFlag{SDL_FLIP_NONE} //unable to surpress this warning in this version of visual studio
 {
 	int textureWidth{};
 	int textureHeight{};
@@ -65,6 +65,11 @@ void Shining::RenderComponent::Render(const glm::vec2& pos) /*const*/
 	}	
 }
 
+void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept
+{
+	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
+}
+
 void Shining::RenderComponent::Update(const float timeStep) noexcept
 {
 	if (m_NrCols == 0) 
@@ -87,11 +92,6 @@ void Shining::RenderComponent::Update(const float timeStep) noexcept
 
 		m_SrcRect.x = m_CurrentFrame * m_SrcRect.w;	//update source rect
 	}
-}
-
-void Shining::RenderComponent::RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept
-{
-	Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, srcRect, destRect);
 }
 
 void Shining::RenderComponent::SwapBuffer() noexcept

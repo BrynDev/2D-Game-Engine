@@ -9,6 +9,7 @@ Shining::World::World(const std::string& textureFile, const std::string& tilePla
 {
 	m_pTileComponent = new TileComponent(tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld, m_pRenderComponent);
 	m_pTileComponent->LoadTiles(tilePlacementsCSV);
+	m_pTileComponent->RegisterCollision();
 }
 
 Shining::World::~World()

@@ -5,18 +5,20 @@
 
 Shining::NullCollision Shining::CollisionComponent::m_NullBehavior;
 
-Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const Shining::RenderComponent* const pComponent, const int tag)
-	:CollisionComponent(pOwner, pComponent->GetSpriteWidth(), pComponent->GetSpriteHeight(), tag)
+Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const Shining::RenderComponent* const pComponent, const int tag, const bool hasWorldCollision, const bool canBreakTiles)
+	:CollisionComponent(pOwner, pComponent->GetSpriteWidth(), pComponent->GetSpriteHeight(), tag, hasWorldCollision, canBreakTiles)
 {
 }
 
-Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const int width, const int height, const int tag)
+Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwner, const int width, const int height, const int tag, const bool hasWorldCollision, const bool canBreakTiles)
 	:Component()
 	, m_pOwner{pOwner}
+	, m_pCollisionBehavior{ &m_NullBehavior }
 	, m_BoxWidth{ width }
 	, m_BoxHeight{ height }
 	, m_Tag{tag}
-	, m_pCollisionBehavior{&m_NullBehavior}
+	, m_CanCollideWithWorld{hasWorldCollision}
+	, m_CanBreakTiles{ canBreakTiles }
 {
 	//register to collision manager
 	Shining::CollisionManager::GetInstance().RegisterCollisionComponent(this, tag);
@@ -25,14 +27,27 @@ Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwne
 const SDL_Rect Shining::CollisionComponent::GetBoundingBox() const noexcept
 {
 	//const glm::vec2& ownerPos{ m_pOwner->GetPosition() };	
-	const glm::vec2& ownerPos{ m_pOwner->GetNextPosition() }; //check if object will collide next frame
+	const glm::vec2& ownerPos{ m_pOwner->GetNextPosition() }; //used to check if object will collide next frame
 	return SDL_Rect{ int(ownerPos.x), int(ownerPos.y), m_BoxWidth, m_BoxHeight };
 }
 
 void Shining::CollisionComponent::Update(const float /*timeStep*/)
 {
 	SDL_Rect boundingBox{ GetBoundingBox() };
-	const Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
+	Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
+
+	if (m_CanCollideWithWorld)
+	{
+		if (instance.HandleWorldCollision(boundingBox, m_CanBreakTiles))
+		{
+			if (!m_CanBreakTiles)
+			{
+				//if colliding with a tile and you can't break through it, get blocked
+				m_pOwner->GetComponent<Shining::PhysicsComponent>()->BlockMovement();
+			}
+			
+		}
+	}
 
 	for (const int targetTag : m_TagsToCollideWith) //for every tag that's relevant to this object
 	{
@@ -76,14 +91,6 @@ void Shining::CollisionComponent::AddTargetTag(const int tag) noexcept
 void Shining::CollisionComponent::RemoveTargetTag(const int tag) noexcept
 {
 	m_TagsToCollideWith.erase(tag);
-}
-
-void Shining::CollisionComponent::AddTargetTags(const std::set<int>& targets) noexcept
-{
-	for (int tag : targets)
-	{
-		m_TagsToCollideWith.insert(tag);
-	}
 }
 
 void Shining::CollisionComponent::SetBehavior(CollisionBehavior* const pBehavior) noexcept

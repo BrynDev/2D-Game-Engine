@@ -81,11 +81,11 @@
     <ClInclude Include="PlayerCollision.h">
       <Filter>Collision behavior</Filter>
     </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
     <ClInclude Include="PickupCollision.h">
       <Filter>Collision behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

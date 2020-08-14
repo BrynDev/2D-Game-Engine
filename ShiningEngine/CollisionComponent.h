@@ -11,8 +11,8 @@ namespace Shining
 	class CollisionComponent final : public Component
 	{
 	public:
-		CollisionComponent(GameObject* const pOwner, const RenderComponent* const pComponent, const int tag); //collider will match the sprite
-		CollisionComponent(GameObject* const pOwner, const int width, const int height, const int tag); //define custom collider size
+		CollisionComponent(GameObject* const pOwner, const RenderComponent* const pComponent, const int tag, const bool hasWorldCollision, const bool canBreakTiles); //collider will match the sprite
+		CollisionComponent(GameObject* const pOwner, const int width, const int height, const int tag, const bool hasWorldCollision, const bool canBreakTiles); //define custom collider size
 		virtual ~CollisionComponent();
 
 		virtual void Update(const float timeStep) override;
@@ -22,7 +22,6 @@ namespace Shining
 		void ResolveCollision(const int collidedTag) noexcept;
 		void AddTargetTag(const int tag) noexcept;
 		void RemoveTargetTag(const int tag) noexcept;
-		void AddTargetTags(const std::set<int>& targets) noexcept;
 		void SetBehavior(CollisionBehavior* const pBehavior) noexcept;
 
 		CollisionComponent(const CollisionComponent& other) = delete;
@@ -37,6 +36,8 @@ namespace Shining
 		const int m_BoxWidth;
 		const int m_BoxHeight;
 		const int m_Tag;
+		bool m_CanCollideWithWorld;
+		const bool m_CanBreakTiles;
 	};
 }
 

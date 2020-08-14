@@ -4,15 +4,16 @@
 #include "IdleState.h"
 
 
-MoveUpCommand::MoveUpCommand()
+MoveUpCommand::MoveUpCommand(const float moveSpeed)
 	:Command()
+	, m_MoveSpeed{moveSpeed}
 {
 }
 
 void MoveUpCommand::Execute(Shining::GameObject* const pTargetObject) const noexcept
 {
 	Shining::PhysicsComponent* pPhysics{ pTargetObject->GetComponent<Shining::PhysicsComponent>() };
-	pPhysics->SetSpeed(0, 150);
+	pPhysics->SetSpeed(0, m_MoveSpeed);
 	pPhysics->SetDirection(0, -1);
 	pTargetObject->GetComponent<Shining::StateComponent>()->ChangeState<MoveState>();
 

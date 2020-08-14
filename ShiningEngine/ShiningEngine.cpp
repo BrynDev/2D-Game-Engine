@@ -56,15 +56,15 @@ void Shining::ShiningEngine::Run()
 	Cleanup();
 }
 
-Shining::ShiningEngine::ShiningEngine()
+Shining::ShiningEngine::ShiningEngine(const std::string& windowName, const int windowWidth, const int windowHeight)
 {
-	Initialize();
+	Initialize(windowName, windowWidth, windowHeight);
 
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 }
 
-void Shining::ShiningEngine::Initialize()
+void Shining::ShiningEngine::Initialize(const std::string& windowName, const int windowWidth, const int windowHeight)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
@@ -72,11 +72,11 @@ void Shining::ShiningEngine::Initialize()
 	}
 
 	m_Window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		windowName.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		640,
-		480,
+		windowWidth,
+		windowHeight,
 		SDL_WINDOW_OPENGL
 	);
 	if (m_Window == nullptr) 
