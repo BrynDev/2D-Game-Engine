@@ -27,6 +27,7 @@ void Shining::ShiningEngine::Run()
 	auto prevTime{ high_resolution_clock::now() };
 
 	bool doContinue{ true };
+
 	while (doContinue) //game loop
 	{
 		const auto currentTime = high_resolution_clock::now();
@@ -41,16 +42,9 @@ void Shining::ShiningEngine::Run()
 		while (realTimeElapsed >= MsPerFrame)
 		{				
 			sceneManager.Update(MsPerFrame); //update game objects
-			realTimeElapsed -= MsPerFrame;
-			/*for (int i{}; i < 10000; ++i)
-			{
-				double* pDouble{ new double{5.0} };
-				delete pDouble;
-			}*/
-				
+			realTimeElapsed -= MsPerFrame;				
 		}
 		renderer.Render(); //render game objects
-		//TODO: interpolate rendering based on leftover of realTimeElapsed
 	}
 
 	Cleanup();
@@ -102,7 +96,7 @@ void Shining::ShiningEngine::SetNoInputCommand(Command* pCommand) noexcept
 	Shining::InputManager::GetInstance().SetNoInputCommand(pCommand);
 }
 
-Shining::Scene& Shining::ShiningEngine::CreateScene(const std::string& name)
+Shining::Scene* Shining::ShiningEngine::CreateScene(const std::string& name)
 {
 	return SceneManager::GetInstance().CreateScene(name);
 }

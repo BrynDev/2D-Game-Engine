@@ -1,7 +1,7 @@
 #include "MoveDownCommand.h"
-#include "ShiningEnginePCH.h"
 #include "MoveState.h"
 #include "IdleState.h"
+#include "ShiningEnginePCH.h"
 
 MoveDownCommand::MoveDownCommand(const float moveSpeed)
 	:Command()

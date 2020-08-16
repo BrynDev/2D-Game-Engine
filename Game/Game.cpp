@@ -95,16 +95,26 @@ int main()
 		pRightWall->AddComponent(pTopWallCollision);
 	}
 
+	Shining::Scene* pMenuScene{ engine.CreateScene("Menu") };
+	Shining::GameObject* pMenuScreen{ new Shining::GameObject(0,0) };
+	Shining::RenderComponent* pMenuRender{ new Shining::RenderComponent("TitleScreen.png", 2) };
+	pMenuScreen->AddComponent(pMenuRender);
+	pMenuScene->Add(pMenuScreen);
+	//TEST
+	pMenuScene->Add(pPlayerCharacter);
+	pMenuScene->Add(pGemTest);
 	//create scenes
-	Shining::Scene& scene{ engine.CreateScene("Game") };
-	scene.Add(pPlayerCharacter);
-	scene.Add(pScoreboard);
-	scene.Add(pGemTest);
-	scene.Add(pLeftWall);
-	scene.Add(pRightWall);
-	scene.Add(pBottomWall);
-	scene.Add(pTopWall);
-	scene.InitWorld("Tileset.png", "Level_1.csv", 20, 20, 4, 1, 15, 10);
+	Shining::Scene* pGameScene_Level1{ engine.CreateScene("Game") };
+	pGameScene_Level1->Add(pPlayerCharacter);
+	pGameScene_Level1->Add(pScoreboard);
+	pGameScene_Level1->Add(pGemTest);
+	pGameScene_Level1->Add(pLeftWall);
+	pGameScene_Level1->Add(pRightWall);
+	pGameScene_Level1->Add(pBottomWall);
+	pGameScene_Level1->Add(pTopWall);
+	pGameScene_Level1->InitWorld("Tileset.png", "Level_1.csv", 20, 20, 4, 1, 15, 10);
+	Shining::SceneManager::GetInstance().SetScene(pGameScene_Level1);
+	//Shining::SceneManager::GetInstance().SetScene(pMenuScene);
 
 	{
 		//setup input and commands

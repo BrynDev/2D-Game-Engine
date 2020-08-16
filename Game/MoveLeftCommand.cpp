@@ -1,8 +1,7 @@
 #include "MoveLeftCommand.h"
-#include "ShiningEnginePCH.h"
 #include "MoveState.h"
 #include "IdleState.h"
-
+#include "ShiningEnginePCH.h"
 
 MoveLeftCommand::MoveLeftCommand(const float moveSpeed)
 	:Command()

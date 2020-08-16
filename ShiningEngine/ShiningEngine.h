@@ -1,9 +1,10 @@
 #pragma once
 struct SDL_Window;
-#include "Scene.h"
 
 namespace Shining
 {
+	class Scene;
+
 	class ShiningEngine
 	{
 	public:
@@ -16,7 +17,7 @@ namespace Shining
 		void RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept;
 		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept;
 		void SetNoInputCommand(Command* pCommand) noexcept; //Command to execute when no keys are pressed
-		Scene& CreateScene(const std::string& name);
+		Scene* CreateScene(const std::string& name);
 
 		ShiningEngine(const ShiningEngine& other) = delete;
 		ShiningEngine& operator=(const ShiningEngine& rhs) = delete;

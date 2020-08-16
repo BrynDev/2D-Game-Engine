@@ -11,7 +11,7 @@ Shining::InputManager::~InputManager()
 		{
 			delete pair.second;
 		}
-		
+
 	}
 	/*for (auto pair : m_CommandsByControllerInput)
 	{
@@ -26,7 +26,7 @@ Shining::InputManager::~InputManager()
 	{
 		delete m_pNoInputCommand;
 	}
-	
+
 }
 
 bool Shining::InputManager::ProcessInput()

@@ -24,11 +24,13 @@ namespace Shining
 
 		void SetPosition(float x, float y) noexcept;
 		const glm::vec2& GetPosition() const noexcept;
-		const glm::vec2& GetNextPosition() const noexcept; //TEST
+		const glm::vec2& GetNextPosition() const noexcept;
 		void NotifyObservers(const int eventID, void* pData = nullptr) noexcept;
 		void AddComponent(Component* pComponent) noexcept;
 		void AddObserver(Observer* pObserver) noexcept;
 		void SetActive(const bool isActive) noexcept;
+		void IncreaseReferenceCount() noexcept;
+		bool DecreaseReferenceCount() noexcept; //returns true if ref count is 0
 
 		template<typename T>
 		T* GetComponent() const;
@@ -39,10 +41,11 @@ namespace Shining
 		GameObject& operator=(GameObject&& other) = delete;
 
 	private:
-		glm::vec2 m_CurrentPos;
-		glm::vec2 m_NextPos;
 		std::vector<Shining::Component*> m_pComponents;
 		std::vector<Observer*> m_pObservers;
+		glm::vec2 m_CurrentPos;
+		glm::vec2 m_NextPos;
+		int m_ReferenceCount;
 		bool m_IsActive;
 		bool m_NeedsSwap;
 	};

@@ -1,7 +1,7 @@
 #include "ShiningEnginePCH.h"
 #include "World.h"
 #include "TileComponent.h"
-#include "RenderComponent.h"
+//#include "RenderComponent.h"
 
 Shining::World::World(const std::string& textureFile, const std::string& tilePlacementsCSV, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
 	:m_pTileComponent{ nullptr }
@@ -20,7 +20,7 @@ Shining::World::~World()
 
 void Shining::World::Update(const float /*timeStep*/)
 {
-	//TODO
+	//unused
 }
 
 void Shining::World::Render() const noexcept
