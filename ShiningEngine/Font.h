@@ -9,8 +9,8 @@ namespace Shining
 	class Font
 	{
 	public:
-		_TTF_Font* GetFont() const;
-		unsigned int GetSize() const;
+		_TTF_Font* GetFont() const noexcept;
+		unsigned int GetSize() const noexcept;
 		explicit Font(const std::string& fullPath, unsigned int size);
 		~Font();
 

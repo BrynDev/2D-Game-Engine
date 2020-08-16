@@ -8,7 +8,7 @@ namespace Shining
 	class Texture2D
 	{
 	public:
-		SDL_Texture* GetSDLTexture() const;
+		SDL_Texture* GetSDLTexture() const noexcept;
 		explicit Texture2D(SDL_Texture* texture);
 		~Texture2D();
 

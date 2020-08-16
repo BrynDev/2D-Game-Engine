@@ -82,6 +82,12 @@
     <ClCompile Include="TileComponent.cpp">
       <Filter>World\TileComponent</Filter>
     </ClCompile>
+    <ClCompile Include="SoundEffect.cpp">
+      <Filter>Resource wrappers\SoundEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioPlayer.cpp">
+      <Filter>AudioPlayer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -169,6 +175,12 @@
     <ClInclude Include="TileComponent.h">
       <Filter>World\TileComponent</Filter>
     </ClInclude>
+    <ClInclude Include="SoundEffect.h">
+      <Filter>Resource wrappers\SoundEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioPlayer.h">
+      <Filter>AudioPlayer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -251,6 +263,12 @@
     </Filter>
     <Filter Include="World\TileComponent">
       <UniqueIdentifier>{506dd9bc-dff2-446e-816d-703f4313cde9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource wrappers\SoundEffect">
+      <UniqueIdentifier>{69617c3e-cba4-44be-bf2c-0b8717a0c55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AudioPlayer">
+      <UniqueIdentifier>{dc906496-5439-4165-9a9e-e8e7efadedb9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
