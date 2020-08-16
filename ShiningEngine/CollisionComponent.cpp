@@ -45,7 +45,6 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 				//if colliding with a tile and you can't break through it, get blocked
 				m_pOwner->GetComponent<Shining::PhysicsComponent>()->BlockMovement();
 			}
-			
 		}
 	}
 

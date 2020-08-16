@@ -1,7 +1,6 @@
 #include "PlayerCollision.h"
 #include "Enums.h"
-#include "PhysicsComponent.h"
-#include <iostream>
+#include "ShiningEnginePCH.h"
 
 void PlayerCollision::ResolveCollision(Shining::GameObject* const pObject, const int collidedTag) const noexcept
 {

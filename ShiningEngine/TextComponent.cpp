@@ -50,16 +50,15 @@ void Shining::TextComponent::Update(const float /*timeStep*/)
 		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 	}
 	SDL_FreeSurface(surf);
-	//allocations and deletions should not be in an update function, is there an alternative to this?
+	
 	delete m_pTexture;
 	m_pTexture = new Shining::Texture2D(pTexture);
-	m_NeedsUpdate = false;
-	
+	m_NeedsUpdate = false;	
 }
 
 void Shining::TextComponent::SwapBuffer() noexcept
 {
-
+	//member variables aren't read in other classes, no swap needed
 }
 
 void Shining::TextComponent::SetText(const std::string& newText)

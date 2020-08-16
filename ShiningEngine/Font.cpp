@@ -2,11 +2,12 @@
 #include <SDL_ttf.h>
 #include "Font.h"
 
-TTF_Font* Shining::Font::GetFont() const {
+TTF_Font* Shining::Font::GetFont() const noexcept
+{
 	return m_Font;
 }
 
-unsigned int Shining::Font::GetSize() const
+unsigned int Shining::Font::GetSize() const noexcept
 {
 	return m_Size;
 }

@@ -7,7 +7,7 @@ Shining::Texture2D::~Texture2D()
 	SDL_DestroyTexture(m_Texture);
 }
 
-SDL_Texture* Shining::Texture2D::GetSDLTexture() const
+SDL_Texture* Shining::Texture2D::GetSDLTexture() const noexcept
 {
 	return m_Texture;
 }

@@ -66,7 +66,7 @@ Shining::ShiningEngine::ShiningEngine(const std::string& windowName, const int w
 
 void Shining::ShiningEngine::Initialize(const std::string& windowName, const int windowWidth, const int windowHeight)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
