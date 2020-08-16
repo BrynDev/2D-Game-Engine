@@ -1,6 +1,6 @@
 #include "PickupCollision.h"
 #include "Enums.h"
-#include "AudioPlayer.h"
+#include "ShiningEnginePCH.h"
 
 void PickupCollision::ResolveCollision(Shining::GameObject* const pObject, const int collidedTag) const noexcept
 {
