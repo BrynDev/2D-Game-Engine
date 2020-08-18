@@ -208,6 +208,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IdleState.cpp" />
+    <ClCompile Include="LevelChangeObserver.cpp" />
     <ClCompile Include="MoveDownCommand.cpp" />
     <ClCompile Include="MoveLeftCommand.cpp" />
     <ClCompile Include="MoveRightCommand.cpp" />
@@ -225,6 +226,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IdleState.h" />
+    <ClInclude Include="LevelChangeObserver.h" />
     <ClInclude Include="MoveDownCommand.h" />
     <ClInclude Include="MoveLeftCommand.h" />
     <ClInclude Include="MoveRightCommand.h" />

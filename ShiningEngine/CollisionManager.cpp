@@ -92,7 +92,12 @@ void Shining::CollisionManager::RemoveCollisionComponent(CollisionComponent* con
 	}
 }
 
-void Shining::CollisionManager::Destroy()
+void Shining::CollisionManager::ClearWorldCollision() noexcept
 {
-	//I might not need this function
+	m_WorldCollisionTiles.clear();
+}
+
+void Shining::CollisionManager::ClearObjectCollision() noexcept
+{
+	m_pCollidersByTag.clear();
 }

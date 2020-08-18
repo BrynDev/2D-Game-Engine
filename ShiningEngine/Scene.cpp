@@ -1,8 +1,8 @@
 #include "ShiningEnginePCH.h"
 #include "Scene.h"
-//#include "GameObject.h"
 #include "World.h"
 #include "SimpleException.h"
+#include "CollisionManager.h"
 
 
 Shining::Scene::Scene(const std::string& name, const int ID)
@@ -65,8 +65,12 @@ void Shining::Scene::Add(Shining::GameObject* pObject)
 	pObject->IncreaseReferenceCount();
 }
 
+const int Shining::Scene::GetID() const noexcept
+{
+	return m_ID;
+}
 
-void Shining::Scene::InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
+void Shining::Scene::InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int worldScale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
 {
 	try
 	{
@@ -80,5 +84,29 @@ void Shining::Scene::InitWorld(const std::string& textureFile, const std::string
 		std::cout << exception.GetMessage() << std::endl;
 	}
 
-	m_pWorld = new World(textureFile, tilePlacementsCSV, tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld);
+	m_pWorld = new World(textureFile, tilePlacementsCSV, worldScale, tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld);
+}
+
+void Shining::Scene::SetObjectCollision() const noexcept
+{
+	Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
+	Shining::CollisionManager::GetInstance().ClearObjectCollision(); //clear old scene colliders
+
+	for (Shining::GameObject* pObject : m_pGameObjects)
+	{
+		Shining::CollisionComponent* pCollision{ pObject->GetComponent<Shining::CollisionComponent>() };
+		if (pCollision != nullptr) //check if this component has collision
+		{
+			instance.RegisterCollisionComponent(pCollision, pCollision->GetTag()); //set this scene's colliders
+		}
+	}
+}
+
+void Shining::Scene::SetWorldCollision() noexcept
+{
+	if (m_pWorld != nullptr)
+	{
+		Shining::CollisionManager::GetInstance().ClearWorldCollision(); //clear old scene world
+		m_pWorld->SetCollision(); //set this scene's world
+	}
 }

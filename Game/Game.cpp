@@ -7,6 +7,7 @@
 #include "IdleState.h"
 #include "StartIdleCommand.h"
 #include "ScoreObserver.h"
+#include "LevelChangeObserver.h"
 #include "PlayerCollision.h"
 #include "PickupCollision.h"
 #include "Enums.h"
@@ -21,6 +22,7 @@ int main()
 	const int windowWidth{ 600 };
 	const int windowHeight{ 400 };
 	Shining::ShiningEngine engine{"Digger", windowWidth, windowHeight };
+	Shining::SceneManager& sceneManager{ Shining::SceneManager::GetInstance() };
 
 	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(0,50) };
 	{
@@ -38,7 +40,7 @@ int main()
 		Shining::CollisionComponent* const pPlayerCollision{ new Shining::CollisionComponent(pPlayerCharacter, pPlayerRender, int(CollisionTags::player), true, true) };
 		Shining::CollisionBehavior* const pPlayerCollisionBehavior{ new PlayerCollision() };
 		pPlayerCollision->SetBehavior(pPlayerCollisionBehavior);
-	
+
 		pPlayerCharacter->AddComponent(pPlayerCollision);
 	}
 	
@@ -64,6 +66,10 @@ int main()
 		ScoreObserver* pScoreObserver{ new ScoreObserver(pScoreboard) };
 		pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
 	}
+
+	LevelChangeObserver* pLevelChangeObserver{ new LevelChangeObserver() };
+	pPlayerCharacter->AddObserver(pLevelChangeObserver);
+	pLevelChangeObserver->SetRequiredGems(1);
 
 	const int wallSize{ 10 };
 	const int wallOffset{ 2 }; //small offset that makes wall collision less strict
@@ -95,16 +101,16 @@ int main()
 		pRightWall->AddComponent(pTopWallCollision);
 	}
 
-	Shining::Scene* pMenuScene{ engine.CreateScene("Menu") };
+	Shining::Scene* pMenuScene{ sceneManager.CreateScene("Menu") };
 	Shining::GameObject* pMenuScreen{ new Shining::GameObject(0,0) };
 	Shining::RenderComponent* pMenuRender{ new Shining::RenderComponent("TitleScreen.png", 2) };
 	pMenuScreen->AddComponent(pMenuRender);
 	pMenuScene->Add(pMenuScreen);
 	//TEST
 	pMenuScene->Add(pPlayerCharacter);
-	pMenuScene->Add(pGemTest);
+	//pMenuScene->Add(pGemTest);
 	//create scenes
-	Shining::Scene* pGameScene_Level1{ engine.CreateScene("Game") };
+	Shining::Scene* pGameScene_Level1{ sceneManager.CreateScene("Game") };
 	pGameScene_Level1->Add(pPlayerCharacter);
 	pGameScene_Level1->Add(pScoreboard);
 	pGameScene_Level1->Add(pGemTest);
@@ -112,9 +118,9 @@ int main()
 	pGameScene_Level1->Add(pRightWall);
 	pGameScene_Level1->Add(pBottomWall);
 	pGameScene_Level1->Add(pTopWall);
-	pGameScene_Level1->InitWorld("Tileset.png", "Level_1.csv", 20, 20, 4, 1, 15, 10);
-	Shining::SceneManager::GetInstance().SetScene(pGameScene_Level1);
-	//Shining::SceneManager::GetInstance().SetScene(pMenuScene);
+	pGameScene_Level1->InitWorld("Tileset.png", "Level_1.csv", 2, 20, 20, 4, 1, 15, 10);
+	//Shining::SceneManager::GetInstance().SetScene(pGameScene_Level1);
+	Shining::SceneManager::GetInstance().SetScene(pMenuScene);
 
 	{
 		//setup input and commands

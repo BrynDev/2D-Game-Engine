@@ -10,10 +10,14 @@ namespace Shining
 	{
 		friend Scene* SceneManager::CreateScene(const std::string& name);
 	public:
-		void Add(GameObject* pObject);
-		void InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld);
 		void Update(const float timeStep);
 		void Render() const noexcept;
+
+		void Add(GameObject* pObject);
+		void InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int worldScale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld);
+		void SetWorldCollision() noexcept;
+		void SetObjectCollision() const noexcept;
+		const int GetID() const noexcept;
 
 		~Scene();
 		Scene(const Scene& other) = delete;

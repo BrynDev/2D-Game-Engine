@@ -18,11 +18,12 @@ namespace Shining
 		virtual void Update(const float timeStep) override;
 		virtual void Render(const glm::vec2& pos) override;
 		virtual void SwapBuffer() noexcept override;
-		inline const SDL_Rect GetBoundingBox() const noexcept;
+		const SDL_Rect GetBoundingBox() const noexcept;
 		void ResolveCollision(const int collidedTag) noexcept;
 		void AddTargetTag(const int tag) noexcept;
 		void RemoveTargetTag(const int tag) noexcept;
 		void SetBehavior(CollisionBehavior* const pBehavior) noexcept;
+		const int GetTag() const noexcept;
 
 		CollisionComponent(const CollisionComponent& other) = delete;
 		CollisionComponent& operator=(const CollisionComponent& rhs) = delete;

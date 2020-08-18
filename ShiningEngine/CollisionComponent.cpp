@@ -20,13 +20,11 @@ Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwne
 	, m_CanCollideWithWorld{hasWorldCollision}
 	, m_CanBreakTiles{ canBreakTiles }
 {
-	//register to collision manager
-	Shining::CollisionManager::GetInstance().RegisterCollisionComponent(this, tag);
+	//this collider will be registered to the collision manager when the scene it belongs to becomes active
 }
 
 const SDL_Rect Shining::CollisionComponent::GetBoundingBox() const noexcept
 {
-	//const glm::vec2& ownerPos{ m_pOwner->GetPosition() };	
 	const glm::vec2& ownerPos{ m_pOwner->GetNextPosition() }; //used to check if object will collide next frame
 	return SDL_Rect{ int(ownerPos.x), int(ownerPos.y), m_BoxWidth, m_BoxHeight };
 }
@@ -36,6 +34,7 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 	SDL_Rect boundingBox{ GetBoundingBox() };
 	Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
 
+	//collide with world
 	if (m_CanCollideWithWorld)
 	{
 		if (instance.HandleWorldCollision(boundingBox, m_CanBreakTiles))
@@ -48,6 +47,7 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 		}
 	}
 
+	//collide with other objects
 	for (const int targetTag : m_TagsToCollideWith) //for every tag that's relevant to this object
 	{
 		Shining::CollisionComponent* const pCollidingObject{ instance.GetCollidingObject(boundingBox, targetTag) };
@@ -84,6 +84,14 @@ void Shining::CollisionComponent::AddTargetTag(const int tag) noexcept
 	{
 		return;
 	}
+
+	//check if these 2 tags already have collision between them
+	/*if (!CollisionManager::GetInstance().DoesTargetHaveTag(m_Tag, tag)) //check made impossible due to collision being set on scene change
+	{
+		//these two colliders do not have collision yet
+		m_TagsToCollideWith.insert(tag);
+	}	*/
+	//TODO: delete obsolete functions
 	m_TagsToCollideWith.insert(tag);
 }
 
@@ -104,6 +112,12 @@ void Shining::CollisionComponent::SetBehavior(CollisionBehavior* const pBehavior
 
 	m_pCollisionBehavior = pBehavior;
 }
+
+const int Shining::CollisionComponent::GetTag() const noexcept
+{
+	return m_Tag;
+}
+
 
 Shining::CollisionComponent::~CollisionComponent()
 {

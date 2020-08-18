@@ -37,10 +37,12 @@ void Shining::ShiningEngine::Run()
 
 		input.CheckForNewControllers(deltaTime.count());
 		doContinue = input.ProcessInput(); //detect quit & take input
-	
-		//fixed update step, variable rendering
+		sceneManager.SwapBuffer();
+
+		//fixed update step
 		while (realTimeElapsed >= MsPerFrame)
-		{				
+		{
+			
 			sceneManager.Update(MsPerFrame); //update game objects
 			realTimeElapsed -= MsPerFrame;				
 		}
@@ -94,11 +96,6 @@ void Shining::ShiningEngine::AddCommand(Command* const pCommandToAdd, const unsi
 void Shining::ShiningEngine::SetNoInputCommand(Command* pCommand) noexcept
 {
 	Shining::InputManager::GetInstance().SetNoInputCommand(pCommand);
-}
-
-Shining::Scene* Shining::ShiningEngine::CreateScene(const std::string& name)
-{
-	return SceneManager::GetInstance().CreateScene(name);
 }
 
 void Shining::ShiningEngine::Cleanup()
