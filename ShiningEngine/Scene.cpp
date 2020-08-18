@@ -3,12 +3,17 @@
 #include "World.h"
 #include "SimpleException.h"
 #include "CollisionManager.h"
+#include "InputContext.h"
+#include "InputManager.h"
 
+
+Shining::InputContext Shining::Scene::m_NullInput{};
 
 Shining::Scene::Scene(const std::string& name, const int ID)
 	: m_Name(name)
 	, m_pWorld{ nullptr }
 	, m_ID{ ID }
+	, m_pInputContext{&m_NullInput}
 {
 }
 
@@ -25,6 +30,11 @@ Shining::Scene::~Scene()
 		{
 			delete pObject;
 		}		
+	}
+
+	if (m_pInputContext != &m_NullInput)
+	{
+		delete m_pInputContext;
 	}
 }
 
@@ -70,6 +80,11 @@ const int Shining::Scene::GetID() const noexcept
 	return m_ID;
 }
 
+Shining::InputContext* const Shining::Scene::GetInputContext() const noexcept
+{
+	return m_pInputContext;
+}
+
 void Shining::Scene::InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int worldScale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
 {
 	try
@@ -109,4 +124,18 @@ void Shining::Scene::SetWorldCollision() noexcept
 		Shining::CollisionManager::GetInstance().ClearWorldCollision(); //clear old scene world
 		m_pWorld->SetCollision(); //set this scene's world
 	}
+}
+
+void Shining::Scene::InitInputContext(InputContext* pInputContext) noexcept
+{
+	if (pInputContext != nullptr)
+	{
+		m_pInputContext = pInputContext;
+		pInputContext->IncreaseReferenceCount();
+	}
+}
+
+void Shining::Scene::SetInputContext() const noexcept
+{
+	Shining::InputManager::GetInstance().SetInputContext(m_pInputContext);
 }

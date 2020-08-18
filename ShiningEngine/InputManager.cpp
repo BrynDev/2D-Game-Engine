@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include <SDL.h>
 #include <algorithm>
+#include "InputContext.h"
 
 Shining::InputManager::~InputManager()
 {
@@ -44,11 +45,18 @@ bool Shining::InputManager::ProcessInput()
 		
 		if (e.type == SDL_KEYDOWN) //if the button is pressed, execute command
 		{
-			auto foundIt{ m_CommandsByVKey.find(e.key.keysym.sym) }; //is this button relevant, does it have an associated command?
+			/*auto foundIt{ m_CommandsByVKey.find(e.key.keysym.sym) }; //is this button relevant, does it have an associated command?
 
 			if (foundIt != m_CommandsByVKey.end())
 			{
 				foundIt->second->Execute(m_pPlayerCharacter);
+				m_CurrentlyPressedKeys.insert(e.key.keysym.sym);
+			}*/
+
+			Command* const pCommandToExecute{ m_pCurrentInputContext->GetCommand(e.key.keysym.sym) };
+			if (pCommandToExecute != nullptr)
+			{
+				pCommandToExecute->Execute(m_pPlayerCharacter);
 				m_CurrentlyPressedKeys.insert(e.key.keysym.sym);
 			}
 			
@@ -56,7 +64,7 @@ bool Shining::InputManager::ProcessInput()
 
 		if (e.type == SDL_KEYUP) //if the button is released, cancel the command
 		{
-			auto foundIt{ m_CommandsByVKey.find(e.key.keysym.sym) };
+			/*auto foundIt{ m_CommandsByVKey.find(e.key.keysym.sym) };
 
 			if (foundIt != m_CommandsByVKey.end())
 			{
@@ -67,12 +75,20 @@ bool Shining::InputManager::ProcessInput()
 				{
 					m_pNoInputCommand->Execute(m_pPlayerCharacter); //if no relevant buttons are currently down, execute the NoInputCommand
 				}
+			}*/
+
+			Command* const pCommandToStop{ m_pCurrentInputContext->GetCommand(e.key.keysym.sym) };
+			if (pCommandToStop != nullptr)
+			{
+				pCommandToStop->OnRelease(m_pPlayerCharacter);
+
+				m_CurrentlyPressedKeys.erase(e.key.keysym.sym);
+				if (m_CurrentlyPressedKeys.empty())
+				{
+					//m_pNoInputCommand->Execute(m_pPlayerCharacter); //if no relevant buttons are currently down, execute the NoInputCommand
+					m_pCurrentInputContext->GetNoInputCommand()->Execute(m_pPlayerCharacter);
+				}
 			}
-		}
-		
-		if (e.type == SDL_MOUSEBUTTONDOWN) 
-		{
-			//to add later
 		}
 	}
 
@@ -90,7 +106,39 @@ bool Shining::InputManager::ProcessInput()
 		XInputGetState(i, &controller.gamepadState);		
 		XINPUT_GAMEPAD gamepad{ controller.gamepadState.Gamepad };
 
-		for (std::pair<ControllerInput, Command*> pair : m_CommandsByControllerInput)
+		//Command* const pCommandToExecute
+		const auto pControllerCommandsMap{ m_pCurrentInputContext->GetControllerCommands() };
+		for (std::pair<ControllerInput, Command* const> pair : *pControllerCommandsMap)
+		{
+			auto foundIt{ m_CurrentControllerInputs.find(pair.first) }; //is this button being held?
+			if (foundIt != m_CurrentControllerInputs.end())
+			{
+				//this button was pressed last frame, is it currently still pressed?
+				if (IsControllerInputPressed(gamepad, pair.first))
+				{
+					//the button is still being held
+					continue;
+				}
+				else
+				{
+					//the button has been released
+					m_CurrentControllerInputs.erase(pair.first);
+					pair.second->OnRelease(m_pPlayerCharacter);
+					if (m_CurrentControllerInputs.empty())
+					{
+						//if no buttons are being held, execute the NoInputCommand
+						m_pCurrentInputContext->GetNoInputCommand()->Execute(m_pPlayerCharacter);
+					}
+				}
+			}
+			else if (IsControllerInputPressed(gamepad, pair.first)) //did the button just start being pressed?
+			{
+				pair.second->Execute(m_pPlayerCharacter);
+				m_CurrentControllerInputs.insert(pair.first);
+			}
+		}
+
+		/*for (std::pair<ControllerInput, Command*> pair : m_CommandsByControllerInput)
 		{
 			auto foundIt{ m_CurrentControllerInputs.find(pair.first) }; //is this button being held?
 			if (foundIt != m_CurrentControllerInputs.end())
@@ -118,7 +166,7 @@ bool Shining::InputManager::ProcessInput()
 				pair.second->Execute(m_pPlayerCharacter);
 				m_CurrentControllerInputs.insert(pair.first);
 			}
-		}	
+		}*/
 	}
 	return true;
 }
@@ -307,13 +355,24 @@ bool Shining::InputManager::IsControllerInputPressed(const XINPUT_GAMEPAD& gamep
 	return isPressed;
 }
 
-void Shining::InputManager::AddCommand(Command* const pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput)
+/*void Shining::InputManager::AddCommand(Command* const pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput)
 {
 	m_CommandsByVKey.insert(std::make_pair(virtualKey, pCommandToAdd));
 	m_CommandsByControllerInput.insert(std::make_pair(controllerInput, pCommandToAdd));
+}*/
+
+void Shining::InputManager::SetInputContext(InputContext* const pContext) noexcept
+{
+	if (pContext == nullptr)
+	{
+		return;
+	}
+
+	//m_pInputContexts.push_back(pContext);
+	m_pCurrentInputContext = pContext;
 }
 
-void Shining::InputManager::SetNoInputCommand(Command* pCommandToAdd) noexcept
+/*void Shining::InputManager::SetNoInputCommand(Command* pCommandToAdd) noexcept
 {
 	if (m_pNoInputCommand == nullptr)
 	{
@@ -324,7 +383,7 @@ void Shining::InputManager::SetNoInputCommand(Command* pCommandToAdd) noexcept
 		delete m_pNoInputCommand;
 		m_pNoInputCommand = pCommandToAdd;
 	}
-}
+}*/
 
 void Shining::InputManager::RegisterPlayerCharacter(GameObject* pCharacterToControl)
 {

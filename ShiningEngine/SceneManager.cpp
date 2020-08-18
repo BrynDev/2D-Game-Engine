@@ -1,7 +1,6 @@
 #include "ShiningEnginePCH.h"
 #include "SceneManager.h"
 #include "Scene.h"
-//#include "SimpleException.h"
 
 void Shining::SceneManager::Update(const float timeStep)
 {
@@ -26,6 +25,7 @@ void Shining::SceneManager::SwapBuffer() noexcept
 
 	m_pCurrentScene->SetWorldCollision();
 	m_pCurrentScene->SetObjectCollision();
+	m_pCurrentScene->SetInputContext();
 }
 
 void Shining::SceneManager::AdvanceScene()

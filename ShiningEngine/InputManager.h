@@ -9,7 +9,7 @@
 
 namespace Shining
 {
-	class InputHandler;
+	class InputContext;
 	
 	struct Controller
 	{
@@ -22,11 +22,18 @@ namespace Shining
 	public:
 		bool ProcessInput();
 		void CheckForNewControllers(const float deltaTime) noexcept;
-		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput);
-		void SetNoInputCommand(Command* pCommandToAdd) noexcept; //Command to be called when no keys are pressed
+		//void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput);
+		void SetInputContext(InputContext* const pContext) noexcept;
+		//void SetNoInputCommand(Command* pCommandToAdd) noexcept; //Command to be called when no keys are pressed
+
 		void RegisterPlayerCharacter(GameObject* pCharacterToControl);
+
 		virtual ~InputManager();
 	private:
+		//TEST
+		//std::vector<InputContext* const> m_pInputContexts{};
+		InputContext* m_pCurrentInputContext{};
+
 		Controller m_Controllers[XUSER_MAX_COUNT]{};
 		GameObject* m_pPlayerCharacter{nullptr};
 		std::unordered_map<unsigned int, Command* const> m_CommandsByVKey{};

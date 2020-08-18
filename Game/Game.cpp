@@ -3,9 +3,11 @@
 #include "MoveLeftCommand.h"
 #include "MoveUpCommand.h"
 #include "MoveDownCommand.h"
+#include "StartIdleCommand.h"
+#include "StartGameCommand.h"
 #include "MoveState.h"
 #include "IdleState.h"
-#include "StartIdleCommand.h"
+
 #include "ScoreObserver.h"
 #include "LevelChangeObserver.h"
 #include "PlayerCollision.h"
@@ -107,7 +109,7 @@ int main()
 	pMenuScreen->AddComponent(pMenuRender);
 	pMenuScene->Add(pMenuScreen);
 	//TEST
-	pMenuScene->Add(pPlayerCharacter);
+	//pMenuScene->Add(pPlayerCharacter);
 	//pMenuScene->Add(pGemTest);
 	//create scenes
 	Shining::Scene* pGameScene_Level1{ sceneManager.CreateScene("Game") };
@@ -132,12 +134,32 @@ int main()
 		MoveDownCommand* const pMoveDown{ new MoveDownCommand(playerMoveSpeed) };
 		StartIdleCommand* const pStartIdle{ new StartIdleCommand() };
 
-		engine.AddCommand(pMoveRight, SDLK_d, Shining::ControllerInput::LeftStickRight);
+		Shining::InputContext* pGameInput{ new Shining::InputContext() };
+		pGameInput->AddCommand(pMoveRight, SDLK_RIGHT, Shining::ControllerInput::LeftStickRight);
+		pGameInput->AddCommand(pMoveLeft, SDLK_LEFT, Shining::ControllerInput::LeftStickLeft);
+		pGameInput->AddCommand(pMoveUp, SDLK_UP, Shining::ControllerInput::LeftStickUp);
+		pGameInput->AddCommand(pMoveDown, SDLK_DOWN, Shining::ControllerInput::LeftStickDown);
+		pGameInput->SetNoInputCommand(pStartIdle);
+
+		pGameScene_Level1->InitInputContext(pGameInput);
+		/*engine.AddCommand(pMoveRight, SDLK_d, Shining::ControllerInput::LeftStickRight);
 		engine.AddCommand(pMoveLeft, SDLK_a, Shining::ControllerInput::LeftStickLeft);
 		engine.AddCommand(pMoveUp, SDLK_w, Shining::ControllerInput::LeftStickUp);
 		engine.AddCommand(pMoveDown, SDLK_s, Shining::ControllerInput::LeftStickDown);
-		engine.SetNoInputCommand(pStartIdle);
+		engine.SetNoInputCommand(pStartIdle);*/
+
+		Shining::InputContext* pMenuInput{ new Shining::InputContext() };
+		StartGameCommand* const pStartGame{ new StartGameCommand() };
+		pMenuInput->AddCommand(pStartGame, SDLK_SPACE, Shining::ControllerInput::ButtonA);
+		pMenuInput->AddCommand(pStartGame, SDLK_LEFT, Shining::ControllerInput::LeftStickLeft);
+		pMenuInput->AddCommand(pStartGame, SDLK_RIGHT, Shining::ControllerInput::LeftStickRight);
+		pMenuInput->AddCommand(pStartGame, SDLK_UP, Shining::ControllerInput::LeftStickUp);
+		pMenuInput->AddCommand(pStartGame, SDLK_DOWN, Shining::ControllerInput::LeftStickDown);
+
+		pMenuScene->InitInputContext(pMenuInput);
 	}
 
 	engine.Run(); //here we go
 }
+
+//todo: clean up all the commented functions, make AIComponent / gold bag / shot

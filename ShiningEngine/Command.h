@@ -8,12 +8,16 @@ namespace Shining
 	class Command
 	{
 	public:
-		Command() = default;
+		Command();
 		virtual ~Command() = default;
 
 		virtual void Execute(Shining::GameObject* const pTargetObject) const noexcept = 0;
 		virtual void OnRelease(Shining::GameObject* const pTargetObject) const noexcept = 0;
-	protected:
+
+		void IncreaseReferenceCount() noexcept;
+		bool DecreaseReferenceCount() noexcept;
+	private:
+		int m_ReferenceCount;
 	};
 }
 
