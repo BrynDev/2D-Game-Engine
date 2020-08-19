@@ -1,6 +1,7 @@
 #include "ShiningEnginePCH.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "SimpleException.h"
 
 void Shining::SceneManager::Update(const float timeStep)
 {
@@ -38,24 +39,38 @@ void Shining::SceneManager::AdvanceScene()
 
 void Shining::SceneManager::SetScene(Scene* pScene)
 {
-	if (pScene == nullptr)
+	try
 	{
-		return;
-	}
+		if (pScene == nullptr)
+		{
+			throw Shining::SimpleException("Exception occured: Attempted to access a nullptr scene");
+		}
 
-	m_pNextScene = pScene;
-	m_NeedsSwap = true;
+		m_pNextScene = pScene;
+		m_NeedsSwap = true;
+	}
+	catch (const Shining::SimpleException & exception)
+	{
+		std::cout << exception.GetExceptionMessage() << std::endl;
+	}
 }
 
 void Shining::SceneManager::SetScene(const int sceneIdx)
 {
-	if (sceneIdx >= m_pScenes.size())
+	try
 	{
-		return;
-	}
+		if (size_t(sceneIdx) >= m_pScenes.size())
+		{
+			throw Shining::SimpleException("Exception occured: Attempted to access a scene that's out of bounds");
+		}
 
-	m_pNextScene = m_pScenes[sceneIdx];
-	m_NeedsSwap = true;
+		m_pNextScene = m_pScenes[sceneIdx];
+		m_NeedsSwap = true;
+	}
+	catch (const Shining::SimpleException & exception)
+	{
+		std::cout << exception.GetExceptionMessage() << std::endl;
+	}	
 }
 
 Shining::Scene* Shining::SceneManager::CreateScene(const std::string& name)

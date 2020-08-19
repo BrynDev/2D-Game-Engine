@@ -15,12 +15,13 @@ namespace Shining
 	public:
 		explicit InputContext();
 		~InputContext();
+
 		Command* const GetCommand(const unsigned int virtualKey) const noexcept;
-		//Command* const GetCommand(const ControllerInput controllerInput) const noexcept;
 		const std::map<ControllerInput, Command* const>* const GetControllerCommands() const noexcept;
 		Command* const GetNoInputCommand() const noexcept;
+
 		void AddCommand(Command* pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept;
-		void SetNoInputCommand(Command* pCommandToAdd) noexcept; //Command to be called when no keys are pressed
+		void SetNoInputCommand(Command* pCommandToAdd) noexcept; 
 		void IncreaseReferenceCount() noexcept;
 		bool DecreaseReferenceCount() noexcept;
 
@@ -31,7 +32,7 @@ namespace Shining
 	private:
 		std::unordered_map<unsigned int, Command* const> m_CommandsByVKey{};
 		std::map<ControllerInput, Command* const> m_CommandsByControllerInput{};
-		Command* m_pNoInputCommand{ nullptr };
+		Command* m_pNoInputCommand{ nullptr }; //Command to be called when no keys are pressed
 		int m_ReferenceCount;
 	};
 }

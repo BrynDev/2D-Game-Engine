@@ -20,18 +20,6 @@ Shining::Command* const Shining::InputContext::GetCommand(const unsigned int vir
 	return foundIt->second;
 }
 
-/*Shining::Command* const Shining::InputContext::GetCommand(const ControllerInput controllerInput) const noexcept
-{
-	auto foundIt{ m_CommandsByControllerInput.find(controllerInput) };
-
-	if (foundIt == m_CommandsByControllerInput.end())
-	{
-		return nullptr; //no command associated with this key
-	}
-
-	return foundIt->second;
-}*/
-
 const std::map<Shining::ControllerInput, Shining::Command* const>* const Shining::InputContext::GetControllerCommands() const noexcept
 {
 	return &m_CommandsByControllerInput;
@@ -55,16 +43,6 @@ Shining::InputContext::~InputContext()
 		}
 
 	}
-
-	/*for (auto pair : m_CommandsByControllerInput)
-	{
-		if (pair.second != nullptr)
-		{
-			delete pair.second;
-			pair.second = nullptr;
-		}
-
-	}*/
 
 	if (m_pNoInputCommand != nullptr)
 	{

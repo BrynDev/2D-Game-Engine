@@ -1,19 +1,21 @@
 #pragma once
 #include "Observer.h"
+#include <vector>
 
 
 class LevelChangeObserver final : public Shining::Observer
 {
 public:
-	LevelChangeObserver();
+	explicit LevelChangeObserver();
 	virtual ~LevelChangeObserver() = default;
-	void SetRequiredGems(const unsigned int nrGems) noexcept;
-	void SetRequiredKills(const unsigned int nrEnemies) noexcept;
+	void AddGemGoal(const unsigned int nrGemsToAdvance) noexcept;
+	void AddEnemyKillsGoal(const unsigned int nrKillsToAdvance) noexcept;
 
 	virtual void Notify(Shining::GameObject* const pSubject, const int eventID, void* pData) noexcept override;
 private:
-	unsigned int m_NrRequiredGems;
-	unsigned int m_NrRequiredKills;
+	std::vector<unsigned int> m_GemGoals;
+	std::vector<unsigned int> m_EnemyKillGoals;
+	unsigned int m_GoalIdx;
 	unsigned int m_NrGemsPickedUp;
 	unsigned int m_NrEnemiesKilled;
 

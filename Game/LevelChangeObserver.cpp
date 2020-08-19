@@ -4,8 +4,7 @@
 
 LevelChangeObserver::LevelChangeObserver()
 	:Observer()
-	, m_NrRequiredGems{0}
-	, m_NrRequiredKills{0}
+	, m_GoalIdx{0}
 	, m_NrGemsPickedUp{0}
 	, m_NrEnemiesKilled{0}
 {
@@ -26,20 +25,22 @@ void LevelChangeObserver::Notify(Shining::GameObject* const /*pSubject*/, const 
 		break;
 	}
 
-	if (m_NrGemsPickedUp >= m_NrRequiredGems || m_NrEnemiesKilled >= m_NrRequiredKills)
+	if (m_NrGemsPickedUp >= m_GemGoals[m_GoalIdx] /*|| m_NrEnemiesKilled >= m_EnemyKillGoals[m_GoalIdx]*/)
 	{
 		//change scene
 		m_NrGemsPickedUp = 0;
 		m_NrEnemiesKilled = 0;
+		++m_GoalIdx;
 		Shining::SceneManager::GetInstance().AdvanceScene();
 	}
 }
 
-void LevelChangeObserver::SetRequiredGems(const unsigned int nrGems) noexcept
+void LevelChangeObserver::AddGemGoal(const unsigned int nrGemsToAdvance) noexcept
 {
-	m_NrRequiredGems = nrGems;
+	m_GemGoals.push_back(nrGemsToAdvance);
 }
-void LevelChangeObserver::SetRequiredKills(const unsigned int nrEnemies) noexcept
+
+void LevelChangeObserver::AddEnemyKillsGoal(const unsigned int nrKillsToAdvance) noexcept
 {
-	m_NrRequiredKills = nrEnemies;
+	m_EnemyKillGoals.push_back(nrKillsToAdvance);
 }

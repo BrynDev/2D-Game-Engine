@@ -34,7 +34,10 @@ Shining::Scene::~Scene()
 
 	if (m_pInputContext != &m_NullInput)
 	{
-		delete m_pInputContext;
+		if (m_pInputContext->DecreaseReferenceCount())
+		{
+			delete m_pInputContext;
+		}	
 	}
 }
 
@@ -80,11 +83,6 @@ const int Shining::Scene::GetID() const noexcept
 	return m_ID;
 }
 
-Shining::InputContext* const Shining::Scene::GetInputContext() const noexcept
-{
-	return m_pInputContext;
-}
-
 void Shining::Scene::InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int worldScale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
 {
 	try
@@ -96,7 +94,7 @@ void Shining::Scene::InitWorld(const std::string& textureFile, const std::string
 	}
 	catch (const Shining::SimpleException & exception)
 	{
-		std::cout << exception.GetMessage() << std::endl;
+		std::cout << exception.GetExceptionMessage() << std::endl;
 	}
 
 	m_pWorld = new World(textureFile, tilePlacementsCSV, worldScale, tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld);

@@ -22,7 +22,6 @@ namespace Shining
 		void SetObjectCollision() const noexcept;
 		void SetInputContext() const noexcept;
 		const int GetID() const noexcept;
-		InputContext* const GetInputContext() const noexcept;
 
 		~Scene();
 		Scene(const Scene& other) = delete;

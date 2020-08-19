@@ -72,7 +72,7 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 	}
 	catch (const SimpleException& exception)
 	{
-		std::cout << exception.GetMessage() << std::endl;
+		std::cout << exception.GetExceptionMessage() << std::endl;
 
 		//fill the tile array with default values
 		int idx{ 0 };
