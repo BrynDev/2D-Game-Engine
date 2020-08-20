@@ -12,6 +12,11 @@ MoveUpCommand::MoveUpCommand(const float moveSpeed)
 void MoveUpCommand::Execute(Shining::GameObject* const pTargetObject) const noexcept
 {
 	Shining::PhysicsComponent* pPhysics{ pTargetObject->GetComponent<Shining::PhysicsComponent>() };
+	if (pPhysics == nullptr)
+	{
+		return;
+	}
+
 	pPhysics->SetSpeed(0, m_MoveSpeed);
 	pPhysics->SetDirection(0, -1);
 	pTargetObject->GetComponent<Shining::StateComponent>()->ChangeState<MoveState>();

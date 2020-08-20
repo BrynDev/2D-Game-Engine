@@ -161,6 +161,23 @@ Shining::Font* Shining::ResourceManager::LoadFont(const std::string& file, unsig
 	
 	//this is a new font
 	//create it, add it to the map and return it
+	_TTF_Font* pFont{ TTF_OpenFont(fullPath.c_str(), size) };
+	try
+	{
+		if (pFont == nullptr)
+		{
+			
+			throw std::runtime_error(std::string("Failed to load font: ") + SDL_GetError());
+			
+		}		
+	}
+	catch (const std::runtime_error& error)
+	{
+		//load a default font instead and continue running
+		std::cout << error.what() << std::endl;
+		//todo: load a default font and continue running
+	}
+
 	Font* pNewFont{ new Font(fullPath, size) };
 	m_FontMap.insert(std::make_pair(file, pNewFont));
 	return pNewFont;

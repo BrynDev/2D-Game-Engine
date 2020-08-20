@@ -58,6 +58,12 @@
     <ClCompile Include="StartGameCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="StartGameKeyboardCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="StartGameControllerCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -97,6 +103,12 @@
       <Filter>Observer</Filter>
     </ClInclude>
     <ClInclude Include="StartGameCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="StartGameKeyboardCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="StartGameControllerCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>

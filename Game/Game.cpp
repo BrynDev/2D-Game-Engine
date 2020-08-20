@@ -5,6 +5,8 @@
 #include "MoveDownCommand.h"
 #include "StartIdleCommand.h"
 #include "StartGameCommand.h"
+//#include "StartGameKeyboardCommand.h"  -- test these later
+//#include "StartGameControllerCommand.h"
 #include "MoveState.h"
 #include "IdleState.h"
 
@@ -24,7 +26,7 @@ void AddGemToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const 
 int main()
 {
 	const int windowWidth{ 600 };
-	const int windowHeight{ 400 };
+	const int windowHeight{ 440 };
 	Shining::ShiningEngine engine{"Digger", windowWidth, windowHeight };
 	Shining::SceneManager& sceneManager{ Shining::SceneManager::GetInstance() };
 	const int tileSize{ 20 };
@@ -34,6 +36,8 @@ int main()
 	const int nrTilesetRows{ 1 };
 	const int nrWorldCols{ 15 };
 	const int nrWorldRows{ 10 };
+	const int worldWidth{ nrWorldCols * scaledTileSize };
+	const int worldHeight{ nrWorldRows * scaledTileSize };
 
 	//player
 	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(7 * scaledTileSize , 9 * scaledTileSize + 2) }; //+2 so the player doesn't clip some dirt at the start
@@ -56,10 +60,10 @@ int main()
 		pPlayerCharacter->AddComponent(pPlayerCollision);
 	}
 	
-	Shining::GameObject* const pScoreboard{ new Shining::GameObject(200,30) };
+	Shining::GameObject* const pScoreboard{ new Shining::GameObject(50, worldHeight) };
 	{
 		//text component
-		Shining::TextComponent* const pScoreboardText{ new Shining::TextComponent("0", "Lingua.otf", SDL_Color{ 0,0,250 }, 50) };
+		Shining::TextComponent* const pScoreboardText{ new Shining::TextComponent("0", "Retro Gaming.ttf", SDL_Color{ 0,250,0 }, 25) };
 		pScoreboard->AddComponent(pScoreboardText);
 
 		//observer
@@ -75,28 +79,28 @@ int main()
 	const int wallOffset{ 2 }; //small offset that makes wall collision less strict
 	Shining::GameObject* pLeftWall{ new Shining::GameObject(-wallSize - wallOffset, 0) };
 	{
-		Shining::CollisionComponent* pLeftWallCollision{ new Shining::CollisionComponent(pLeftWall, wallSize, windowHeight, int(CollisionTags::wall), false, false) };
+		Shining::CollisionComponent* pLeftWallCollision{ new Shining::CollisionComponent(pLeftWall, wallSize, worldHeight, int(CollisionTags::wall), false, false) };
 		pLeftWallCollision->AddTargetTag(int(CollisionTags::player));
 		pLeftWall->AddComponent(pLeftWallCollision);
 	}
 
-	Shining::GameObject* pRightWall{ new Shining::GameObject(windowWidth + wallOffset, 0) };
+	Shining::GameObject* pRightWall{ new Shining::GameObject(worldWidth + wallOffset, 0) };
 	{
-		Shining::CollisionComponent* pRightWallCollision{ new Shining::CollisionComponent(pRightWall, wallSize, windowHeight, int(CollisionTags::wall), false, false) };
+		Shining::CollisionComponent* pRightWallCollision{ new Shining::CollisionComponent(pRightWall, wallSize, worldHeight, int(CollisionTags::wall), false, false) };
 		pRightWallCollision->AddTargetTag(int(CollisionTags::player));
 		pRightWall->AddComponent(pRightWallCollision);
 	}
 
-	Shining::GameObject* pBottomWall{ new Shining::GameObject(0, windowHeight + wallOffset) };
+	Shining::GameObject* pBottomWall{ new Shining::GameObject(0, worldHeight + wallOffset) };
 	{
-		Shining::CollisionComponent* pBottomWallCollision{ new Shining::CollisionComponent(pBottomWall, windowWidth, wallSize, int(CollisionTags::wall), false, false) };
+		Shining::CollisionComponent* pBottomWallCollision{ new Shining::CollisionComponent(pBottomWall, worldWidth, wallSize, int(CollisionTags::wall), false, false) };
 		pBottomWallCollision->AddTargetTag(int(CollisionTags::player));
 		pRightWall->AddComponent(pBottomWallCollision);
 	}
 
 	Shining::GameObject* pTopWall{ new Shining::GameObject(0, -wallSize - wallOffset) };
 	{
-		Shining::CollisionComponent* pTopWallCollision{ new Shining::CollisionComponent(pTopWall, windowWidth, wallSize, int(CollisionTags::wall), false, false) };
+		Shining::CollisionComponent* pTopWallCollision{ new Shining::CollisionComponent(pTopWall, worldWidth, wallSize, int(CollisionTags::wall), false, false) };
 		pTopWallCollision->AddTargetTag(int(CollisionTags::player));
 		pRightWall->AddComponent(pTopWallCollision);
 	}
@@ -109,9 +113,9 @@ int main()
 		pStartMenu->AddComponent(pMenuRender);
 		pMenuScene->Add(pStartMenu);
 
-		const int textSize{ 30 };
+		const int textSize{ 20 };
 		Shining::GameObject* pTitle{ new Shining::GameObject((windowWidth / 2) - textSize, 8) };
-		Shining::TextComponent* pTitleText{ new Shining::TextComponent("D I G G E R", "Lingua.otf", SDL_Color{10,230,10}, textSize) };
+		Shining::TextComponent* pTitleText{ new Shining::TextComponent("DIGGER", "Retro Gaming.ttf", SDL_Color{10,230,10}, textSize) };
 		pTitle->AddComponent(pTitleText);
 		pMenuScene->Add(pTitle);
 	}
@@ -333,7 +337,8 @@ int main()
 	//game input
 	{	
 		const float playerMoveSpeed{ 100.f };
-		engine.RegisterPlayerCharacter(pPlayerCharacter);
+		engine.SetPlayer(pPlayerCharacter);
+		
 		MoveRightCommand* const pMoveRight{ new MoveRightCommand(playerMoveSpeed) };
 		MoveLeftCommand* const pMoveLeft{ new MoveLeftCommand(playerMoveSpeed) };
 		MoveUpCommand* const pMoveUp{ new MoveUpCommand(playerMoveSpeed) };

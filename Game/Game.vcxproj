@@ -218,6 +218,8 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClCompile Include="PlayerCollision.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
     <ClCompile Include="StartGameCommand.cpp" />
+    <ClCompile Include="StartGameControllerCommand.cpp" />
+    <ClCompile Include="StartGameKeyboardCommand.cpp" />
     <ClCompile Include="StartIdleCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +240,8 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClInclude Include="PlayerCollision.h" />
     <ClInclude Include="ScoreObserver.h" />
     <ClInclude Include="StartGameCommand.h" />
+    <ClInclude Include="StartGameControllerCommand.h" />
+    <ClInclude Include="StartGameKeyboardCommand.h" />
     <ClInclude Include="StartIdleCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

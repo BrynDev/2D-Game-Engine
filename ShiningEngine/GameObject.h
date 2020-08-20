@@ -25,6 +25,8 @@ namespace Shining
 		void SetPosition(float x, float y) noexcept;
 		const glm::vec2& GetPosition() const noexcept;
 		const glm::vec2& GetNextPosition() const noexcept;
+		void ResetPos() noexcept;
+
 		void NotifyObservers(const int eventID, void* pData = nullptr) noexcept;
 		void AddComponent(Component* pComponent) noexcept;
 		void AddObserver(Observer* pObserver) noexcept;
@@ -42,9 +44,10 @@ namespace Shining
 
 	private:
 		std::vector<Shining::Component*> m_pComponents;
-		std::vector<Observer*> m_pObservers;
+		std::vector<Observer*> m_pObservers;		
 		glm::vec2 m_CurrentPos;
 		glm::vec2 m_NextPos;
+		const glm::vec2 m_StartPos;
 		int m_ReferenceCount;
 		bool m_IsActive;
 		bool m_NeedsSwap;
