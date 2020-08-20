@@ -52,6 +52,12 @@
     <ClCompile Include="PickupCollision.cpp">
       <Filter>Collision behavior</Filter>
     </ClCompile>
+    <ClCompile Include="LevelChangeObserver.cpp">
+      <Filter>Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="StartGameCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -86,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelChangeObserver.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="StartGameCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,15 +9,22 @@ namespace Shining
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		Scene& CreateScene(const std::string& name);
-
 		void Update(const float timeStep);
 		void Render();
+		void SwapBuffer() noexcept;
+
+		Scene* CreateScene(const std::string& name);
+		void AdvanceScene();
+		void SetScene(Scene* pScene);
+		void SetScene(const int sceneIdx);
 
 		void Destroy();
 	private:
 		friend class Singleton<SceneManager>;
-		SceneManager() = default;
+		SceneManager();
 		std::vector<Scene*> m_pScenes;
+		Scene* m_pCurrentScene;
+		Scene* m_pNextScene;
+		bool m_NeedsSwap;
 	};
 }

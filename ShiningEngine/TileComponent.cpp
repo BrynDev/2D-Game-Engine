@@ -4,7 +4,7 @@
 #include "SimpleException.h"
 #include "CollisionManager.h"
 
-Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld, const RenderComponent* pWeakRenderComponent)
+Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld, const int worldScale, const RenderComponent* pRenderComponent)
 	:Component()
 	, m_TileWidth{tileWidth}
 	, m_TileHeight{tileHeight}
@@ -12,7 +12,8 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 	, m_NrRowsTexture{nrRowsTexture}
 	, m_NrColsWorld{nrColsWorld}
 	, m_NrRowsWorld{nrRowsWorld}
-	, m_pWeakRenderComponent{pWeakRenderComponent}
+	, m_WorldScale{worldScale}
+	, m_pRenderComponent{pRenderComponent}
 {
 	//resize the 2D vector that represents the tiles
 	m_Tiles.resize(nrRowsWorld);
@@ -28,8 +29,7 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 
 void Shining::TileComponent::Render(const glm::vec2& /*pos*/) /*const*/
 {
-	const int scale{ 2 };
-	SDL_Rect destRect{0, 0, m_TileWidth * scale, m_TileHeight * scale};
+	SDL_Rect destRect{0, 0, m_TileWidth * m_WorldScale, m_TileHeight * m_WorldScale };
 	for (int row{ 0 }; row < m_NrRowsWorld; ++row)
 	{
 		for (int col{ 0 }; col < m_NrColsWorld; ++col)
@@ -37,23 +37,23 @@ void Shining::TileComponent::Render(const glm::vec2& /*pos*/) /*const*/
 			glm::vec2 texCoord{ m_Tiles[row][col].pSharedInfo->texCoord };
 
 			SDL_Rect srcRect{ int(texCoord.x), int(texCoord.y), m_TileWidth, m_TileHeight };
-			m_pWeakRenderComponent->RenderTile(srcRect, destRect);
+			m_pRenderComponent->RenderTile(srcRect, destRect);
 
-			destRect.x += m_TileWidth * scale;
+			destRect.x += destRect.w;
 		}
 		destRect.x = 0;
-		destRect.y += m_TileHeight * scale;
+		destRect.y += destRect.h;
 	}
 }
 
 void Shining::TileComponent::Update(const float /*timeStep*/)
 {
-	//TODO
+	//empty
 }
 
 void Shining::TileComponent::SwapBuffer() noexcept
 {
-	//currently not needed, probably later
+	//not needed
 }
 
 void Shining::TileComponent::BreakTile(const int row, const int col) noexcept
@@ -72,7 +72,7 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 	}
 	catch (const SimpleException& exception)
 	{
-		std::cout << exception.GetMessage() << std::endl;
+		std::cout << exception.GetExceptionMessage() << std::endl;
 
 		//fill the tile array with default values
 		int idx{ 0 };
@@ -120,11 +120,10 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 	}
 }
 
-void Shining::TileComponent::RegisterCollision() noexcept
+void Shining::TileComponent::SetCollision() noexcept
 {
 	Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
-	const int scale{ 2 };
-	SDL_Rect destRect{ 0, 0, m_TileWidth * scale, m_TileHeight * scale };
+	SDL_Rect destRect{ 0, 0, m_TileWidth * m_WorldScale, m_TileHeight * m_WorldScale };
 	for (int row{ 0 }; row < m_NrRowsWorld; ++row)
 	{
 		for (int col{ 0 }; col < m_NrColsWorld; ++col)
@@ -134,15 +133,14 @@ void Shining::TileComponent::RegisterCollision() noexcept
 				instance.AddWorldTile(destRect, row, col);
 			}
 
-			destRect.x += m_TileWidth * scale;
+			destRect.x += destRect.w;
 		}
 		destRect.x = 0;
-		destRect.y += m_TileHeight * scale;
+		destRect.y += destRect.h;
 	}
 
 	instance.RegisterWorldTileComponent(this); //register this world so the collision component can break tiles if it needs to
 }
-
 
 Shining::TileComponent::~TileComponent()
 {

@@ -104,7 +104,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;xinput.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\SDL2\lib\x64;$(SolutionDir)3rdParty\SDL2_image\lib\x64;$(SolutionDir)3rdParty\SDL2_ttf\lib\x64;$(SolutionDir)3rdParty\SDL2_mixer\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
@@ -208,6 +208,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IdleState.cpp" />
+    <ClCompile Include="LevelChangeObserver.cpp" />
     <ClCompile Include="MoveDownCommand.cpp" />
     <ClCompile Include="MoveLeftCommand.cpp" />
     <ClCompile Include="MoveRightCommand.cpp" />
@@ -216,6 +217,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClCompile Include="PickupCollision.cpp" />
     <ClCompile Include="PlayerCollision.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
+    <ClCompile Include="StartGameCommand.cpp" />
     <ClCompile Include="StartIdleCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +227,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IdleState.h" />
+    <ClInclude Include="LevelChangeObserver.h" />
     <ClInclude Include="MoveDownCommand.h" />
     <ClInclude Include="MoveLeftCommand.h" />
     <ClInclude Include="MoveRightCommand.h" />
@@ -234,6 +237,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClInclude Include="PickupCollision.h" />
     <ClInclude Include="PlayerCollision.h" />
     <ClInclude Include="ScoreObserver.h" />
+    <ClInclude Include="StartGameCommand.h" />
     <ClInclude Include="StartIdleCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

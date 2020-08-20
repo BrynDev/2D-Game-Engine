@@ -10,14 +10,14 @@ namespace Shining
 	class TileComponent final : public Shining::Component
 	{
 	public:
-		TileComponent(const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld, const RenderComponent* pWeakRenderComponent);
+		TileComponent(const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld, const int worldScale,const RenderComponent* pRenderComponent);
 		virtual ~TileComponent();
 		virtual void Render(const glm::vec2& pos) /*const*/ override;
 		virtual void Update(const float timeStep) override;
 		virtual void SwapBuffer() noexcept override;
 
 		void LoadTiles(const std::string& tilePlacementsCSV);
-		void RegisterCollision() noexcept;
+		void SetCollision() noexcept;
 		void BreakTile(const int row, const int col) noexcept;
 	
 		TileComponent(const TileComponent& other) = delete;
@@ -43,13 +43,14 @@ namespace Shining
 
 		std::vector<std::vector<Tile>> m_Tiles; //2D grid of tiles
 		std::unordered_map<int, const SharedTileInfo* const> m_TileInfoByID;
-		const Shining::RenderComponent* m_pWeakRenderComponent;
+		const Shining::RenderComponent* m_pRenderComponent;
 		const int m_TileWidth;
 		const int m_TileHeight;
 		const int m_NrColsTexture;
 		const int m_NrRowsTexture;
 		const int m_NrColsWorld;
 		const int m_NrRowsWorld;
+		const int m_WorldScale;
 	};
 }
 

@@ -27,6 +27,7 @@ void Shining::ShiningEngine::Run()
 	auto prevTime{ high_resolution_clock::now() };
 
 	bool doContinue{ true };
+
 	while (doContinue) //game loop
 	{
 		const auto currentTime = high_resolution_clock::now();
@@ -36,21 +37,16 @@ void Shining::ShiningEngine::Run()
 
 		input.CheckForNewControllers(deltaTime.count());
 		doContinue = input.ProcessInput(); //detect quit & take input
-	
-		//fixed update step, variable rendering
+		sceneManager.SwapBuffer();
+
+		//fixed update step
 		while (realTimeElapsed >= MsPerFrame)
-		{				
+		{
+			
 			sceneManager.Update(MsPerFrame); //update game objects
-			realTimeElapsed -= MsPerFrame;
-			/*for (int i{}; i < 10000; ++i)
-			{
-				double* pDouble{ new double{5.0} };
-				delete pDouble;
-			}*/
-				
+			realTimeElapsed -= MsPerFrame;				
 		}
 		renderer.Render(); //render game objects
-		//TODO: interpolate rendering based on leftover of realTimeElapsed
 	}
 
 	Cleanup();
@@ -92,7 +88,7 @@ void Shining::ShiningEngine::RegisterPlayerCharacter(GameObject* pPlayerCharacte
 	InputManager::GetInstance().RegisterPlayerCharacter(pPlayerCharacter);
 }
 
-void Shining::ShiningEngine::AddCommand(Command* const pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept
+/*void Shining::ShiningEngine::AddCommand(Command* const pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept
 {
 	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
 }
@@ -100,12 +96,7 @@ void Shining::ShiningEngine::AddCommand(Command* const pCommandToAdd, const unsi
 void Shining::ShiningEngine::SetNoInputCommand(Command* pCommand) noexcept
 {
 	Shining::InputManager::GetInstance().SetNoInputCommand(pCommand);
-}
-
-Shining::Scene& Shining::ShiningEngine::CreateScene(const std::string& name)
-{
-	return SceneManager::GetInstance().CreateScene(name);
-}
+}*/
 
 void Shining::ShiningEngine::Cleanup()
 {

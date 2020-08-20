@@ -17,13 +17,13 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Texture2D.cpp">
-      <Filter>Resource wrappers\Texture2D</Filter>
+      <Filter>Resources\Texture2D</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Transform</Filter>
     </ClCompile>
     <ClCompile Include="Font.cpp">
-      <Filter>Resource wrappers\Font</Filter>
+      <Filter>Resources\Font</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Input</Filter>
@@ -65,28 +65,31 @@
       <Filter>Components\CollisionComponent</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
-      <Filter>Managers\ResourceManager</Filter>
+      <Filter>Resources\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Managers\SceneManager</Filter>
+      <Filter>Scene\SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
-      <Filter>Managers\CollisionManager</Filter>
+      <Filter>Collision\CollisionManager</Filter>
     </ClCompile>
     <ClCompile Include="CollisionBehavior.cpp">
-      <Filter>CollisionBehavior</Filter>
+      <Filter>Collision\CollisionBehavior</Filter>
     </ClCompile>
     <ClCompile Include="NullCollision.cpp">
-      <Filter>CollisionBehavior</Filter>
+      <Filter>Collision\CollisionBehavior</Filter>
     </ClCompile>
     <ClCompile Include="TileComponent.cpp">
       <Filter>World\TileComponent</Filter>
     </ClCompile>
     <ClCompile Include="SoundEffect.cpp">
-      <Filter>Resource wrappers\SoundEffect</Filter>
+      <Filter>Resources\SoundEffect</Filter>
     </ClCompile>
     <ClCompile Include="AudioPlayer.cpp">
       <Filter>AudioPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="InputContext.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,13 +110,13 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
-      <Filter>Resource wrappers\Texture2D</Filter>
+      <Filter>Resources\Texture2D</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Transform</Filter>
     </ClInclude>
     <ClInclude Include="Font.h">
-      <Filter>Resource wrappers\Font</Filter>
+      <Filter>Resources\Font</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Input</Filter>
@@ -158,28 +161,31 @@
       <Filter>Components\CollisionComponent</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
-      <Filter>Managers\ResourceManager</Filter>
+      <Filter>Resources\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
-      <Filter>Managers\SceneManager</Filter>
+      <Filter>Scene\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="CollisionManager.h">
-      <Filter>Managers\CollisionManager</Filter>
+      <Filter>Collision\CollisionManager</Filter>
     </ClInclude>
     <ClInclude Include="CollisionBehavior.h">
-      <Filter>CollisionBehavior</Filter>
+      <Filter>Collision\CollisionBehavior</Filter>
     </ClInclude>
     <ClInclude Include="NullCollision.h">
-      <Filter>CollisionBehavior</Filter>
+      <Filter>Collision\CollisionBehavior</Filter>
     </ClInclude>
     <ClInclude Include="TileComponent.h">
       <Filter>World\TileComponent</Filter>
     </ClInclude>
     <ClInclude Include="SoundEffect.h">
-      <Filter>Resource wrappers\SoundEffect</Filter>
+      <Filter>Resources\SoundEffect</Filter>
     </ClInclude>
     <ClInclude Include="AudioPlayer.h">
       <Filter>AudioPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="InputContext.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +194,6 @@
     </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{ad04bbea-13f0-43a4-beb9-19bcdea3087b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{62c7af5a-344d-4ae8-b1ab-a42e480c5c2d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Renderer">
       <UniqueIdentifier>{d05c31db-6e39-45ce-bfb8-27bef36d5b63}</UniqueIdentifier>
@@ -240,35 +243,38 @@
     <Filter Include="Components\CollisionComponent">
       <UniqueIdentifier>{c1fd7f84-e21e-4592-abcf-2826b2da23d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource wrappers">
-      <UniqueIdentifier>{8602fae0-9bb1-4f4e-b285-704c2666fffc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource wrappers\Font">
-      <UniqueIdentifier>{d3a2915c-c144-439a-ba67-3c4ae46f71ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource wrappers\Texture2D">
-      <UniqueIdentifier>{8e43e0be-68fb-4bf3-b874-cbb69e4ef872}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers\ResourceManager">
-      <UniqueIdentifier>{788073bf-06c8-4d73-bdbd-05bf8a286e27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers\SceneManager">
-      <UniqueIdentifier>{49e5dc9d-b0ee-4697-af28-4a22e7cf0af8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers\CollisionManager">
-      <UniqueIdentifier>{a664bb25-ca6d-4dd2-a5fb-b4a33e463e0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CollisionBehavior">
-      <UniqueIdentifier>{c15b6564-217b-4271-8e74-7e3c1d7029f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="World\TileComponent">
       <UniqueIdentifier>{506dd9bc-dff2-446e-816d-703f4313cde9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource wrappers\SoundEffect">
-      <UniqueIdentifier>{69617c3e-cba4-44be-bf2c-0b8717a0c55c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="AudioPlayer">
       <UniqueIdentifier>{dc906496-5439-4165-9a9e-e8e7efadedb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\SceneManager">
+      <UniqueIdentifier>{49e5dc9d-b0ee-4697-af28-4a22e7cf0af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{8602fae0-9bb1-4f4e-b285-704c2666fffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Font">
+      <UniqueIdentifier>{d3a2915c-c144-439a-ba67-3c4ae46f71ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Texture2D">
+      <UniqueIdentifier>{8e43e0be-68fb-4bf3-b874-cbb69e4ef872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\SoundEffect">
+      <UniqueIdentifier>{69617c3e-cba4-44be-bf2c-0b8717a0c55c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\ResourceManager">
+      <UniqueIdentifier>{788073bf-06c8-4d73-bdbd-05bf8a286e27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{659a16af-471b-4aa1-a1ba-f745c071267a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision\CollisionBehavior">
+      <UniqueIdentifier>{c15b6564-217b-4271-8e74-7e3c1d7029f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Collision\CollisionManager">
+      <UniqueIdentifier>{a664bb25-ca6d-4dd2-a5fb-b4a33e463e0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

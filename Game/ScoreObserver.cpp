@@ -2,8 +2,9 @@
 #include "Enums.h"
 #include "ShiningEnginePCH.h"
 
-ScoreObserver::ScoreObserver(Shining::GameObject* pObjectToModify)
-	:Observer(pObjectToModify)
+ScoreObserver::ScoreObserver(Shining::GameObject* pScoreboard)
+	:Observer()
+	, m_pScoreboard{pScoreboard}
 	, m_Score{0}
 	, m_GemPickupStreak{0}
 	, m_GemPickupStreakMax{8}
@@ -34,5 +35,5 @@ void ScoreObserver::Notify(Shining::GameObject* const /*pSubject*/, const int ev
 		break;
 	}
 
-	m_pObjectToModify->GetComponent<Shining::TextComponent>()->SetText(std::to_string(m_Score));
+	m_pScoreboard->GetComponent<Shining::TextComponent>()->SetText(std::to_string(m_Score));
 }

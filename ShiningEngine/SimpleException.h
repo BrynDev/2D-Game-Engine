@@ -9,7 +9,7 @@ namespace Shining
 		SimpleException(const std::string& message);
 		~SimpleException() = default;
 
-		const std::string& GetMessage() const noexcept;
+		const std::string& GetExceptionMessage() const noexcept;
 		
 	private:
 		const std::string m_Message;	

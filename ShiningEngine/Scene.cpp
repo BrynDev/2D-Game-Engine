@@ -1,72 +1,139 @@
 #include "ShiningEnginePCH.h"
 #include "Scene.h"
-#include "GameObject.h"
 #include "World.h"
 #include "SimpleException.h"
+#include "CollisionManager.h"
+#include "InputContext.h"
+#include "InputManager.h"
 
-using namespace Shining;
 
-unsigned int Scene::m_IdCounter = 0;
+Shining::InputContext Shining::Scene::m_NullInput{};
 
-Scene::Scene(const std::string& name) 
-	: m_Name(name) 
-	, m_pWorld{nullptr}
+Shining::Scene::Scene(const std::string& name, const int ID)
+	: m_Name(name)
+	, m_pWorld{ nullptr }
+	, m_ID{ ID }
+	, m_pInputContext{&m_NullInput}
 {
 }
 
-Scene::~Scene()
+Shining::Scene::~Scene()
 {
-	delete m_pWorld;
-	for (GameObject* pObject : m_pGameObjects)
+	if (m_pWorld != nullptr)
 	{
-		delete pObject;
+		delete m_pWorld;
+	}
+
+	for (Shining::GameObject* pObject : m_pGameObjects)
+	{
+		if (pObject->DecreaseReferenceCount()) //true if ref count is 0
+		{
+			delete pObject;
+		}		
+	}
+
+	if (m_pInputContext != &m_NullInput)
+	{
+		if (m_pInputContext->DecreaseReferenceCount())
+		{
+			delete m_pInputContext;
+		}	
 	}
 }
 
-void Scene::Update(const float timeStep)
+void Shining::Scene::Update(const float timeStep)
 {
-	m_pWorld->Update(timeStep);
+	if (m_pWorld != nullptr)
+	{
+		m_pWorld->Update(timeStep);
+	}
 
-	for (GameObject* pObject : m_pGameObjects)
+	for (Shining::GameObject* pObject : m_pGameObjects)
 	{
 		pObject->SwapBuffer();
 	}
 
-	for(GameObject* pObject : m_pGameObjects)
+	for(Shining::GameObject* pObject : m_pGameObjects)
 	{
 		pObject->Update(timeStep);
 	}
 }
 
-void Scene::Render() const noexcept
+void Shining::Scene::Render() const noexcept
 {
-	m_pWorld->Render();
+	if (m_pWorld != nullptr)
+	{
+		m_pWorld->Render();
+	}
 
-	for (GameObject* pObject : m_pGameObjects)
+	for (Shining::GameObject* pObject : m_pGameObjects)
 	{
 		pObject->Render();
 	}
 }
 
-void Scene::Add(GameObject* pObject)
+void Shining::Scene::Add(Shining::GameObject* pObject)
 {
 	m_pGameObjects.push_back(pObject);
+	pObject->IncreaseReferenceCount();
 }
 
+const int Shining::Scene::GetID() const noexcept
+{
+	return m_ID;
+}
 
-void Scene::InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
+void Shining::Scene::InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int worldScale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
 {
 	try
 	{
 		if (m_pWorld != nullptr)
 		{
-			throw SimpleException{ "Exception occured: attempt to intialize the world for scene " + m_Name + " when it already has a world" };
+			throw Shining::SimpleException{ "Exception occured: attempt to intialize the world for scene " + m_Name + " when it already has a world" };
 		}
 	}
-	catch (const SimpleException & exception)
+	catch (const Shining::SimpleException & exception)
 	{
-		std::cout << exception.GetMessage() << std::endl;
+		std::cout << exception.GetExceptionMessage() << std::endl;
 	}
 
-	m_pWorld = new World(textureFile, tilePlacementsCSV, tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld);
+	m_pWorld = new World(textureFile, tilePlacementsCSV, worldScale, tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld);
+}
+
+void Shining::Scene::SetObjectCollision() const noexcept
+{
+	Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
+	Shining::CollisionManager::GetInstance().ClearObjectCollision(); //clear old scene colliders
+
+	for (Shining::GameObject* pObject : m_pGameObjects)
+	{
+		Shining::CollisionComponent* pCollision{ pObject->GetComponent<Shining::CollisionComponent>() };
+		if (pCollision != nullptr) //check if this component has collision
+		{
+			instance.RegisterCollisionComponent(pCollision, pCollision->GetTag()); //set this scene's colliders
+		}
+	}
+}
+
+void Shining::Scene::SetWorldCollision() noexcept
+{
+	if (m_pWorld != nullptr)
+	{
+		Shining::CollisionManager::GetInstance().ClearWorldCollision(); //clear old scene world
+		m_pWorld->SetCollision(); //set this scene's world
+	}
+}
+
+void Shining::Scene::InitInputContext(InputContext* pInputContext) noexcept
+{
+	if (pInputContext != nullptr)
+	{
+		m_pInputContext = pInputContext;
+		pInputContext->IncreaseReferenceCount();
+	}
+}
+
+void Shining::Scene::SetInputContext() const noexcept
+{
+	Shining::InputManager::GetInstance().SetInputContext(m_pInputContext);
 }

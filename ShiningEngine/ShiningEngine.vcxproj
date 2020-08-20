@@ -213,6 +213,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClInclude Include="CSVParser.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="InputContext.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="NullCollision.h" />
     <ClInclude Include="Observer.h" />
@@ -245,6 +246,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClCompile Include="CSVParser.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="InputContext.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="NullCollision.cpp" />
     <ClCompile Include="Observer.cpp" />

@@ -9,6 +9,7 @@ Shining::GameObject::GameObject(const float xPos, const float yPos)
 	, m_NextPos{xPos,yPos}
 	, m_pComponents{}
 	, m_pObservers{}
+	, m_ReferenceCount{0}
 	, m_IsActive{true}
 	, m_NeedsSwap{false}
 {
@@ -107,5 +108,15 @@ void Shining::GameObject::SetActive(const bool isActive) noexcept
 	m_IsActive = isActive;
 }
 
+void Shining::GameObject::IncreaseReferenceCount() noexcept
+{
+	++m_ReferenceCount;
+}
+
+bool Shining::GameObject::DecreaseReferenceCount() noexcept
+{
+	--m_ReferenceCount;
+	return(m_ReferenceCount <= 0);
+}
 
 

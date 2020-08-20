@@ -101,7 +101,7 @@ Shining::Texture2D* Shining::ResourceManager::LoadTexture(const std::string& fil
 Shining::SoundEffect* Shining::ResourceManager::LoadSoundEffect(const std::string& file)
 {
 	//check if this file has already been loaded
-	if (m_TextureMap.find(file) != m_TextureMap.cend())
+	if (m_SoundEffectMap.find(file) != m_SoundEffectMap.cend())
 	{
 		return m_SoundEffectMap.at(file);
 	}
