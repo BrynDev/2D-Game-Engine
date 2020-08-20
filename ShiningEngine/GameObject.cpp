@@ -7,6 +7,7 @@
 Shining::GameObject::GameObject(const float xPos, const float yPos)
 	:m_CurrentPos{xPos, yPos}
 	, m_NextPos{xPos,yPos}
+	, m_StartPos{xPos, yPos}
 	, m_pComponents{}
 	, m_pObservers{}
 	, m_ReferenceCount{0}
@@ -82,6 +83,12 @@ const glm::vec2& Shining::GameObject::GetPosition() const noexcept
 const glm::vec2& Shining::GameObject::GetNextPosition() const noexcept
 {
 	return m_NextPos;
+}
+
+void Shining::GameObject::ResetPos() noexcept
+{
+	m_CurrentPos = m_StartPos;
+	m_NextPos = m_StartPos;
 }
 
 void Shining::GameObject::NotifyObservers(const int eventID, void* pData) noexcept

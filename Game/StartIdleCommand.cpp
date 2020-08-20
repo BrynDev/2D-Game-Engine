@@ -9,7 +9,12 @@ StartIdleCommand::StartIdleCommand()
 
 void StartIdleCommand::Execute(Shining::GameObject* const pTargetObject) const noexcept
 {
-	pTargetObject->GetComponent<Shining::StateComponent>()->ChangeState<IdleState>();
+	Shining::StateComponent* const pState{ pTargetObject->GetComponent<Shining::StateComponent>() };
+	if (pState == nullptr)
+	{
+		return;
+	}
+	pState->ChangeState<IdleState>();
 }
 
 void StartIdleCommand::OnRelease(Shining::GameObject* const /*pTargetObject*/) const noexcept

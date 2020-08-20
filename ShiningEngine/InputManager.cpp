@@ -22,7 +22,7 @@ bool Shining::InputManager::ProcessInput()
 			Command* const pCommandToExecute{ m_pCurrentInputContext->GetCommand(e.key.keysym.sym) };
 			if (pCommandToExecute != nullptr)
 			{
-				pCommandToExecute->Execute(m_pPlayerCharacter);
+				pCommandToExecute->Execute(m_pPlayerCharacterKeyboard);
 
 				m_CurrentlyPressedKeys.insert(e.key.keysym.sym);
 			}
@@ -35,13 +35,13 @@ bool Shining::InputManager::ProcessInput()
 			Command* const pCommandToStop{ m_pCurrentInputContext->GetCommand(e.key.keysym.sym) };
 			if (pCommandToStop != nullptr)
 			{
-				pCommandToStop->OnRelease(m_pPlayerCharacter);
+				pCommandToStop->OnRelease(m_pPlayerCharacterKeyboard);
 
 				m_CurrentlyPressedKeys.erase(e.key.keysym.sym);
 				if (m_CurrentlyPressedKeys.empty())
 				{
 					//if no buttons are pressed, execute the NoInputCommand
-					m_pCurrentInputContext->GetNoInputCommand()->Execute(m_pPlayerCharacter);
+					m_pCurrentInputContext->GetNoInputCommand()->Execute(m_pPlayerCharacterKeyboard);
 				}
 			}
 		}
@@ -78,17 +78,17 @@ bool Shining::InputManager::ProcessInput()
 				{
 					//the button has been released
 					m_CurrentControllerInputs.erase(pair.first);
-					pair.second->OnRelease(m_pPlayerCharacter);
+					pair.second->OnRelease(m_pPlayerCharacterController);
 					if (m_CurrentControllerInputs.empty())
 					{
 						//if no buttons are being held, execute the NoInputCommand
-						m_pCurrentInputContext->GetNoInputCommand()->Execute(m_pPlayerCharacter);
+						m_pCurrentInputContext->GetNoInputCommand()->Execute(m_pPlayerCharacterController);
 					}
 				}
 			}
 			else if (IsControllerInputPressed(gamepad, pair.first)) //did the button just start being pressed?
 			{
-				pair.second->Execute(m_pPlayerCharacter);
+				pair.second->Execute(m_pPlayerCharacterController);
 				m_CurrentControllerInputs.insert(pair.first);
 			}
 		}
@@ -99,6 +99,7 @@ bool Shining::InputManager::ProcessInput()
 //"For performance reasons, don't call XInputGetState for an 'empty' user slot every frame. 
 //We recommend that you space out checks for new controllers every few seconds instead."
 //from https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput#multiple-controllers
+
 void Shining::InputManager::CheckForNewControllers(const float deltaTime) noexcept
 {
 	m_ControllerCheckTimer += deltaTime;
@@ -292,7 +293,18 @@ void Shining::InputManager::SetInputContext(InputContext* const pContext) noexce
 	m_CurrentControllerInputs.clear();
 }
 
-void Shining::InputManager::RegisterPlayerCharacter(GameObject* pCharacterToControl)
+void Shining::InputManager::SetPlayer(GameObject* const pObjectToControl)
 {
-	m_pPlayerCharacter = pCharacterToControl;
+	m_pPlayerCharacterKeyboard = pObjectToControl;
+	m_pPlayerCharacterController = pObjectToControl;
+}
+
+void Shining::InputManager::SetKeyboardPlayer(GameObject* const pObjectToControl)
+{
+	m_pPlayerCharacterKeyboard = pObjectToControl;
+}
+
+void Shining::InputManager::SetControllerPlayer(GameObject* const pObjectToControl)
+{
+	m_pPlayerCharacterController = pObjectToControl;
 }

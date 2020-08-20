@@ -24,7 +24,7 @@ void Shining::World::Update(const float /*timeStep*/)
 
 void Shining::World::Render() const noexcept
 {
-	m_pTileComponent->Render(glm::vec3{ 0,0,0 }); //start position
+	m_pTileComponent->Render(glm::vec2{ 0,0 }); //start position
 }
 
 void Shining::World::SetCollision() noexcept

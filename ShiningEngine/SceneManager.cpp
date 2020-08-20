@@ -24,6 +24,7 @@ void Shining::SceneManager::SwapBuffer() noexcept
 	m_pNextScene = nullptr;
 	m_NeedsSwap = false;
 
+	m_pCurrentScene->ResetObjectsPos();
 	m_pCurrentScene->SetWorldCollision();
 	m_pCurrentScene->SetObjectCollision();
 	m_pCurrentScene->SetInputContext();

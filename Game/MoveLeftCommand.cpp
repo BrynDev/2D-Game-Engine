@@ -12,6 +12,11 @@ MoveLeftCommand::MoveLeftCommand(const float moveSpeed)
 void MoveLeftCommand::Execute(Shining::GameObject* const pTargetObject) const noexcept
 {
 	Shining::PhysicsComponent* pPhysics{ pTargetObject->GetComponent<Shining::PhysicsComponent>() };
+	if (pPhysics == nullptr)
+	{
+		return;
+	}
+
 	pPhysics->SetSpeed(m_MoveSpeed, 0);
 	pPhysics->SetDirection(-1, 0);
 	pTargetObject->GetComponent<Shining::StateComponent>()->ChangeState<MoveState>();

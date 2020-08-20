@@ -83,20 +83,20 @@ void Shining::ShiningEngine::Initialize(const std::string& windowName, const int
 	Renderer::GetInstance().Init(m_Window);
 }
 
-void Shining::ShiningEngine::RegisterPlayerCharacter(GameObject* pPlayerCharacter) noexcept
+void Shining::ShiningEngine::SetPlayer(GameObject* const pObjectToControl) noexcept
 {
-	InputManager::GetInstance().RegisterPlayerCharacter(pPlayerCharacter);
+	Shining::InputManager::GetInstance().SetPlayer(pObjectToControl);
 }
 
-/*void Shining::ShiningEngine::AddCommand(Command* const pCommandToAdd, const unsigned int virtualKey, const ControllerInput controllerInput) noexcept
+void Shining::ShiningEngine::SetKeyboardPlayer(GameObject* const pObjectToControl) noexcept
 {
-	Shining::InputManager::GetInstance().AddCommand(pCommandToAdd, virtualKey, controllerInput);
+	Shining::InputManager::GetInstance().SetKeyboardPlayer(pObjectToControl);
 }
 
-void Shining::ShiningEngine::SetNoInputCommand(Command* pCommand) noexcept
+void Shining::ShiningEngine::SetControllerPlayer(GameObject* const pObjectToControl) noexcept
 {
-	Shining::InputManager::GetInstance().SetNoInputCommand(pCommand);
-}*/
+	Shining::InputManager::GetInstance().SetControllerPlayer(pObjectToControl);
+}
 
 void Shining::ShiningEngine::Cleanup()
 {

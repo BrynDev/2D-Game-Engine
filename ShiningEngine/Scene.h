@@ -18,6 +18,7 @@ namespace Shining
 		void InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int worldScale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld);
 		void InitInputContext(InputContext* pInputContext) noexcept;
 
+		void ResetObjectsPos() noexcept;
 		void SetWorldCollision() noexcept;
 		void SetObjectCollision() const noexcept;
 		void SetInputContext() const noexcept;

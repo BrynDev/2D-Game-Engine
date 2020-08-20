@@ -1,7 +1,6 @@
 #pragma once
 #include "Singleton.h"
 #include <string>
-#include <unordered_map>
 
 namespace Shining
 {
@@ -10,7 +9,6 @@ namespace Shining
 	class AudioPlayer final : public Singleton<AudioPlayer>
 	{
 	public:
-		//void AddSoundEffect(const std::string& fileName) noexcept;
 		void PlaySoundEffect(const std::string& fileName) const noexcept;
 
 		void SetAllEffectsVolume(const int volume) const noexcept;

@@ -19,9 +19,6 @@
     <ClCompile Include="Texture2D.cpp">
       <Filter>Resources\Texture2D</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Transform</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Resources\Font</Filter>
     </ClCompile>
@@ -112,9 +109,6 @@
     <ClInclude Include="Texture2D.h">
       <Filter>Resources\Texture2D</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Transform</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Resources\Font</Filter>
     </ClInclude>
@@ -203,9 +197,6 @@
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{9fdac045-303e-401c-b1b0-5a14c6c79c80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Transform">
-      <UniqueIdentifier>{d216418a-c2df-467d-a569-dc561b30be82}</UniqueIdentifier>
     </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{5dea1320-5d15-4fa4-a951-a0bdad767243}</UniqueIdentifier>

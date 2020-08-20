@@ -100,6 +100,14 @@ void Shining::Scene::InitWorld(const std::string& textureFile, const std::string
 	m_pWorld = new World(textureFile, tilePlacementsCSV, worldScale, tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld);
 }
 
+void Shining::Scene::ResetObjectsPos() noexcept
+{
+	for (Shining::GameObject* pObject : m_pGameObjects)
+	{
+		pObject->ResetPos();
+	}
+}
+
 void Shining::Scene::SetObjectCollision() const noexcept
 {
 	Shining::CollisionManager& instance{ Shining::CollisionManager::GetInstance() };
