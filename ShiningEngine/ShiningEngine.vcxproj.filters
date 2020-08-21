@@ -88,6 +88,9 @@
     <ClCompile Include="InputContext.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="SpawnComponent.cpp">
+      <Filter>Components\SpawnComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -181,6 +184,9 @@
     <ClInclude Include="InputContext.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="SpawnComponent.h">
+      <Filter>Components\SpawnComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -266,6 +272,9 @@
     </Filter>
     <Filter Include="Collision\CollisionManager">
       <UniqueIdentifier>{a664bb25-ca6d-4dd2-a5fb-b4a33e463e0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\SpawnComponent">
+      <UniqueIdentifier>{e079ec47-48fa-4715-a89f-2bb6899084ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

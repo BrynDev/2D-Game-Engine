@@ -11,10 +11,10 @@ void IdleState::Update(Shining::GameObject* const /*pOwner*/, const float /*time
 	//empty
 }
 
-void IdleState::OnEntry(Shining::GameObject* const /*pOwner*/) noexcept
+void IdleState::OnEntry(Shining::GameObject* const pOwner) noexcept
 {
-	//empty
-	
+	Shining::PhysicsComponent* pPhysics{ pOwner->GetComponent<Shining::PhysicsComponent>() };
+	pPhysics->SetIsMoving(false);
 }
 
 void IdleState::OnExit(Shining::GameObject* const /*pOwner*/) noexcept

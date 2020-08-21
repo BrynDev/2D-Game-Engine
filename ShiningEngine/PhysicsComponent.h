@@ -8,7 +8,7 @@ namespace Shining
 	class PhysicsComponent final : public Component
 	{
 	public:
-		PhysicsComponent(GameObject* const pOwner);
+		PhysicsComponent(GameObject* const pOwner, const bool isCurrentlyMoving);
 		virtual ~PhysicsComponent() = default;
 
 		virtual void Update(const float timeStep) noexcept override;
@@ -23,6 +23,7 @@ namespace Shining
 		void SetDirection(const float dirX, const float dirY) noexcept;
 		void SetDirectionX(const float dirX) noexcept;
 		void SetDirectionY(const float dirY) noexcept;
+		void SetIsMoving(const bool isMoving) noexcept;
 
 		const glm::vec2& GetSpeed() const noexcept;
 		const glm::vec2& GetDirection() const noexcept;
@@ -37,6 +38,7 @@ namespace Shining
 		MoveInfo* m_pNextMoveInfo;
 		MoveInfo* m_pCurrentMoveInfo;
 		bool m_NeedsSwap;
+		bool m_IsMoving;
 	};
 }
 

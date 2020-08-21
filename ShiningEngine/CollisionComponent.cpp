@@ -19,6 +19,8 @@ Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwne
 	, m_Tag{tag}
 	, m_CanCollideWithWorld{hasWorldCollision}
 	, m_CanBreakTiles{ canBreakTiles }
+	, m_HasHitWorld{true} //true until proven otherwise
+	, m_HasHitWorldNext{ true }
 {
 	//this collider will be registered to the collision manager when the scene it belongs to becomes active
 }
@@ -39,12 +41,19 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 	{
 		if (instance.HandleWorldCollision(boundingBox, m_CanBreakTiles))
 		{
+			m_HasHitWorldNext = true;
+
 			if (!m_CanBreakTiles)
 			{
 				//if colliding with a tile and you can't break through it, get blocked
 				m_pOwner->GetComponent<Shining::PhysicsComponent>()->BlockMovement();
 			}
 		}
+		else
+		{
+			m_HasHitWorldNext = false;
+		}
+		
 	}
 
 	//collide with other objects
@@ -54,7 +63,7 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 		if (pCollidingObject == nullptr)
 		{
 			//no collision happened
-			return;
+			continue;
 		}
 
 		ResolveCollision(targetTag);
@@ -64,8 +73,7 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 
 void Shining::CollisionComponent::Render(const glm::vec2& /*pos*/)
 {
-	//can render hitboxes for testing maybe
-	
+
 }
 
 void Shining::CollisionComponent::ResolveCollision(const int collidedTag) noexcept
@@ -75,7 +83,7 @@ void Shining::CollisionComponent::ResolveCollision(const int collidedTag) noexce
 
 void Shining::CollisionComponent::SwapBuffer() noexcept
 {
-	//no swap necessary
+	m_HasHitWorld = m_HasHitWorldNext;
 }
 
 void Shining::CollisionComponent::AddTargetTag(const int tag) noexcept
@@ -85,13 +93,6 @@ void Shining::CollisionComponent::AddTargetTag(const int tag) noexcept
 		return;
 	}
 
-	//check if these 2 tags already have collision between them
-	/*if (!CollisionManager::GetInstance().DoesTargetHaveTag(m_Tag, tag)) //check made impossible due to collision being set on scene change
-	{
-		//these two colliders do not have collision yet
-		m_TagsToCollideWith.insert(tag);
-	}	*/
-	//TODO: delete obsolete functions
 	m_TagsToCollideWith.insert(tag);
 }
 
@@ -118,6 +119,19 @@ const int Shining::CollisionComponent::GetTag() const noexcept
 	return m_Tag;
 }
 
+const bool Shining::CollisionComponent::HasHitWorld() noexcept
+{
+	
+	if (m_HasHitWorld)
+	{
+		m_HasHitWorldNext = false;
+		return  true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 Shining::CollisionComponent::~CollisionComponent()
 {
