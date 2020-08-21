@@ -15,5 +15,6 @@ enum class CollisionTags
 	gem = 2,
 	gold = 3,
 	goldBag = 4,
-	wall = 5
+	fireBall = 5,
+	wall = 6
 };

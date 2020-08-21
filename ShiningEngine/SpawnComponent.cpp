@@ -5,7 +5,9 @@ Shining::SpawnComponent::SpawnComponent(Shining::GameObject* const pObjectToSpaw
 	:Component()
 	, m_pObjectToSpawn{ pObjectToSpawn }
 	, m_SpawnDelayMs{spawnDelayMs}
+	, m_SpawnTimer{0}
 	, m_DoesMove{doesObjectMove}
+	, m_CanStartMoving{false}
 	, m_WillSpawn{false}
 {
 	m_pObjectToSpawn->SetActive(false);
@@ -18,6 +20,16 @@ Shining::SpawnComponent::SpawnComponent(Shining::GameObject* const pObjectToSpaw
 
 void Shining::SpawnComponent::Update(const float timeStep)
 {
+
+	if (m_CanStartMoving)
+	{
+		Shining::PhysicsComponent* const pPhysics{ m_pObjectToSpawn->GetComponent<Shining::PhysicsComponent>() };
+		pPhysics->SetIsMoving(true);
+
+		m_CanStartMoving = false;
+
+	}
+
 	if (!m_WillSpawn)
 	{
 		return; //Spawnobject() hasn't been called yet
@@ -27,6 +39,7 @@ void Shining::SpawnComponent::Update(const float timeStep)
 	{
 		//no delay, spawn the object now
 		ActivateObject();
+		return;
 	}
 
 	m_SpawnTimer += int(timeStep);
@@ -49,24 +62,21 @@ void Shining::SpawnComponent::SwapBuffer() noexcept
 
 void Shining::SpawnComponent::ActivateObject() noexcept
 {
-	m_pObjectToSpawn->SetActive(true);
-	m_WillSpawn = false;
-	m_SpawnTimer = 0;
 
 	if (m_DoesMove)
 	{
-		Shining::PhysicsComponent* const pPhysics{ m_pObjectToSpawn->GetComponent<Shining::PhysicsComponent>() };
-		if (pPhysics != nullptr)
-		{
-			pPhysics->SetIsMoving(true);
-		}
+		m_CanStartMoving = true; //delay setting physics->IsMoving to true by a frame, to make sure that the position is set properly first
 	}
+
+	m_pObjectToSpawn->SetActive(true); //instant
+	m_WillSpawn = false;
+	m_SpawnTimer = 0;
 }
 
 void Shining::SpawnComponent::SpawnObject(const float posX, const float posY) noexcept
 {
 	m_pObjectToSpawn->SetPosition(posX, posY);
-	m_WillSpawn = true;
+	m_WillSpawn = true; //object will activate next time this component updates
 }
 
 void Shining::SpawnComponent::SpawnObject(const float posX, const float posY, const glm::vec2& speed, const glm::vec2& dir) noexcept
@@ -79,5 +89,5 @@ void Shining::SpawnComponent::SpawnObject(const float posX, const float posY, co
 		pPhysics->SetDirection(dir.x, dir.y);
 	}
 
-	m_WillSpawn = true;
+	m_WillSpawn = true; //object will activate next time this component updates
 }

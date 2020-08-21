@@ -28,6 +28,7 @@ namespace Shining
 		const unsigned int m_SpawnDelayMs;
 		unsigned int m_SpawnTimer;
 		const bool m_DoesMove;
+		bool m_CanStartMoving;
 		bool m_WillSpawn;
 	};
 }
