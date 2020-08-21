@@ -64,6 +64,15 @@
     <ClCompile Include="StartGameControllerCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="BagIdleState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="BagFallingState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="BagCollision.cpp">
+      <Filter>Collision behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -110,6 +119,15 @@
     </ClInclude>
     <ClInclude Include="StartGameControllerCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="BagIdleState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="BagFallingState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="BagCollision.h">
+      <Filter>Collision behavior</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

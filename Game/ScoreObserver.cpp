@@ -29,6 +29,7 @@ void ScoreObserver::Notify(Shining::GameObject* const /*pSubject*/, const int ev
 		m_Score += 500;
 		break;
 		case int(ObservedEvents::enemyKill):
+		m_GemPickupStreak = 0;
 		m_Score += 250;
 		break;
 	default:

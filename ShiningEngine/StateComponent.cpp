@@ -13,19 +13,11 @@ Shining::StateComponent::StateComponent(State* pStartingState, GameObject* pOwne
 
 void Shining::StateComponent::Render(const glm::vec2& /*pos*/) /*const*/
 {
-	//UNUSED FUNCTION
+	//empty
 }
 
 void Shining::StateComponent::Update(const float timeStep)
 {
-	/*if (m_pNextState != nullptr)
-	{
-		//TEMP
-		m_pCurrentState->OnExit(m_pOwner);
-		m_pCurrentState = m_pNextState;
-		m_pCurrentState->OnEntry(m_pOwner, glm::vec4{0,0,0,0});
-		m_pNextState = nullptr;
-	}*/
 	m_pCurrentState->Update(m_pOwner, timeStep);
 }
 
@@ -37,6 +29,11 @@ void Shining::StateComponent::SwapBuffer() noexcept
 		m_pCurrentState->OnEntry(m_pOwner);
 		m_NeedsSwap = false;
 	}	
+}
+
+Shining::State* const Shining::StateComponent::GetCurrentState() const noexcept
+{
+	return m_pCurrentState;
 }
 
 void Shining::StateComponent::AddState(State* pStateToAdd) noexcept

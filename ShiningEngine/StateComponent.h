@@ -23,10 +23,13 @@ namespace Shining
 		virtual void Update(const float timeStep) override;
 		virtual void SwapBuffer() noexcept override;
 		void AddState(State* pStateToAdd) noexcept;
+		State* const GetCurrentState() const noexcept;
 
-		//data variable used to optionally pass aditional data to the state, left to the user
 		template<typename T>
 		void ChangeState() noexcept;
+
+		template<typename T>
+		const bool IsCurrentState() noexcept;
 	private:
 		std::set<State*> m_pStates;
 		State* m_pCurrentState;
@@ -38,7 +41,7 @@ namespace Shining
 
 
 template<typename T>
-void Shining::StateComponent::ChangeState(/*const glm::vec4& data*/) noexcept
+void Shining::StateComponent::ChangeState() noexcept
 {
 	if (typeid(T) == typeid(m_pCurrentState))
 	{
@@ -51,13 +54,18 @@ void Shining::StateComponent::ChangeState(/*const glm::vec4& data*/) noexcept
 		if (typeid(T) == typeid(*pState))
 		{
 			m_pCurrentState->OnExit(m_pOwner);
-			//m_pCurrentState = pState;
-			//m_pCurrentState->OnEntry(m_pOwner); //OnEntry of new state gets called in this component's SwapBuffer function
 			m_pNextState = pState;
 			m_NeedsSwap = true;
 			return;
 		}
 	}
 
+}
+
+template<typename T>
+const bool Shining::StateComponent::IsCurrentState() noexcept
+{
+	return(typeid(T) == typeid(*m_pCurrentState));
+	
 }
 

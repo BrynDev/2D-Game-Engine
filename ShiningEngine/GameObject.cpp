@@ -57,14 +57,17 @@ void Shining::GameObject::Render() const
 
 void Shining::GameObject::SwapBuffer() noexcept
 {
-	if (m_NeedsSwap)
+	if (m_IsActive)
 	{
-		m_CurrentPos = m_NextPos;
-		m_NeedsSwap = false;
-	}
-	for (Component* pComponent : m_pComponents)
-	{
-		pComponent->SwapBuffer();
+		if (m_NeedsSwap)
+		{
+			m_CurrentPos = m_NextPos;
+			m_NeedsSwap = false;
+		}
+		for (Component* pComponent : m_pComponents)
+		{
+			pComponent->SwapBuffer();
+		}
 	}
 }
 

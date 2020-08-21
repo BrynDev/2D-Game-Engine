@@ -10,7 +10,7 @@ namespace Shining
 		CollisionBehavior() = default;
 		virtual ~CollisionBehavior() = default;
 
-		virtual void ResolveCollision(Shining::GameObject* const pObject, const int collidedTag) const noexcept = 0;
+		virtual void ResolveCollision(Shining::GameObject* const pOwnerObject, const int collidedTag) const noexcept = 0;
 		void IncreaseInstanceCount() noexcept;
 		bool DecreaseInstanceCount() noexcept; //returns true if the instance count is 0, the owner object then deletes this
 	private:

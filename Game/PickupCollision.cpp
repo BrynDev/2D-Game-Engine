@@ -2,13 +2,28 @@
 #include "Enums.h"
 #include "ShiningEnginePCH.h"
 
-void PickupCollision::ResolveCollision(Shining::GameObject* const pObject, const int collidedTag) const noexcept
+PickupCollision::PickupCollision(const bool isGem)
+	:m_IsGem{isGem}
+{
+}
+
+void PickupCollision::ResolveCollision(Shining::GameObject* const pOwnerObject, const int collidedTag) const noexcept
 {
 	switch (collidedTag)
 	{
 	case int(CollisionTags::player):
-		pObject->SetActive(false);
-		Shining::AudioPlayer::GetInstance().PlaySoundEffect("PickupSound.wav");
+		pOwnerObject->SetActive(false);
+		if (m_IsGem)
+		{
+			Shining::AudioPlayer::GetInstance().PlaySoundEffect("PickupSound.wav");
+		}
+		else 
+		{
+			Shining::AudioPlayer::GetInstance().PlaySoundEffect("GoldPickup.wav");
+		}
+		break;
+	case int(CollisionTags::enemy):
+		pOwnerObject->SetActive(false);
 		break;
 	default:
 		break;

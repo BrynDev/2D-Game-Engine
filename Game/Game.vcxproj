@@ -206,6 +206,9 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BagCollision.cpp" />
+    <ClCompile Include="BagFallingState.cpp" />
+    <ClCompile Include="BagIdleState.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="LevelChangeObserver.cpp" />
@@ -228,6 +231,9 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BagCollision.h" />
+    <ClInclude Include="BagFallingState.h" />
+    <ClInclude Include="BagIdleState.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="LevelChangeObserver.h" />
     <ClInclude Include="MoveDownCommand.h" />

@@ -9,11 +9,14 @@
 //#include "StartGameControllerCommand.h"
 #include "MoveState.h"
 #include "IdleState.h"
+#include "BagIdleState.h"
+#include "BagFallingState.h"
 
 #include "ScoreObserver.h"
 #include "LevelChangeObserver.h"
 #include "PlayerCollision.h"
 #include "PickupCollision.h"
+#include "BagCollision.h"
 #include "Enums.h"
 
 //"Perform every explicit resource allocation(e.g., new) in its own statement that immediately gives the
@@ -22,6 +25,7 @@
 // - "CPP Coding Standards - 101 Rules Guidelines and Best Practices 2005", item 13 - Herb Sutter, Andrei Alexandrescu
 
 void AddGemToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos );
+void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos);
 
 int main()
 {
@@ -50,7 +54,7 @@ int main()
 		pPlayerState->AddState(new MoveState());
 		pPlayerCharacter->AddComponent(pPlayerState);
 
-		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter) };
+		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter, false) };
 		pPlayerCharacter->AddComponent(pPlayerPhysics);
 
 		Shining::CollisionComponent* const pPlayerCollision{ new Shining::CollisionComponent(pPlayerCharacter, pPlayerRender, int(CollisionTags::player), true, true) };
@@ -60,6 +64,7 @@ int main()
 		pPlayerCharacter->AddComponent(pPlayerCollision);
 	}
 	
+	//scoreboard
 	Shining::GameObject* const pScoreboard{ new Shining::GameObject(50, worldHeight) };
 	{
 		//text component
@@ -70,10 +75,9 @@ int main()
 		ScoreObserver* pScoreObserver{ new ScoreObserver(pScoreboard) };
 		pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
 	}
-
+	//level change observer
 	LevelChangeObserver* pLevelChangeObserver{ new LevelChangeObserver() };
 	pPlayerCharacter->AddObserver(pLevelChangeObserver);
-	
 
 	const int wallSize{ 10 };
 	const int wallOffset{ 2 }; //small offset that makes wall collision less strict
@@ -95,14 +99,14 @@ int main()
 	{
 		Shining::CollisionComponent* pBottomWallCollision{ new Shining::CollisionComponent(pBottomWall, worldWidth, wallSize, int(CollisionTags::wall), false, false) };
 		pBottomWallCollision->AddTargetTag(int(CollisionTags::player));
-		pRightWall->AddComponent(pBottomWallCollision);
+		pBottomWall->AddComponent(pBottomWallCollision);
 	}
 
 	Shining::GameObject* pTopWall{ new Shining::GameObject(0, -wallSize - wallOffset) };
 	{
 		Shining::CollisionComponent* pTopWallCollision{ new Shining::CollisionComponent(pTopWall, worldWidth, wallSize, int(CollisionTags::wall), false, false) };
 		pTopWallCollision->AddTargetTag(int(CollisionTags::player));
-		pRightWall->AddComponent(pTopWallCollision);
+		pTopWall->AddComponent(pTopWallCollision);
 	}
 
 	//menu scene
@@ -132,8 +136,8 @@ int main()
 		pGameScene_Level1->Add(pTopWall);
 
 		//these objects are unique to this scene
-		//this essentially puts the gem on top of the tile on column idx 3 row idx 1
-		AddGemToScene(pGameScene_Level1, 3 * scaledTileSize, 1 * scaledTileSize);
+		//GEMS
+		AddGemToScene(pGameScene_Level1, 3 * scaledTileSize, 1 * scaledTileSize); //this essentially puts the gem on top of the tile on column idx 3 row idx 1
 		AddGemToScene(pGameScene_Level1, 4 * scaledTileSize, 1 * scaledTileSize);
 		AddGemToScene(pGameScene_Level1, 7 * scaledTileSize, 1 * scaledTileSize);
 
@@ -172,6 +176,15 @@ int main()
 		AddGemToScene(pGameScene_Level1, 1 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level1, 13 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level1, 14 * scaledTileSize, 9 * scaledTileSize);
+
+		//GOLD BAGS
+		AddGoldBagToScene(pGameScene_Level1, 4 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, 12 * scaledTileSize, 1 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, 1 * scaledTileSize, 2 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, 5 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, 8 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, 6 * scaledTileSize, 6 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, 8 * scaledTileSize, 6 * scaledTileSize);
 
 		pLevelChangeObserver->AddGemGoal(30); //pick up 30 gems to proceed to next stage
 
@@ -244,6 +257,14 @@ int main()
 		AddGemToScene(pGameScene_Level2, 1 * scaledTileSize, 9 * scaledTileSize);
 		pLevelChangeObserver->AddGemGoal(41);
 
+		AddGoldBagToScene(pGameScene_Level2, 8 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, 10 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, 0 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, 3 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, 7 * scaledTileSize, 5 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, 1 * scaledTileSize, 7 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, 2 * scaledTileSize, 7 * scaledTileSize);
+
 		pGameScene_Level2->InitWorld("Tileset.png", "Level_2.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
 	}
 
@@ -312,10 +333,20 @@ int main()
 
 		AddGemToScene(pGameScene_Level3, 0 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level3, 1 * scaledTileSize, 9 * scaledTileSize);
+		AddGemToScene(pGameScene_Level3, 5 * scaledTileSize, 9 * scaledTileSize);
+		AddGemToScene(pGameScene_Level3, 9 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level3, 13 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level3, 14 * scaledTileSize, 9 * scaledTileSize);
 
-		pLevelChangeObserver->AddGemGoal(49);
+		pLevelChangeObserver->AddGemGoal(51);
+
+		AddGoldBagToScene(pGameScene_Level3, 5 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, 7 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, 9 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, 12 * scaledTileSize, 1 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, 13 * scaledTileSize, 1 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, 1 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, 2 * scaledTileSize, 3 * scaledTileSize);
 
 		pGameScene_Level3->InitWorld("Tileset.png", "Level_3.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
 	}
@@ -372,9 +403,59 @@ void AddGemToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const 
 	//collision component
 	Shining::CollisionComponent* const pGemCollision{ new Shining::CollisionComponent(pGem, pGemRender, int(CollisionTags::gem), false, false) };
 	pGemCollision->AddTargetTag(int(CollisionTags::player));
-	Shining::CollisionBehavior* const pPickupCollision{ new PickupCollision() };
+	Shining::CollisionBehavior* const pPickupCollision{ new PickupCollision(true) };
 	pGemCollision->SetBehavior(pPickupCollision);
 	pGem->AddComponent(pGemCollision);
 
 	pSceneToAddTo->Add(pGem);
+}
+
+void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos)
+{
+	const int bagOffsetX{ 5 }; //better center the bag on the tile
+	const int bagOffsetY{ 2 }; //make sure the bag doesn't stick to a ceiling
+	//bag
+	//render
+	Shining::GameObject* const pBag{ new Shining::GameObject(xPos + bagOffsetX, yPos + bagOffsetY) };
+	Shining::RenderComponent* const pBagRender{ new Shining::RenderComponent("GoldBag.png", 2) };
+	pBag->AddComponent(pBagRender);
+
+	//state
+	BagIdleState* const pBagIdleState{ new BagIdleState{} };
+	BagFallingState* const pFallingState{ new BagFallingState() };
+	Shining::StateComponent* const pBagStates{ new Shining::StateComponent(pBagIdleState, pBag) };
+	pBagStates->AddState(pFallingState);
+	pBag->AddComponent(pBagStates);
+
+	//physics
+	Shining::PhysicsComponent* const pBagPhysics{ new Shining::PhysicsComponent(pBag, false) };
+	pBag->AddComponent(pBagPhysics);
+
+	//collision
+	Shining::CollisionComponent* const pBagCollision{ new Shining::CollisionComponent(pBag, pBagRender, int(CollisionTags::goldBag), true, false) };
+	Shining::CollisionBehavior* const pBagCollisionBehavior{ new BagCollision() }; //this object keeps no variables or states, all bags could share 1 behavior painter, todo
+	pBagCollision->SetBehavior(pBagCollisionBehavior);
+	pBagCollision->AddTargetTag(int(CollisionTags::player));
+	pBagCollision->AddTargetTag(int(CollisionTags::wall));
+	pBagCollision->AddTargetTag(int(CollisionTags::enemy));
+	pBag->AddComponent(pBagCollision);
+
+	//gold
+	//render
+	Shining::GameObject* const pGold{ new Shining::GameObject(-100,0) }; //object will be spawned at the position of the bag when it breaks
+	Shining::RenderComponent* const pGoldRender(new Shining::RenderComponent("Gold.png", 2));
+	pGold->AddComponent(pGoldRender);
+
+	//collision
+	Shining::CollisionComponent* const pGoldCollision{ new Shining::CollisionComponent(pGold, pGoldRender, int(CollisionTags::gold), false, false) };
+	Shining::CollisionBehavior* const pGoldCollisionBehavior{ new PickupCollision(false) };
+	pGoldCollision->SetBehavior(pGoldCollisionBehavior);
+	pGoldCollision->AddTargetTag(int(CollisionTags::player));
+	pGold->AddComponent(pGoldCollision);
+
+	//gold spawner added to bag
+	Shining::SpawnComponent* const pGoldSpawn{ new Shining::SpawnComponent(pGold, false) };
+	pBag->AddComponent(pGoldSpawn); //add to the bag, so the bag can spawn the gold
+	pSceneToAddTo->Add(pBag);
+	pSceneToAddTo->Add(pGold);
 }

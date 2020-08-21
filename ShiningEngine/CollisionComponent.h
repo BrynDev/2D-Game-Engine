@@ -24,6 +24,7 @@ namespace Shining
 		void RemoveTargetTag(const int tag) noexcept;
 		void SetBehavior(CollisionBehavior* const pBehavior) noexcept;
 		const int GetTag() const noexcept;
+		const bool HasHitWorld() noexcept;
 
 		CollisionComponent(const CollisionComponent& other) = delete;
 		CollisionComponent& operator=(const CollisionComponent& rhs) = delete;
@@ -38,6 +39,8 @@ namespace Shining
 		const int m_BoxHeight;
 		const int m_Tag;
 		bool m_CanCollideWithWorld;
+		bool m_HasHitWorld;
+		bool m_HasHitWorldNext;
 		const bool m_CanBreakTiles;
 	};
 }

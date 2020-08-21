@@ -228,6 +228,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClInclude Include="SimpleException.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="SpawnComponent.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateComponent.h" />
     <ClInclude Include="TextComponent.h" />
@@ -265,6 +266,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SimpleException.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
+    <ClCompile Include="SpawnComponent.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
