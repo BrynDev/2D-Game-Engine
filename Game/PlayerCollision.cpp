@@ -22,3 +22,8 @@ void PlayerCollision::ResolveCollision(Shining::GameObject* const pOwnerObject, 
 			break;		
 	}
 }
+
+void PlayerCollision::ResolveWorldCollision(Shining::GameObject* const /*pOwnerObject*/) const noexcept
+{
+	//don't affect the player, tile breaking is handled in the collision manager
+}

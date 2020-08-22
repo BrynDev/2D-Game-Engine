@@ -29,3 +29,8 @@ void PickupCollision::ResolveCollision(Shining::GameObject* const pOwnerObject, 
 		break;
 	}
 }
+
+void PickupCollision::ResolveWorldCollision(Shining::GameObject* const /*pOwnerObject*/) const noexcept
+{
+	//pickups dont have world collision
+}

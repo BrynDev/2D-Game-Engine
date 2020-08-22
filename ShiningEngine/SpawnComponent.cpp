@@ -27,7 +27,7 @@ void Shining::SpawnComponent::Update(const float timeStep)
 		pPhysics->SetIsMoving(true);
 
 		m_CanStartMoving = false;
-
+		m_pObjectToSpawn->SetActive(true); //instant
 	}
 
 	if (!m_WillSpawn)
@@ -65,12 +65,18 @@ void Shining::SpawnComponent::ActivateObject() noexcept
 
 	if (m_DoesMove)
 	{
-		m_CanStartMoving = true; //delay setting physics->IsMoving to true by a frame, to make sure that the position is set properly first
+		m_CanStartMoving = true; //delay activation by a frame, to make sure that the position is set properly first
+		m_WillSpawn = false;
+		m_SpawnTimer = 0;
+	}
+	else
+	{
+		m_pObjectToSpawn->SetActive(true); //instant
+		m_WillSpawn = false;
+		m_SpawnTimer = 0;
 	}
 
-	m_pObjectToSpawn->SetActive(true); //instant
-	m_WillSpawn = false;
-	m_SpawnTimer = 0;
+	
 }
 
 void Shining::SpawnComponent::SpawnObject(const float posX, const float posY) noexcept

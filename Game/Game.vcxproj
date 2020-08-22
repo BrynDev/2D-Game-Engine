@@ -222,6 +222,8 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClCompile Include="PlayerCollision.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
     <ClCompile Include="ShootCommand.cpp" />
+    <ClCompile Include="ShotCooldownState.cpp" />
+    <ClCompile Include="ShotReadyState.cpp" />
     <ClCompile Include="StartGameCommand.cpp" />
     <ClCompile Include="StartGameControllerCommand.cpp" />
     <ClCompile Include="StartGameKeyboardCommand.cpp" />
@@ -249,6 +251,8 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClInclude Include="PlayerCollision.h" />
     <ClInclude Include="ScoreObserver.h" />
     <ClInclude Include="ShootCommand.h" />
+    <ClInclude Include="ShotCooldownState.h" />
+    <ClInclude Include="ShotReadyState.h" />
     <ClInclude Include="StartGameCommand.h" />
     <ClInclude Include="StartGameControllerCommand.h" />
     <ClInclude Include="StartGameKeyboardCommand.h" />

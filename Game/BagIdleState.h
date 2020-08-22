@@ -10,6 +10,9 @@ public:
 	virtual void Update(Shining::GameObject* const pOwner, const float timeStep) noexcept override;
 	virtual void OnEntry(Shining::GameObject* const pOwner) noexcept override;
 	virtual void OnExit(Shining::GameObject* const pOwner) noexcept override;
+
+	void DenyFall() noexcept;
 private:
+	bool m_CanFall;
 };
 

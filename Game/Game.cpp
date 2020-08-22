@@ -8,10 +8,13 @@
 //#include "StartGameKeyboardCommand.h"  -- test these later
 //#include "StartGameControllerCommand.h"
 #include "ShootCommand.h"
+
 #include "MoveState.h"
 #include "IdleState.h"
 #include "BagIdleState.h"
 #include "BagFallingState.h"
+#include "ShotReadyState.h"
+#include "ShotCooldownState.h"
 
 #include "ScoreObserver.h"
 #include "LevelChangeObserver.h"
@@ -69,11 +72,18 @@ int main()
 	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(7 * scaledTileSize , 9 * scaledTileSize + 2) }; //+2 so the player doesn't clip some dirt at the start
 	{
 		//render
-		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
+		//Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
+		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar_States.png", 2, 80, 2, 3) };
 		pPlayerCharacter->AddComponent(pPlayerRender);
 		//state
-		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(new IdleState(), pPlayerCharacter) };
-		pPlayerState->AddState(new MoveState());
+		Shining::State* const pIdleState{ new IdleState() };
+		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(pIdleState, pPlayerCharacter) };
+		Shining::State* const pMoveState{ new MoveState() };
+		pPlayerState->AddState(pMoveState);
+		Shining::State* const pShotReadyState{ new ShotReadyState() };
+		Shining::State* const pShotCooldownState{ new ShotCooldownState() };
+		pPlayerState->AddNewStateLayer(pShotReadyState);
+		pPlayerState->AddState(pShotCooldownState, 1); //second state layer
 		pPlayerCharacter->AddComponent(pPlayerState);
 		//physics
 		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter, false) };

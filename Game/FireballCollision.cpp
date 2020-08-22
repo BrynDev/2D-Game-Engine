@@ -21,9 +21,15 @@ void FireballCollision::ResolveCollision(Shining::GameObject* const pOwnerObject
 			break;
 	}
 
-	//Shining::CollisionComponent* pCollision{ pOwnerObject->GetComponent<Shining::CollisionComponent>() };
-	if (hasHit /*|| pCollision->HasHitWorld()*/)
+	if (hasHit)
 	{
 		pOwnerObject->SetActive(false);
 	}
+}
+
+void FireballCollision::ResolveWorldCollision(Shining::GameObject* const pOwnerObject) const noexcept
+{
+	pOwnerObject->SetActive(false);
+	Shining::PhysicsComponent* const pPhysics{ pOwnerObject->GetComponent<Shining::PhysicsComponent>() };
+	pPhysics->SetIsMoving(false);
 }

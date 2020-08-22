@@ -8,6 +8,7 @@ public:
 	virtual ~PickupCollision() = default;
 
 	virtual void ResolveCollision(Shining::GameObject* const pOwnerObject, const int collidedTag) const noexcept override;
+	virtual void ResolveWorldCollision(Shining::GameObject* const pOwnerObject) const noexcept override;
 private:
 	const bool m_IsGem; //if false, this is gold
 };
