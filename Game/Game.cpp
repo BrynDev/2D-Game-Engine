@@ -73,7 +73,7 @@ int main()
 	{
 		//render
 		//Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
-		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar_States.png", 2, 80, 2, 3) };
+		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 2, 3) };
 		pPlayerCharacter->AddComponent(pPlayerRender);
 		//state
 		Shining::State* const pIdleState{ new IdleState() };

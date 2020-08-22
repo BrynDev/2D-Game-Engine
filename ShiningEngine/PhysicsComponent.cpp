@@ -14,7 +14,7 @@ Shining::PhysicsComponent::PhysicsComponent(GameObject* const pOwner, const bool
 	m_pNextMoveInfo = &m_MoveInfo[1];
 }
 
-void Shining::PhysicsComponent::Render(const glm::vec2& /*pos*/) /*const*/ noexcept
+void Shining::PhysicsComponent::Render(const glm::vec2& /*pos*/) const noexcept
 {
 	//unused
 }

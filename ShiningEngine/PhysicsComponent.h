@@ -12,7 +12,7 @@ namespace Shining
 		virtual ~PhysicsComponent() = default;
 
 		virtual void Update(const float timeStep) noexcept override;
-		virtual void Render(const glm::vec2& pos) /*const*/ noexcept override;
+		virtual void Render(const glm::vec2& pos) const noexcept override;
 		virtual void SwapBuffer() noexcept override;
 
 		void BlockMovement() noexcept;

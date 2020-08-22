@@ -7,12 +7,13 @@ void ShootCommand::Execute(Shining::GameObject* const pTargetObject) const noexc
 {
 	//check state, if true:
 	Shining::StateComponent* pState{ pTargetObject->GetComponent<Shining::StateComponent>() };
+	const int stateLayerIdx{ 1 };
 
-	if (pState->IsCurrentState<ShotReadyState>(1)) //check if the current state in layer idx 1 is the ready state
+	if (pState->IsCurrentState<ShotReadyState>(stateLayerIdx)) //check if the current state in layer idx 1 is the ready state
 	{
 		Shining::PhysicsComponent* const pPhysics{ pTargetObject->GetComponent<Shining::PhysicsComponent>() };
 		const glm::vec2& ownerDir{ pPhysics->GetDirection() };
-		const glm::vec2 shotSpeed{ 150,150 }; //setting both speeds is fine since a direction is also passed, either x or y will be zero
+		const glm::vec2 shotSpeed{ 180,180 }; //setting both speeds is fine since a direction is also passed, either x or y will be zero
 
 		const int posOffsetX{ 2 }; //center the fireball to the character better
 		const int posOffsetY{ 4 };
@@ -21,7 +22,7 @@ void ShootCommand::Execute(Shining::GameObject* const pTargetObject) const noexc
 		Shining::SpawnComponent* const pSpawner{ pTargetObject->GetComponent<Shining::SpawnComponent>() };
 		pSpawner->SpawnObject(ownerPos.x + posOffsetX, ownerPos.y + posOffsetY, shotSpeed, ownerDir); //spawn the fireball
 		
-		pState->ChangeState<ShotCooldownState>(1); //set state in layer idx 1 to cooldown
+		pState->ChangeState<ShotCooldownState>(stateLayerIdx); //set state in layer idx 1 to cooldown
 
 		Shining::AudioPlayer::GetInstance().PlaySoundEffect("ShotSound.wav");
 	}

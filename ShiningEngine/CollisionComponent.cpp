@@ -64,9 +64,9 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 	}
 }
 
-void Shining::CollisionComponent::Render(const glm::vec2& /*pos*/)
+void Shining::CollisionComponent::Render(const glm::vec2& /*pos*/) const
 {
-
+	//empty
 }
 
 void Shining::CollisionComponent::ResolveCollision(const int collidedTag) noexcept

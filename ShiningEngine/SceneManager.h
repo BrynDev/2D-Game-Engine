@@ -10,7 +10,7 @@ namespace Shining
 	{
 	public:
 		void Update(const float timeStep);
-		void Render();
+		void Render() const;
 		void SwapBuffer() noexcept;
 
 		Scene* CreateScene(const std::string& name);

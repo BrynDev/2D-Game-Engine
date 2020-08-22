@@ -17,7 +17,7 @@ namespace Shining
 		virtual ~SpawnComponent() = default;
 
 		virtual void Update(const float timeStep) override;
-		virtual void Render(const glm::vec2& pos) override;
+		virtual void Render(const glm::vec2& pos) const override;
 		virtual void SwapBuffer() noexcept override;
 
 		void SpawnObject(const float posX, const float posY) noexcept; //spawn at location

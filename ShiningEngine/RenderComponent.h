@@ -19,7 +19,7 @@ namespace Shining
 		RenderComponent(const std::string& textureName, const int spriteScaleFactor, const int msPerFrame, const int nrRows, const int nrCols);
 		virtual ~RenderComponent() = default;
 
-		virtual void Render(const glm::vec2& pos) /*const*/ override;
+		virtual void Render(const glm::vec2& pos) const override;
 		virtual void Update(const float timeStep) noexcept override;
 		virtual void SwapBuffer() noexcept override;
 		void RenderTile(const SDL_Rect& srcRect, const SDL_Rect& destRect) const noexcept;

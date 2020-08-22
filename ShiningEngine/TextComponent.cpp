@@ -22,7 +22,7 @@ Shining::TextComponent::~TextComponent()
 	delete m_pTexture; //this texture was not loaded through the ResourceManager and must be deleted here
 }
 
-void Shining::TextComponent::Render(const glm::vec2& pos) /*const*/
+void Shining::TextComponent::Render(const glm::vec2& pos) const
 {
 	if (m_pTexture != nullptr)
 	{

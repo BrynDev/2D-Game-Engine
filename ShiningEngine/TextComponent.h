@@ -12,7 +12,7 @@ namespace Shining
 		TextComponent(const std::string& text, const std::string& fontName, const SDL_Color& color, const int size);
 		virtual ~TextComponent();
 
-		virtual void Render(const glm::vec2& pos) /*const*/ override;
+		virtual void Render(const glm::vec2& pos) const override;
 		virtual void Update(const float timeStep) override;
 		virtual void SwapBuffer() noexcept override;
 		void SetText(const std::string& newText);

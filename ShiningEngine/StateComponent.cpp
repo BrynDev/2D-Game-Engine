@@ -17,7 +17,7 @@ Shining::StateComponent::StateComponent(State* pStartingState, GameObject* pOwne
 	m_pStateLayers.push_back(firstLayer);
 }
 
-void Shining::StateComponent::Render(const glm::vec2& /*pos*/) /*const*/
+void Shining::StateComponent::Render(const glm::vec2& /*pos*/) const
 {
 	//empty
 }
@@ -30,28 +30,10 @@ void Shining::StateComponent::Update(const float timeStep)
 	{
 		m_pCurrentStates[i]->Update(m_pOwner, timeStep);
 	}
-	//m_pCurrentState->Update(m_pOwner, timeStep);
 }
 
 void Shining::StateComponent::SwapBuffer() noexcept
 {
-	/*if (m_NeedsSwap)
-	{
-		const size_t nrStateLayers{ m_pStateLayers.size() };
-		for (int i{ 0 }; i < nrStateLayers; ++i)
-		{
-			Shining::State* const pNext{ m_pNextStates[i] };
-
-			if (m_pCurrentStates[i] != pNext)
-			{
-				m_pCurrentStates[i] = pNext;
-				m_pCurrentStates[i]->OnEntry(m_pOwner);
-			}		
-			
-		}
-		m_NeedsSwap = false;
-	}	*/
-
 	
 	const size_t nrStateLayers{ m_pStateLayers.size() };
 
@@ -106,15 +88,6 @@ Shining::StateComponent::~StateComponent()
 		std::for_each(m_pStateLayers.at(i).begin(), m_pStateLayers.at(i).end(), [](State* pState) {
 			delete pState;
 			});
-		/*const size_t nrStates{ m_pStateLayers.at(i).size };
-		for (int j{0}; j < nrStates; ++j)
-		{
-			m_pStateLayers.at(i).
-		}*/
+	
 	}
-
-	/*for (State* pState : m_pStates)
-	{
-		delete pState;
-	}*/
 }

@@ -8,7 +8,7 @@ void Shining::SceneManager::Update(const float timeStep)
 	m_pCurrentScene->Update(timeStep);
 }
 
-void Shining::SceneManager::Render()
+void Shining::SceneManager::Render() const
 {
 	m_pCurrentScene->Render();
 }

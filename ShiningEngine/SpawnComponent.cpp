@@ -50,7 +50,7 @@ void Shining::SpawnComponent::Update(const float timeStep)
 	}
 }
 
-void Shining::SpawnComponent::Render(const glm::vec2& /*pos*/)
+void Shining::SpawnComponent::Render(const glm::vec2& /*pos*/) const
 {
 	//empty
 }
