@@ -3,11 +3,6 @@
 #include "ShiningEnginePCH.h"
 
 
-MoveState::MoveState()
-	:State()
-{
-}
-
 void MoveState::Update(Shining::GameObject* const /*pOwner*/, const float /*timeStep*/) noexcept
 {
 	//empty

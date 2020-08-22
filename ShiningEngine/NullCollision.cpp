@@ -10,3 +10,8 @@ void Shining::NullCollision::ResolveCollision(Shining::GameObject* const /*pObje
 {
 	//empty function
 }
+
+void Shining::NullCollision::ResolveWorldCollision(Shining::GameObject* const /*pOwnerObject*/) const noexcept
+{
+	//empty
+}

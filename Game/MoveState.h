@@ -4,7 +4,7 @@
 class MoveState : public Shining::State
 {
 public:
-	MoveState();
+	explicit MoveState() = default;
 	virtual ~MoveState() = default;
 	virtual void Update(Shining::GameObject* const pOwner, const float timeStep) noexcept override;
 	virtual void OnEntry(Shining::GameObject* const pOwner) noexcept override;

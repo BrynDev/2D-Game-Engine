@@ -4,22 +4,20 @@
 
 BagIdleState::BagIdleState()
 	:State()
+	, m_CanFall{false}
 {
 
 }
 
 void BagIdleState::Update(Shining::GameObject* const pOwner, const float /*timeStep*/) noexcept
 {
-	Shining::CollisionComponent* const pCollision{ pOwner->GetComponent<Shining::CollisionComponent>() };
-
-	if (pCollision->HasHitWorld())
+	if (m_CanFall)
 	{
-		return;
+		Shining::StateComponent* pState{ pOwner->GetComponent<Shining::StateComponent>() };
+		pState->ChangeState<BagFallingState>();
 	}
-	
-	Shining::StateComponent* pState{ pOwner->GetComponent<Shining::StateComponent>() };
-	pState->ChangeState<BagFallingState>();
-	
+
+	m_CanFall = true; //bag will attempt to fall, of colliding with world this will be set to false
 }
 
 void BagIdleState::OnEntry(Shining::GameObject* const pOwner) noexcept
@@ -30,5 +28,10 @@ void BagIdleState::OnEntry(Shining::GameObject* const pOwner) noexcept
 
 void BagIdleState::OnExit(Shining::GameObject* const /*pOwner*/) noexcept
 {
+	m_CanFall = false;
+}
 
+void BagIdleState::DenyFall() noexcept
+{
+	m_CanFall = false;
 }

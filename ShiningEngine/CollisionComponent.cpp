@@ -19,8 +19,6 @@ Shining::CollisionComponent::CollisionComponent(Shining::GameObject* const pOwne
 	, m_Tag{tag}
 	, m_CanCollideWithWorld{hasWorldCollision}
 	, m_CanBreakTiles{ canBreakTiles }
-	, m_HasHitWorld{true} //true until proven otherwise
-	, m_HasHitWorldNext{ true }
 {
 	//this collider will be registered to the collision manager when the scene it belongs to becomes active
 }
@@ -41,7 +39,7 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 	{
 		if (instance.HandleWorldCollision(boundingBox, m_CanBreakTiles))
 		{
-			m_HasHitWorldNext = true;
+			ResolveWorldCollision();
 
 			if (!m_CanBreakTiles)
 			{
@@ -49,11 +47,6 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 				m_pOwner->GetComponent<Shining::PhysicsComponent>()->BlockMovement();
 			}
 		}
-		else
-		{
-			m_HasHitWorldNext = false;
-		}
-		
 	}
 
 	//collide with other objects
@@ -71,9 +64,9 @@ void Shining::CollisionComponent::Update(const float /*timeStep*/)
 	}
 }
 
-void Shining::CollisionComponent::Render(const glm::vec2& /*pos*/)
+void Shining::CollisionComponent::Render(const glm::vec2& /*pos*/) const
 {
-
+	//empty
 }
 
 void Shining::CollisionComponent::ResolveCollision(const int collidedTag) noexcept
@@ -81,9 +74,14 @@ void Shining::CollisionComponent::ResolveCollision(const int collidedTag) noexce
 	m_pCollisionBehavior->ResolveCollision(m_pOwner, collidedTag);
 }
 
+void Shining::CollisionComponent::ResolveWorldCollision() noexcept
+{
+	m_pCollisionBehavior->ResolveWorldCollision(m_pOwner);
+}
+
 void Shining::CollisionComponent::SwapBuffer() noexcept
 {
-	m_HasHitWorld = m_HasHitWorldNext;
+	//empty
 }
 
 void Shining::CollisionComponent::AddTargetTag(const int tag) noexcept
@@ -117,20 +115,6 @@ void Shining::CollisionComponent::SetBehavior(CollisionBehavior* const pBehavior
 const int Shining::CollisionComponent::GetTag() const noexcept
 {
 	return m_Tag;
-}
-
-const bool Shining::CollisionComponent::HasHitWorld() noexcept
-{
-	
-	if (m_HasHitWorld)
-	{
-		m_HasHitWorldNext = false;
-		return  true;
-	}
-	else
-	{
-		return false;
-	}
 }
 
 Shining::CollisionComponent::~CollisionComponent()

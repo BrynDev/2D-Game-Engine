@@ -12,7 +12,7 @@ namespace Shining
 	public:
 		TileComponent(const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld, const int worldScale,const RenderComponent* pRenderComponent);
 		virtual ~TileComponent();
-		virtual void Render(const glm::vec2& pos) /*const*/ override;
+		virtual void Render(const glm::vec2& pos) const override;
 		virtual void Update(const float timeStep) override;
 		virtual void SwapBuffer() noexcept override;
 

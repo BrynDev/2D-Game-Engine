@@ -6,6 +6,7 @@ Shining::PhysicsComponent::PhysicsComponent(GameObject* const pOwner, const bool
 	:m_pOwner{pOwner}
 	, m_NeedsSwap{false}
 	, m_IsMoving{isCurrentlyMoving}
+	, m_IsMovingNext{isCurrentlyMoving}
 {
 	m_MoveInfo[0] = MoveInfo{};
 	m_MoveInfo[1] = MoveInfo{};
@@ -13,7 +14,7 @@ Shining::PhysicsComponent::PhysicsComponent(GameObject* const pOwner, const bool
 	m_pNextMoveInfo = &m_MoveInfo[1];
 }
 
-void Shining::PhysicsComponent::Render(const glm::vec2& /*pos*/) /*const*/ noexcept
+void Shining::PhysicsComponent::Render(const glm::vec2& /*pos*/) const noexcept
 {
 	//unused
 }
@@ -31,14 +32,6 @@ void Shining::PhysicsComponent::Update(const float timeStep) noexcept
 	}
 }
 
-void Shining::PhysicsComponent::MoveOwner(const float timeStep) noexcept
-{	
-	const glm::vec2& oldPos{ m_pOwner->GetPosition() };
-	const glm::vec2& direction{ m_pCurrentMoveInfo->direction };
-	const glm::vec2& speed{ m_pCurrentMoveInfo->speed };
-	const glm::vec2 newPos{ oldPos.x + (direction.x * (timeStep / 1000.f) * speed.x), oldPos.y + (direction.y * (timeStep / 1000.f) * speed.y) };
-	m_pOwner->SetPosition(newPos.x, newPos.y);
-}
 
 void Shining::PhysicsComponent::BlockMovement() noexcept
 {
@@ -64,9 +57,7 @@ void Shining::PhysicsComponent::SetSpeed(const float speedX, const float speedY)
 {
 	m_pNextMoveInfo->speed.x = speedX;
 	m_pNextMoveInfo->speed.y = speedY;
-	m_NeedsSwap = true;
-	//m_Speed.x = speedX;
-	//m_Speed.y = speedY;
+	m_NeedsSwap = true;	
 }
 
 void Shining::PhysicsComponent::SetDirection(const float dirX, const float dirY) noexcept
@@ -74,36 +65,30 @@ void Shining::PhysicsComponent::SetDirection(const float dirX, const float dirY)
 	m_pNextMoveInfo->direction.x = dirX;
 	m_pNextMoveInfo->direction.y = dirY;
 	m_NeedsSwap = true;
-	//m_Direction.x = dirX;
-	//m_Direction.y = dirY;
 }
 
 void Shining::PhysicsComponent::SetSpeedX(const float speedX) noexcept
 {
 	m_pNextMoveInfo->speed.x = speedX;
 	m_NeedsSwap = true;
-	//m_Speed.x = speedX;
 }
 
 void Shining::PhysicsComponent::SetSpeedY(const float speedY) noexcept
 {
 	m_pNextMoveInfo->speed.y = speedY;
 	m_NeedsSwap = true;
-	//m_Speed.y = speedY;
 }
 
 void Shining::PhysicsComponent::SetDirectionX(const float dirX) noexcept
 {
 	m_pNextMoveInfo->direction.x = dirX;
 	m_NeedsSwap = true;
-	//m_Direction.x = dirX;
 }
 
 void Shining::PhysicsComponent::SetDirectionY(const float dirY) noexcept
 {
 	m_pNextMoveInfo->direction.y = dirY;
 	m_NeedsSwap = true;
-	//m_Direction.y = dirY;
 }
 
 void Shining::PhysicsComponent::SetIsMoving(const bool isMoving) noexcept
@@ -114,11 +99,9 @@ void Shining::PhysicsComponent::SetIsMoving(const bool isMoving) noexcept
 const glm::vec2& Shining::PhysicsComponent::GetSpeed() const noexcept
 {
 	return m_pCurrentMoveInfo->speed;
-	//return m_Speed;
 }
 
 const glm::vec2& Shining::PhysicsComponent::GetDirection() const noexcept
 {
 	return m_pCurrentMoveInfo->direction;
-	//return m_Direction;
 }

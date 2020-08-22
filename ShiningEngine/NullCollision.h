@@ -11,6 +11,7 @@ namespace Shining
 		virtual ~NullCollision() = default;
 
 		virtual void ResolveCollision(Shining::GameObject* const pObject, const int collidedTag) const noexcept override;
+		virtual void ResolveWorldCollision(Shining::GameObject* const pOwnerObject) const noexcept override;
 	private:
 	};
 

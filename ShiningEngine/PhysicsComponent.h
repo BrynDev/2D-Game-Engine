@@ -12,10 +12,9 @@ namespace Shining
 		virtual ~PhysicsComponent() = default;
 
 		virtual void Update(const float timeStep) noexcept override;
-		virtual void Render(const glm::vec2& pos) /*const*/ noexcept override;
+		virtual void Render(const glm::vec2& pos) const noexcept override;
 		virtual void SwapBuffer() noexcept override;
 
-		void MoveOwner(const float timeStep) noexcept;
 		void BlockMovement() noexcept;
 		void SetSpeed(const float speedX, const float speedY) noexcept;
 		void SetSpeedX(const float speedX) noexcept;
@@ -39,6 +38,7 @@ namespace Shining
 		MoveInfo* m_pCurrentMoveInfo;
 		bool m_NeedsSwap;
 		bool m_IsMoving;
+		bool m_IsMovingNext;
 	};
 }
 

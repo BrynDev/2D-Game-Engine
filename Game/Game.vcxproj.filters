@@ -73,6 +73,18 @@
     <ClCompile Include="BagCollision.cpp">
       <Filter>Collision behavior</Filter>
     </ClCompile>
+    <ClCompile Include="FireballCollision.cpp">
+      <Filter>Collision behavior</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="ShotCooldownState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="ShotReadyState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -128,6 +140,18 @@
     </ClInclude>
     <ClInclude Include="BagCollision.h">
       <Filter>Collision behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="FireballCollision.h">
+      <Filter>Collision behavior</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="ShotCooldownState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="ShotReadyState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

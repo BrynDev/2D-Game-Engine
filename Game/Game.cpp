@@ -7,16 +7,21 @@
 #include "StartGameCommand.h"
 //#include "StartGameKeyboardCommand.h"  -- test these later
 //#include "StartGameControllerCommand.h"
+#include "ShootCommand.h"
+
 #include "MoveState.h"
 #include "IdleState.h"
 #include "BagIdleState.h"
 #include "BagFallingState.h"
+#include "ShotReadyState.h"
+#include "ShotCooldownState.h"
 
 #include "ScoreObserver.h"
 #include "LevelChangeObserver.h"
 #include "PlayerCollision.h"
 #include "PickupCollision.h"
 #include "BagCollision.h"
+#include "FireBallCollision.h"
 #include "Enums.h"
 
 //"Perform every explicit resource allocation(e.g., new) in its own statement that immediately gives the
@@ -43,25 +48,55 @@ int main()
 	const int worldWidth{ nrWorldCols * scaledTileSize };
 	const int worldHeight{ nrWorldRows * scaledTileSize };
 
+	
+	//fireball
+	Shining::GameObject* const pFireball{ new Shining::GameObject(-150.f,0.f) }; //object will be moved to player's location upon activation
+	{
+		//render
+		Shining::RenderComponent* const pFireballRender{ new Shining::RenderComponent("Fireball.png", 2, 20, 1, 3) };
+		pFireball->AddComponent(pFireballRender);
+		//collision
+		Shining::CollisionComponent* const pFireballCollision{ new Shining::CollisionComponent(pFireball, pFireballRender, int(CollisionTags::fireBall), true, false) };
+		pFireballCollision->AddTargetTag(int(CollisionTags::goldBag));
+		pFireballCollision->AddTargetTag(int(CollisionTags::wall));
+		pFireballCollision->AddTargetTag(int(CollisionTags::enemy));
+		Shining::CollisionBehavior* const pFireballCollisionBehavior{ new FireballCollision() };
+		pFireballCollision->SetBehavior(pFireballCollisionBehavior);
+		pFireball->AddComponent(pFireballCollision);
+		//physics
+		Shining::PhysicsComponent* const pFireballPhysics{ new Shining::PhysicsComponent(pFireball, false) };
+		pFireball->AddComponent(pFireballPhysics);	
+	}
+
 	//player
 	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(7 * scaledTileSize , 9 * scaledTileSize + 2) }; //+2 so the player doesn't clip some dirt at the start
 	{
-		//init player components
-		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
+		//render
+		//Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
+		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 2, 3) };
 		pPlayerCharacter->AddComponent(pPlayerRender);
-	
-		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(new IdleState(), pPlayerCharacter) };
-		pPlayerState->AddState(new MoveState());
+		//state
+		Shining::State* const pIdleState{ new IdleState() };
+		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(pIdleState, pPlayerCharacter) };
+		Shining::State* const pMoveState{ new MoveState() };
+		pPlayerState->AddState(pMoveState);
+		Shining::State* const pShotReadyState{ new ShotReadyState() };
+		Shining::State* const pShotCooldownState{ new ShotCooldownState() };
+		pPlayerState->AddNewStateLayer(pShotReadyState);
+		pPlayerState->AddState(pShotCooldownState, 1); //second state layer
 		pPlayerCharacter->AddComponent(pPlayerState);
-
+		//physics
 		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter, false) };
 		pPlayerCharacter->AddComponent(pPlayerPhysics);
-
+		//collision
 		Shining::CollisionComponent* const pPlayerCollision{ new Shining::CollisionComponent(pPlayerCharacter, pPlayerRender, int(CollisionTags::player), true, true) };
 		Shining::CollisionBehavior* const pPlayerCollisionBehavior{ new PlayerCollision() };
 		pPlayerCollision->SetBehavior(pPlayerCollisionBehavior);
-
 		pPlayerCharacter->AddComponent(pPlayerCollision);
+		//spawner, for the fireball object
+		Shining::SpawnComponent* const pFireballSpawner{ new Shining::SpawnComponent(pFireball, true) };
+		pPlayerCharacter->AddComponent(pFireballSpawner);
+
 	}
 	
 	//scoreboard
@@ -128,7 +163,8 @@ int main()
 	Shining::Scene* pGameScene_Level1{ sceneManager.CreateScene("Game_Level1") };
 	{
 		//these objects are in in most scenes
-		pGameScene_Level1->Add(pPlayerCharacter);
+		pGameScene_Level1->Add(pFireball);
+		pGameScene_Level1->Add(pPlayerCharacter);	
 		pGameScene_Level1->Add(pScoreboard);
 		pGameScene_Level1->Add(pLeftWall);
 		pGameScene_Level1->Add(pRightWall);
@@ -194,6 +230,7 @@ int main()
 	//game level 2 scene
 	Shining::Scene* pGameScene_Level2{ sceneManager.CreateScene("Game_Level2") };
 	{
+		pGameScene_Level2->Add(pFireball);
 		pGameScene_Level2->Add(pPlayerCharacter);
 		pGameScene_Level2->Add(pScoreboard);
 		pGameScene_Level2->Add(pLeftWall);
@@ -271,6 +308,7 @@ int main()
 	//game level 3 scene
 	Shining::Scene* pGameScene_Level3{ sceneManager.CreateScene("Game_Level3") };
 	{
+		pGameScene_Level3->Add(pFireball);
 		pGameScene_Level3->Add(pPlayerCharacter);
 		pGameScene_Level3->Add(pScoreboard);
 		pGameScene_Level3->Add(pLeftWall);
@@ -354,35 +392,38 @@ int main()
 	//setup input and commands
 	//menu screen input
 	{
+		//create the commands
 		Shining::InputContext* pMenuInput{ new Shining::InputContext() };
 		StartGameCommand* const pStartGame{ new StartGameCommand() };
-
+		//add them to the input context
 		pMenuInput->AddCommand(pStartGame, SDLK_SPACE, Shining::ControllerInput::ButtonA);
 		pMenuInput->AddCommand(pStartGame, SDLK_LEFT, Shining::ControllerInput::LeftStickLeft);
 		pMenuInput->AddCommand(pStartGame, SDLK_RIGHT, Shining::ControllerInput::LeftStickRight);
 		pMenuInput->AddCommand(pStartGame, SDLK_UP, Shining::ControllerInput::LeftStickUp);
 		pMenuInput->AddCommand(pStartGame, SDLK_DOWN, Shining::ControllerInput::LeftStickDown);
-
+		//set this context to the start menu
 		pMenuScene->InitInputContext(pMenuInput);
 	}
 	//game input
 	{	
 		const float playerMoveSpeed{ 100.f };
 		engine.SetPlayer(pPlayerCharacter);
-		
+		//create the commands
 		MoveRightCommand* const pMoveRight{ new MoveRightCommand(playerMoveSpeed) };
 		MoveLeftCommand* const pMoveLeft{ new MoveLeftCommand(playerMoveSpeed) };
 		MoveUpCommand* const pMoveUp{ new MoveUpCommand(playerMoveSpeed) };
 		MoveDownCommand* const pMoveDown{ new MoveDownCommand(playerMoveSpeed) };
 		StartIdleCommand* const pStartIdle{ new StartIdleCommand() };
-
+		ShootCommand* const pShoot{ new ShootCommand() };
+		//add them to the input context
 		Shining::InputContext* pGameInput{ new Shining::InputContext() };
 		pGameInput->AddCommand(pMoveRight, SDLK_RIGHT, Shining::ControllerInput::LeftStickRight);
 		pGameInput->AddCommand(pMoveLeft, SDLK_LEFT, Shining::ControllerInput::LeftStickLeft);
 		pGameInput->AddCommand(pMoveUp, SDLK_UP, Shining::ControllerInput::LeftStickUp);
 		pGameInput->AddCommand(pMoveDown, SDLK_DOWN, Shining::ControllerInput::LeftStickDown);
+		pGameInput->AddCommand(pShoot, SDLK_SPACE, Shining::ControllerInput::ButtonA);
 		pGameInput->SetNoInputCommand(pStartIdle);
-
+		//set this context for the game scenes
 		pGameScene_Level1->InitInputContext(pGameInput);
 		pGameScene_Level2->InitInputContext(pGameInput);
 		pGameScene_Level3->InitInputContext(pGameInput);

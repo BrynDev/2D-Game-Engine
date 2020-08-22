@@ -1,51 +1,93 @@
 #include "ShiningEnginePCH.h"
 #include "StateComponent.h"
 #include "State.h"
+#include <algorithm>
 
 Shining::StateComponent::StateComponent(State* pStartingState, GameObject* pOwner)
 	:Component()
-	, m_pCurrentState{pStartingState}
+	, m_pStateLayers{}
+	, m_pCurrentStates{pStartingState}
 	, m_pOwner{pOwner}
-	, m_pNextState{nullptr}
+	, m_pNextStates{nullptr}
+	, m_NeedsSwap{false}
+	, m_NeedsSwapVect{false}
 {
-	m_pStates.insert(pStartingState);
+	std::set<State*> firstLayer{};
+	firstLayer.insert(pStartingState);
+	m_pStateLayers.push_back(firstLayer);
 }
 
-void Shining::StateComponent::Render(const glm::vec2& /*pos*/) /*const*/
+void Shining::StateComponent::Render(const glm::vec2& /*pos*/) const
 {
 	//empty
 }
 
 void Shining::StateComponent::Update(const float timeStep)
 {
-	m_pCurrentState->Update(m_pOwner, timeStep);
+	const size_t nrStateLayers{ m_pStateLayers.size() };
+
+	for (size_t i{0}; i < nrStateLayers; ++i)
+	{
+		m_pCurrentStates[i]->Update(m_pOwner, timeStep);
+	}
 }
 
 void Shining::StateComponent::SwapBuffer() noexcept
 {
-	if (m_NeedsSwap)
+	
+	const size_t nrStateLayers{ m_pStateLayers.size() };
+
+	for (size_t i{ 0 }; i < nrStateLayers; ++i)
 	{
-		m_pCurrentState = m_pNextState;
-		m_pCurrentState->OnEntry(m_pOwner);
-		m_NeedsSwap = false;
-	}	
+		if (!m_NeedsSwapVect[i]) //check if this layer needs to be swapped
+		{
+			continue;
+		}
+
+		Shining::State* const pNext{ m_pNextStates[i] };
+		Shining::State* const pCurrent{ m_pCurrentStates[i] };
+
+		if (pCurrent != pNext) //check if new is different from current
+		{
+			pCurrent->OnExit(m_pOwner);
+			m_pCurrentStates[i] = pNext;
+			pNext->OnEntry(m_pOwner);
+
+			m_NeedsSwapVect[i] = false;
+		}
+
+	}
 }
 
-Shining::State* const Shining::StateComponent::GetCurrentState() const noexcept
+Shining::State* const Shining::StateComponent::GetCurrentState(const unsigned int layerIdx) const
 {
-	return m_pCurrentState;
+	return m_pCurrentStates.at(layerIdx);
 }
 
-void Shining::StateComponent::AddState(State* pStateToAdd) noexcept
+void Shining::StateComponent::AddState(State* pStateToAdd, const unsigned int layerIdx)
 {
-	m_pStates.insert(pStateToAdd);
+	m_pStateLayers.at(layerIdx).insert(pStateToAdd);
+}
+
+void Shining::StateComponent::AddNewStateLayer(State* pStateToAdd) noexcept
+{
+	std::set<State*> newLayer{};
+	newLayer.insert(pStateToAdd);
+	m_pStateLayers.push_back(newLayer);
+	m_pCurrentStates.push_back(pStateToAdd);
+	m_pNextStates.push_back(nullptr);
+	m_NeedsSwapVect.push_back(false);
 }
 
 Shining::StateComponent::~StateComponent()
 {
-	//need to change this in case I implement shared state pointers
-	for (State* pState : m_pStates)
+	const size_t nrStateLayers{ m_pStateLayers.size() };
+	for (size_t i{ 0 }; i < nrStateLayers; ++i) //for every layer
 	{
-		delete pState;
+		//for every state in this layer
+		std::for_each(m_pStateLayers.at(i).begin(), m_pStateLayers.at(i).end(), [](State* pState) {
+			delete pState;
+			});
+	
 	}
 }

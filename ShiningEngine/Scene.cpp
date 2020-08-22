@@ -66,7 +66,7 @@ void Shining::Scene::Render() const noexcept
 		m_pWorld->Render();
 	}
 
-	for (Shining::GameObject* pObject : m_pGameObjects)
+	for (Shining::GameObject* const pObject : m_pGameObjects)
 	{
 		pObject->Render();
 	}

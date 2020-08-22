@@ -27,7 +27,7 @@ Shining::TileComponent::TileComponent(const int tileWidth, const int tileHeight,
 	m_TileInfoByID.insert(std::make_pair(0, pEmptyTileInfo));
 }
 
-void Shining::TileComponent::Render(const glm::vec2& /*pos*/) /*const*/
+void Shining::TileComponent::Render(const glm::vec2& /*pos*/) const
 {
 	SDL_Rect destRect{0, 0, m_TileWidth * m_WorldScale, m_TileHeight * m_WorldScale };
 	for (int row{ 0 }; row < m_NrRowsWorld; ++row)
@@ -80,8 +80,6 @@ void Shining::TileComponent::LoadTiles(const std::string& tilePlacementsCSV)
 		{
 			for (int col{ 0 }; col < m_NrColsWorld; ++col)
 			{
-		
-				//Tile defaultTile{ m_TileInfoByID[0] };
 				m_Tiles[row][col] = Tile{m_TileInfoByID[0]};
 				++idx;
 			}
