@@ -10,12 +10,18 @@ void Shining::AudioPlayer::PlaySoundEffect(const std::string& fileName) const no
 	pSound->PlaySound();
 }
 
-void Shining::AudioPlayer::SetAllEffectsVolume(const int volume) const noexcept
+const bool Shining::AudioPlayer::IsPlayingSoundEffect() const noexcept
 {
-	Mix_Volume(-1, volume); //-1 to modify all channels
+	return(Mix_Playing(-1) == 0); //-1 counts the number of channels that are playing
 }
 
 void Shining::AudioPlayer::StopAllEffects() const noexcept
 {
 	Mix_HaltChannel(-1); //-1 to stop all channels
 }
+
+void Shining::AudioPlayer::SetAllEffectsVolume(const int volume) const noexcept
+{
+	Mix_Volume(-1, volume); //-1 to modify all channels
+}
+

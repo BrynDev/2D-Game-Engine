@@ -18,10 +18,11 @@ namespace Shining
 		virtual void Render(const glm::vec2 & pos) const override;
 		virtual void SwapBuffer() noexcept override;
 
+		void GetHit(const int damageTaken) noexcept; //calls HitBehavior->OnHit(), which will determine the next action
+		void TakeDamage(const int damageTaken) noexcept; //unconditionally deals damage to component
+		const int GetCurrentHealth() const noexcept; 
 		void SetHitBehavior(HitBehavior* const pHitBehavior) noexcept;
-		void TakeDamage(const int damageTaken) noexcept;
-		const int GetCurrentHealth() const noexcept;
-
+		
 	private:
 		static NullHit m_NullHit;
 		HitBehavior* m_pHitBehavior;

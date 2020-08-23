@@ -23,7 +23,7 @@ void BagCollision::ResolveCollision(Shining::GameObject* const pOwnerObject, con
 		case int(CollisionTags::player) :
 			if (pBagState->IsCurrentState<BagFallingState>())
 			{
-				m_pPlayerHealth->TakeDamage(1); //deal 1 damage to player
+				m_pPlayerHealth->GetHit(1); //attempt to deal 1 damage to player
 			}
 			break;
 		case int(CollisionTags::enemy):

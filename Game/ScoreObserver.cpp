@@ -23,7 +23,7 @@ void ScoreObserver::Notify(Shining::GameObject* const pSubject, const int eventI
 		++m_GemPickupStreak;
 		if (m_GemPickupStreak >= m_GemPickupStreakMax)
 		{
-			scoreIncrease += 25000;
+			scoreIncrease += 250;
 			m_GemPickupStreak = 0;
 		}
 		scoreChanged = true;

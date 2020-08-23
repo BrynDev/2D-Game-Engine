@@ -10,10 +10,9 @@ namespace Shining
 	{
 	public:
 		void PlaySoundEffect(const std::string& fileName) const noexcept;
-
-		void SetAllEffectsVolume(const int volume) const noexcept;
+		const bool IsPlayingSoundEffect() const noexcept;
 		void StopAllEffects() const noexcept;
-
+		void SetAllEffectsVolume(const int volume) const noexcept;
 	private:
 		friend class Singleton<AudioPlayer>;
 		AudioPlayer() = default;

@@ -51,7 +51,7 @@ void Shining::HealthComponent::SwapBuffer() noexcept
 
 	const int damageTaken{ m_CurrentHealth - m_NextHealth };
 	m_CurrentHealth = m_NextHealth; 
-	m_pHitBehavior->OnHit(m_pOwner, damageTaken);
+	//m_pHitBehavior->OnHit(m_pOwner, damageTaken);
 
 	if (m_CurrentHealth <= 0)
 	{
@@ -60,6 +60,12 @@ void Shining::HealthComponent::SwapBuffer() noexcept
 	}
 
 	m_NeedsSwap = false;
+}
+
+
+void Shining::HealthComponent::GetHit(const int damageTaken) noexcept
+{
+	m_pHitBehavior->OnHit(m_pOwner, damageTaken);
 }
 
 void Shining::HealthComponent::TakeDamage(const int damageTaken) noexcept

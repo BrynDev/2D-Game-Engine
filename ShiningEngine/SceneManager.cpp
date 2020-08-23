@@ -38,6 +38,11 @@ void Shining::SceneManager::AdvanceScene()
 	SetScene(nextIdx);
 }
 
+void Shining::SceneManager::ResetCurrentScene() noexcept
+{
+	SetScene(m_pCurrentScene);
+}
+
 void Shining::SceneManager::SetScene(Scene* pScene)
 {
 	try
@@ -72,6 +77,12 @@ void Shining::SceneManager::SetScene(const int sceneIdx)
 	{
 		std::cout << exception.GetExceptionMessage() << std::endl;
 	}	
+}
+
+void Shining::SceneManager::GoToFinalScene()
+{
+	const int finalSceneIdx{ int(m_pScenes.size()) - 1};
+	SetScene(finalSceneIdx);
 }
 
 Shining::Scene* Shining::SceneManager::CreateScene(const std::string& name)

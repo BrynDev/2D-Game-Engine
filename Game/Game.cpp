@@ -12,6 +12,7 @@
 
 #include "MoveState.h"
 #include "IdleState.h"
+#include "DyingState.h"
 #include "BagIdleState.h"
 #include "BagWarningState.h"
 #include "BagFallingState.h"
@@ -79,18 +80,20 @@ int main()
 	
 	{
 		//render
-		//Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
-		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 2, 3) };
+		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 3, 3) };
 		pPlayerCharacter->AddComponent(pPlayerRender);
 		//state
 		Shining::State* const pIdleState{ new IdleState() };
 		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(pIdleState, pPlayerCharacter) };
 		Shining::State* const pMoveState{ new MoveState() };
 		pPlayerState->AddState(pMoveState);
+		Shining::State* const pDyingState{ new DyingState() };
+		pPlayerState->AddState(pDyingState);
+		//second layer of state
 		Shining::State* const pShotReadyState{ new ShotReadyState() };
 		Shining::State* const pShotCooldownState{ new ShotCooldownState() };
 		pPlayerState->AddNewStateLayer(pShotReadyState);
-		pPlayerState->AddState(pShotCooldownState, 1); //second state layer
+		pPlayerState->AddState(pShotCooldownState, 1); //add to second state layer
 		pPlayerCharacter->AddComponent(pPlayerState);
 		//physics
 		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter, false) };
@@ -414,6 +417,25 @@ int main()
 		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 2 * scaledTileSize, 3 * scaledTileSize);
 
 		pGameScene_Level3->InitWorld("Tileset.png", "Level_3.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
+	}
+	Shining::Scene* pGameOverScreen{ sceneManager.CreateScene("GameOver") };
+	{		
+		pGameOverScreen->Add(pScoreboard);
+		const int textPosX{ 190 };
+
+		Shining::GameObject* const pBigTextObject{ new Shining::GameObject(textPosX, windowHeight / 2) };
+		const int bigTextSize{ 24 };
+		Shining::TextComponent* const pBigText{ new Shining::TextComponent("Game over", "Retro Gaming.ttf", SDL_Color{210, 140, 140},bigTextSize) };
+		pBigTextObject->AddComponent(pBigText);
+
+		const int offsetY{ 50 };
+		Shining::GameObject* const pSmallTextObject{ new Shining::GameObject(textPosX, windowHeight / 2 + offsetY) };
+		const int smallTextSize{ 18 };
+		Shining::TextComponent* const pSmallText{ new Shining::TextComponent("Thanks for playing!", "Retro Gaming.ttf", SDL_Color{210, 140, 140},smallTextSize) };
+		pSmallTextObject->AddComponent(pSmallText);
+
+		pGameOverScreen->Add(pBigTextObject);
+		pGameOverScreen->Add(pSmallTextObject);
 	}
 	
 	//setup input and commands

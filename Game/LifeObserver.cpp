@@ -10,23 +10,27 @@ LifeObserver::LifeObserver(Shining::TextComponent* const pLivesText)
 
 void LifeObserver::Notify(Shining::GameObject* const pSubject, const int eventID, void* /*pData*/) noexcept
 {
-	bool wasNrLivesChanged{ false };
-	bool shouldIncreaseCount{ false };
+	//bool wasNrLivesChanged{ false };
+	//bool shouldIncreaseCount{ false };
+	bool shouldIncrease{ false };
+	bool shouldDecrease{ false };
 	switch (eventID)
 	{
 		case int(ObservedEvents::playerHit) :
-			wasNrLivesChanged = true;
+			//wasNrLivesChanged = true;
+			shouldDecrease = true;
 			break;
 		case int(ObservedEvents::extraLifeEarned) :
 			pSubject->GetComponent<Shining::HealthComponent>()->TakeDamage(-1); //deal -1 damage to actually give the player an extra life
-			wasNrLivesChanged = true;
-			shouldIncreaseCount = true;
+			//wasNrLivesChanged = true;
+			//shouldIncreaseCount = true;
+			shouldIncrease = true;
 			break;
 		default:
 			break;
 	}
 
-	if (wasNrLivesChanged)
+	/*if (wasNrLivesChanged)
 	{
 		Shining::HealthComponent* const pHealth{ pSubject->GetComponent<Shining::HealthComponent>() };
 		int currentHealth{ pHealth->GetCurrentHealth() };
@@ -36,6 +40,25 @@ void LifeObserver::Notify(Shining::GameObject* const pSubject, const int eventID
 		}
 
 		std::string newText{ "x " + std::to_string(currentHealth) };
+		m_pLivesText->SetText(newText);
+	}*/
+
+	if (shouldIncrease)
+	{
+		Shining::HealthComponent* const pHealth{ pSubject->GetComponent<Shining::HealthComponent>() };
+		int currentHealth{ pHealth->GetCurrentHealth() };
+		int newHealth{ currentHealth + 1 };
+
+		std::string newText{ "x " + std::to_string(newHealth) };
+		m_pLivesText->SetText(newText);
+	}
+	if (shouldDecrease)
+	{
+		Shining::HealthComponent* const pHealth{ pSubject->GetComponent<Shining::HealthComponent>() };
+		int currentHealth{ pHealth->GetCurrentHealth() };
+		int newHealth{ currentHealth - 1 };
+
+		std::string newText{ "x " + std::to_string(newHealth) };
 		m_pLivesText->SetText(newText);
 	}
 }

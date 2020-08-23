@@ -97,6 +97,9 @@
     <ClCompile Include="BagWarningState.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="DyingState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -172,6 +175,9 @@
       <Filter>HitBehavior</Filter>
     </ClInclude>
     <ClInclude Include="BagWarningState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="DyingState.h">
       <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>

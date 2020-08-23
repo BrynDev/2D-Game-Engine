@@ -15,6 +15,8 @@ namespace Shining
 
 		Scene* CreateScene(const std::string& name);
 		void AdvanceScene();
+		void GoToFinalScene();
+		void ResetCurrentScene() noexcept;
 		void SetScene(Scene* pScene);
 		void SetScene(const int sceneIdx);
 
