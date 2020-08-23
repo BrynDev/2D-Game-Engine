@@ -4,8 +4,9 @@ enum class ObservedEvents
 	gemPickup = 0,
 	goldPickup = 1,
 	enemyKill = 2,
-	playerMove = 3,
-	playerShoot = 4
+	playerHit = 3,
+	extraLifeEarned = 4,
+	outOfLives = 5
 };
 
 enum class CollisionTags

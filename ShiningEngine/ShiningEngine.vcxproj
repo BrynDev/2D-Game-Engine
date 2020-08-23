@@ -213,9 +213,12 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClInclude Include="CSVParser.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HitBehavior.h" />
     <ClInclude Include="InputContext.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="NullCollision.h" />
+    <ClInclude Include="NullHit.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="ShiningEngine.h" />
@@ -246,9 +249,12 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClCompile Include="CSVParser.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HitBehavior.cpp" />
     <ClCompile Include="InputContext.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="NullCollision.cpp" />
+    <ClCompile Include="NullHit.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="ShiningEngine.cpp" />

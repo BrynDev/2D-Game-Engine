@@ -4,12 +4,27 @@
 #include "BagFallingState.h"
 #include "BagIdleState.h"
 
+/*BagCollision::BagCollision(Shining::GameObject* const pPlayer)
+	:m_pPlayer{pPlayer}
+{
+}*/
+
+BagCollision::BagCollision(Shining::HealthComponent* const pPlayerHealth)
+	:CollisionBehavior()
+	, m_pPlayerHealth{pPlayerHealth}
+{
+}
+
 void BagCollision::ResolveCollision(Shining::GameObject* const pOwnerObject, const int collidedTag) const noexcept
 {
+	Shining::StateComponent* const pBagState{ pOwnerObject->GetComponent<Shining::StateComponent>() };
 	switch (collidedTag)
 	{
 		case int(CollisionTags::player) :
-			//kill
+			if (pBagState->IsCurrentState<BagFallingState>())
+			{
+				m_pPlayerHealth->TakeDamage(1); //deal 1 damage to player
+			}
 			break;
 		case int(CollisionTags::enemy):
 			//kill
