@@ -15,7 +15,7 @@ Shining::HealthComponent::HealthComponent(GameObject* const pOwner, const int ma
 	, m_pOwner{pOwner}
 	, m_MaxHealth{maxHealth}
 	, m_CurrentHealth{currentHealth}
-	, m_NextHealth{maxHealth}
+	, m_NextHealth{m_CurrentHealth}
 	, m_IsDead{false}
 	, m_NeedsSwap{false}
 {

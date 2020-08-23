@@ -13,6 +13,7 @@
 #include "MoveState.h"
 #include "IdleState.h"
 #include "BagIdleState.h"
+#include "BagWarningState.h"
 #include "BagFallingState.h"
 #include "ShotReadyState.h"
 #include "ShotCooldownState.h"
@@ -121,7 +122,7 @@ int main()
 		pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
 	}
 	//lives counter
-	Shining::GameObject* const pLivesCounter{ new Shining::GameObject(135, worldHeight + 5) }; //slight offset to make it look nicer
+	Shining::GameObject* const pLivesCounter{ new Shining::GameObject(145, worldHeight + 5) }; //slight offset to make it look nicer
 	{
 		Shining::RenderComponent* const pLivesRender{ new Shining::RenderComponent("Life.png", 2) };
 		pLivesCounter->AddComponent(pLivesRender);
@@ -129,7 +130,7 @@ int main()
 		Shining::TextComponent* const pLivesText{ new Shining::TextComponent("x 3", "Retro Gaming.ttf", SDL_Color{ 0,250,0 }, 18, 35, 0) };
 		pLivesCounter->AddComponent(pLivesText);
 		//life observer
-		Shining::Observer* const pLifeObserver{ new LifeObserver(pLivesText,0) };
+		Shining::Observer* const pLifeObserver{ new LifeObserver(pLivesText) };
 		pPlayerCharacter->AddObserver(pLifeObserver);
 	}
 	//level change observer
@@ -489,9 +490,11 @@ void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, Shining::HealthCompo
 
 	//state
 	BagIdleState* const pBagIdleState{ new BagIdleState{} };
-	BagFallingState* const pFallingState{ new BagFallingState() };
+	BagWarningState* const pBagWarningState{ new BagWarningState() };
+	BagFallingState* const pBagFallingState{ new BagFallingState() };
 	Shining::StateComponent* const pBagStates{ new Shining::StateComponent(pBagIdleState, pBag) };
-	pBagStates->AddState(pFallingState);
+	pBagStates->AddState(pBagWarningState);
+	pBagStates->AddState(pBagFallingState);
 	pBag->AddComponent(pBagStates);
 
 	//physics

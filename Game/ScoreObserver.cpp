@@ -23,7 +23,7 @@ void ScoreObserver::Notify(Shining::GameObject* const pSubject, const int eventI
 		++m_GemPickupStreak;
 		if (m_GemPickupStreak >= m_GemPickupStreakMax)
 		{
-			scoreIncrease += 250;
+			scoreIncrease += 25000;
 			m_GemPickupStreak = 0;
 		}
 		scoreChanged = true;
@@ -45,8 +45,10 @@ void ScoreObserver::Notify(Shining::GameObject* const pSubject, const int eventI
 	
 	if (scoreChanged)
 	{
-		m_pScoreText->SetText(std::to_string(m_Score));
 		m_Score += scoreIncrease;
+		m_pScoreText->SetText(std::to_string(m_Score));
+		
+
 		m_ExtraLifeCount += scoreIncrease;
 		const int scorePerLife{ 20000 }; //award an extra life every 20.000 points
 		if (m_ExtraLifeCount >= scorePerLife)

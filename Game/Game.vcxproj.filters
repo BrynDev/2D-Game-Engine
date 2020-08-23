@@ -94,6 +94,9 @@
     <ClCompile Include="PlayerHit.cpp">
       <Filter>HitBehavior</Filter>
     </ClCompile>
+    <ClCompile Include="BagWarningState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -167,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="PlayerHit.h">
       <Filter>HitBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="BagWarningState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

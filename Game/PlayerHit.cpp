@@ -4,22 +4,17 @@
 
 void PlayerHit::OnHit(Shining::GameObject* const pHitObject, const int damageTaken) const noexcept
 {
-
-	Shining::HealthComponent* const pPlayerHealth{ pHitObject->GetComponent<Shining::HealthComponent>() };
-	const int currentHealth{ pPlayerHealth->GetCurrentHealth() };
-
-	int eventIDToSend{};
-	if (damageTaken > 0)
+	if (damageTaken > 0) //player took damage
 	{
-		eventIDToSend = int(ObservedEvents::playerHit);
+		/*Shining::HealthComponent* const pPlayerHealth{ pHitObject->GetComponent<Shining::HealthComponent>() };
+		const int currentHealth{ pPlayerHealth->GetCurrentHealth() };
+		const int eventIDToSend{ int(ObservedEvents::playerHit) };*/
+		pHitObject->NotifyObservers(int(ObservedEvents::playerHit)); //decrease life counter
+		//set player state to dying, reset current stage
 	}
-	/*else
-	{
-		eventIDToSend = int(ObservedEvents::extraLifeEarned);
-	}*/
+
+	//if damageTaken is smaller than 0, the player got an extra life and nothing should happen on hit
 	
-	pHitObject->NotifyObservers(eventIDToSend, (void*)(&currentHealth));
-	//set player to dying state
 }
 
 void PlayerHit::OnDeath(Shining::GameObject* const pDeadObject) const noexcept

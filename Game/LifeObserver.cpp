@@ -2,30 +2,25 @@
 #include "Enums.h"
 #include "ShiningEnginePCH.h"
 
-LifeObserver::LifeObserver(Shining::TextComponent* const pLivesText, const int lives)
+LifeObserver::LifeObserver(Shining::TextComponent* const pLivesText)
 	:Observer()
 	, m_pLivesText{pLivesText}
-	, m_NrLives{lives}
 {
 }
 
-void LifeObserver::Notify(Shining::GameObject* const /*pSubject*/, const int eventID, void* pData) noexcept
+void LifeObserver::Notify(Shining::GameObject* const pSubject, const int eventID, void* /*pData*/) noexcept
 {
 	bool wasNrLivesChanged{ false };
+	bool shouldIncreaseCount{ false };
 	switch (eventID)
 	{
 		case int(ObservedEvents::playerHit) :
 			wasNrLivesChanged = true;
-			/*--m_NrLives;
-			static_cast<int*>(pData);
-			//m_pLivesText->SetText("x " + m_NrLives);
-			
-			static_cast<int*>(pData);*/
 			break;
 		case int(ObservedEvents::extraLifeEarned) :
+			pSubject->GetComponent<Shining::HealthComponent>()->TakeDamage(-1); //deal -1 damage to actually give the player an extra life
 			wasNrLivesChanged = true;
-			/*++m_NrLives;
-			m_pLivesText->SetText("x " + m_NrLives);*/
+			shouldIncreaseCount = true;
 			break;
 		default:
 			break;
@@ -33,13 +28,14 @@ void LifeObserver::Notify(Shining::GameObject* const /*pSubject*/, const int eve
 
 	if (wasNrLivesChanged)
 	{
-		int* pNrLives{ static_cast<int*>(pData) };
-		std::string newText{ "x " + std::to_string(*pNrLives) };
+		Shining::HealthComponent* const pHealth{ pSubject->GetComponent<Shining::HealthComponent>() };
+		int currentHealth{ pHealth->GetCurrentHealth() };
+		if (shouldIncreaseCount)
+		{
+			++currentHealth; //there is no SwapBuffer() call between increasing health and updating the text, so increment it once to make the text correct
+		}
+
+		std::string newText{ "x " + std::to_string(currentHealth) };
 		m_pLivesText->SetText(newText);
 	}
-
-	/*if (m_NrLives < 0)
-	{
-		pSubject->NotifyObservers(int(ObservedEvents::outOfLives));
-	}*/
 }
