@@ -1,6 +1,7 @@
 #include "StartIdleCommand.h"
 #include "IdleState.h"
 #include "ShiningEnginePCH.h"
+#include "DyingState.h"
 
 StartIdleCommand::StartIdleCommand()
 	:Command()
@@ -10,11 +11,10 @@ StartIdleCommand::StartIdleCommand()
 void StartIdleCommand::Execute(Shining::GameObject* const pTargetObject) const noexcept
 {
 	Shining::StateComponent* const pState{ pTargetObject->GetComponent<Shining::StateComponent>() };
-	if (pState == nullptr)
+	if (!pState->IsCurrentState<DyingState>()) //block inputs if the player is dying
 	{
-		return;
-	}
-	pState->ChangeState<IdleState>();
+		pState->ChangeState<IdleState>();
+	}	
 }
 
 void StartIdleCommand::OnRelease(Shining::GameObject* const /*pTargetObject*/) const noexcept

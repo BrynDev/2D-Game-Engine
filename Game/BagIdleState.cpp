@@ -1,6 +1,6 @@
 #include "BagIdleState.h"
 #include "ShiningEnginePCH.h"
-#include "BagFallingState.h"
+#include "BagWarningState.h"
 
 BagIdleState::BagIdleState()
 	:State()
@@ -14,10 +14,10 @@ void BagIdleState::Update(Shining::GameObject* const pOwner, const float /*timeS
 	if (m_CanFall)
 	{
 		Shining::StateComponent* pState{ pOwner->GetComponent<Shining::StateComponent>() };
-		pState->ChangeState<BagFallingState>();
+		pState->ChangeState<BagWarningState>();
 	}
 
-	m_CanFall = true; //bag will attempt to fall, of colliding with world this will be set to false
+	m_CanFall = true; //bag will attempt to fall, if colliding with world this will be set to false
 }
 
 void BagIdleState::OnEntry(Shining::GameObject* const pOwner) noexcept

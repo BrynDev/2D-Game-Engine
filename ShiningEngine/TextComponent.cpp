@@ -7,12 +7,19 @@
 #include <SDL_ttf.h>
 
 Shining::TextComponent::TextComponent(const std::string& text, const std::string& fontName, const SDL_Color& color, const int size)
+	:TextComponent(text, fontName, color, size, 0, 0)
+{
+}
+
+Shining::TextComponent::TextComponent(const std::string& text, const std::string& fontName, const SDL_Color& color, const int size, const int offsetX, const int offsetY)
 	:Component{}
-	, m_Text{text}
-	, m_pFont{ Shining::ResourceManager::GetInstance().LoadFont(fontName, size)}
-	, m_Color{color}
-	, m_pTexture{nullptr}
-	, m_NeedsUpdate{true}
+	, m_Text{ text }
+	, m_pFont{ Shining::ResourceManager::GetInstance().LoadFont(fontName, size) }
+	, m_Color{ color }
+	, m_pTexture{ nullptr }
+	, m_NeedsUpdate{ true }
+	, m_OffsetX{ offsetX }
+	, m_OffsetY{ offsetY }
 {
 
 }
@@ -26,7 +33,7 @@ void Shining::TextComponent::Render(const glm::vec2& pos) const
 {
 	if (m_pTexture != nullptr)
 	{
-		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+		Shining::Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x + m_OffsetX, pos.y + m_OffsetY);
 	}
 }
 

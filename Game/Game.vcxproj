@@ -209,10 +209,13 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClCompile Include="BagCollision.cpp" />
     <ClCompile Include="BagFallingState.cpp" />
     <ClCompile Include="BagIdleState.cpp" />
+    <ClCompile Include="BagWarningState.cpp" />
+    <ClCompile Include="DyingState.cpp" />
     <ClCompile Include="FireballCollision.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="LevelChangeObserver.cpp" />
+    <ClCompile Include="LifeObserver.cpp" />
     <ClCompile Include="MoveDownCommand.cpp" />
     <ClCompile Include="MoveLeftCommand.cpp" />
     <ClCompile Include="MoveRightCommand.cpp" />
@@ -220,6 +223,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClCompile Include="MoveUpCommand.cpp" />
     <ClCompile Include="PickupCollision.cpp" />
     <ClCompile Include="PlayerCollision.cpp" />
+    <ClCompile Include="PlayerHit.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
     <ClCompile Include="ShootCommand.cpp" />
     <ClCompile Include="ShotCooldownState.cpp" />
@@ -238,9 +242,12 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClInclude Include="BagCollision.h" />
     <ClInclude Include="BagFallingState.h" />
     <ClInclude Include="BagIdleState.h" />
+    <ClInclude Include="BagWarningState.h" />
+    <ClInclude Include="DyingState.h" />
     <ClInclude Include="FireballCollision.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="LevelChangeObserver.h" />
+    <ClInclude Include="LifeObserver.h" />
     <ClInclude Include="MoveDownCommand.h" />
     <ClInclude Include="MoveLeftCommand.h" />
     <ClInclude Include="MoveRightCommand.h" />
@@ -249,6 +256,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClInclude Include="Enums.h" />
     <ClInclude Include="PickupCollision.h" />
     <ClInclude Include="PlayerCollision.h" />
+    <ClInclude Include="PlayerHit.h" />
     <ClInclude Include="ScoreObserver.h" />
     <ClInclude Include="ShootCommand.h" />
     <ClInclude Include="ShotCooldownState.h" />

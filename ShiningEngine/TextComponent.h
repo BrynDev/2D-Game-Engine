@@ -10,6 +10,7 @@ namespace Shining
 	{
 	public:
 		TextComponent(const std::string& text, const std::string& fontName, const SDL_Color& color, const int size);
+		TextComponent(const std::string& text, const std::string& fontName, const SDL_Color& color, const int size, const int offsetX, const int offsetY);
 		virtual ~TextComponent();
 
 		virtual void Render(const glm::vec2& pos) const override;
@@ -26,6 +27,8 @@ namespace Shining
 		const Shining::Font* m_pFont;
 		std::string m_Text;
 		const SDL_Color m_Color;
+		const int m_OffsetX;
+		const int m_OffsetY;
 		bool m_NeedsUpdate;
 	};
 }

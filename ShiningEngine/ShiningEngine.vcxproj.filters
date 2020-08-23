@@ -91,6 +91,15 @@
     <ClCompile Include="SpawnComponent.cpp">
       <Filter>Components\SpawnComponent</Filter>
     </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Components\HealthComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="HitBehavior.cpp">
+      <Filter>HitBehavior</Filter>
+    </ClCompile>
+    <ClCompile Include="NullHit.cpp">
+      <Filter>HitBehavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -187,6 +196,15 @@
     <ClInclude Include="SpawnComponent.h">
       <Filter>Components\SpawnComponent</Filter>
     </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Components\HealthComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="HitBehavior.h">
+      <Filter>HitBehavior</Filter>
+    </ClInclude>
+    <ClInclude Include="NullHit.h">
+      <Filter>HitBehavior</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -275,6 +293,12 @@
     </Filter>
     <Filter Include="Components\SpawnComponent">
       <UniqueIdentifier>{e079ec47-48fa-4715-a89f-2bb6899084ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\HealthComponent">
+      <UniqueIdentifier>{179e3608-1698-4d59-ac86-ad4b67e06dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HitBehavior">
+      <UniqueIdentifier>{87ae9555-76cc-4166-a617-415a923f5852}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

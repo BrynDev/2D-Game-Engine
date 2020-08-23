@@ -109,6 +109,7 @@ void Shining::CollisionComponent::SetBehavior(CollisionBehavior* const pBehavior
 		}
 	}
 
+	pBehavior->IncreaseInstanceCount();
 	m_pCollisionBehavior = pBehavior;
 }
 

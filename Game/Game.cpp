@@ -1,4 +1,5 @@
 #include "ShiningEnginePCH.h" //single include to access all engine functionality
+
 #include "MoveRightCommand.h"
 #include "MoveLeftCommand.h"
 #include "MoveUpCommand.h"
@@ -11,13 +12,18 @@
 
 #include "MoveState.h"
 #include "IdleState.h"
+#include "DyingState.h"
 #include "BagIdleState.h"
+#include "BagWarningState.h"
 #include "BagFallingState.h"
 #include "ShotReadyState.h"
 #include "ShotCooldownState.h"
 
 #include "ScoreObserver.h"
 #include "LevelChangeObserver.h"
+#include "LifeObserver.h"
+
+#include "PlayerHit.h"
 #include "PlayerCollision.h"
 #include "PickupCollision.h"
 #include "BagCollision.h"
@@ -30,7 +36,7 @@
 // - "CPP Coding Standards - 101 Rules Guidelines and Best Practices 2005", item 13 - Herb Sutter, Andrei Alexandrescu
 
 void AddGemToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos );
-void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos);
+void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, Shining::HealthComponent* const pPlayerHealth, const float xPos, const float yPos);
 
 int main()
 {
@@ -70,20 +76,24 @@ int main()
 
 	//player
 	Shining::GameObject* const pPlayerCharacter{ new Shining::GameObject(7 * scaledTileSize , 9 * scaledTileSize + 2) }; //+2 so the player doesn't clip some dirt at the start
+	Shining::HealthComponent* const pPlayerHealth{ new Shining::HealthComponent(pPlayerCharacter, 99, 3) }; //player can earn more lives
+	
 	{
 		//render
-		//Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 1, 3) };
-		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 2, 3) };
+		Shining::RenderComponent* const pPlayerRender{ new Shining::RenderComponent("DiggerCar.png", 2, 80, 3, 3) };
 		pPlayerCharacter->AddComponent(pPlayerRender);
 		//state
 		Shining::State* const pIdleState{ new IdleState() };
 		Shining::StateComponent* const pPlayerState{ new Shining::StateComponent(pIdleState, pPlayerCharacter) };
 		Shining::State* const pMoveState{ new MoveState() };
 		pPlayerState->AddState(pMoveState);
+		Shining::State* const pDyingState{ new DyingState() };
+		pPlayerState->AddState(pDyingState);
+		//second layer of state
 		Shining::State* const pShotReadyState{ new ShotReadyState() };
 		Shining::State* const pShotCooldownState{ new ShotCooldownState() };
 		pPlayerState->AddNewStateLayer(pShotReadyState);
-		pPlayerState->AddState(pShotCooldownState, 1); //second state layer
+		pPlayerState->AddState(pShotCooldownState, 1); //add to second state layer
 		pPlayerCharacter->AddComponent(pPlayerState);
 		//physics
 		Shining::PhysicsComponent* const pPlayerPhysics{ new Shining::PhysicsComponent(pPlayerCharacter, false) };
@@ -96,6 +106,10 @@ int main()
 		//spawner, for the fireball object
 		Shining::SpawnComponent* const pFireballSpawner{ new Shining::SpawnComponent(pFireball, true) };
 		pPlayerCharacter->AddComponent(pFireballSpawner);
+		//health
+		Shining::HitBehavior* const pPlayerHitBehavior{ new PlayerHit() };
+		pPlayerHealth->SetHitBehavior(pPlayerHitBehavior);
+		pPlayerCharacter->AddComponent(pPlayerHealth);
 
 	}
 	
@@ -107,13 +121,26 @@ int main()
 		pScoreboard->AddComponent(pScoreboardText);
 
 		//observer
-		ScoreObserver* pScoreObserver{ new ScoreObserver(pScoreboard) };
+		ScoreObserver* pScoreObserver{ new ScoreObserver(pScoreboardText) };
 		pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
+	}
+	//lives counter
+	Shining::GameObject* const pLivesCounter{ new Shining::GameObject(145, worldHeight + 5) }; //slight offset to make it look nicer
+	{
+		Shining::RenderComponent* const pLivesRender{ new Shining::RenderComponent("Life.png", 2) };
+		pLivesCounter->AddComponent(pLivesRender);
+
+		Shining::TextComponent* const pLivesText{ new Shining::TextComponent("x 3", "Retro Gaming.ttf", SDL_Color{ 0,250,0 }, 18, 35, 0) };
+		pLivesCounter->AddComponent(pLivesText);
+		//life observer
+		Shining::Observer* const pLifeObserver{ new LifeObserver(pLivesText) };
+		pPlayerCharacter->AddObserver(pLifeObserver);
 	}
 	//level change observer
 	LevelChangeObserver* pLevelChangeObserver{ new LevelChangeObserver() };
 	pPlayerCharacter->AddObserver(pLevelChangeObserver);
-
+	
+	//walls
 	const int wallSize{ 10 };
 	const int wallOffset{ 2 }; //small offset that makes wall collision less strict
 	Shining::GameObject* pLeftWall{ new Shining::GameObject(-wallSize - wallOffset, 0) };
@@ -166,6 +193,7 @@ int main()
 		pGameScene_Level1->Add(pFireball);
 		pGameScene_Level1->Add(pPlayerCharacter);	
 		pGameScene_Level1->Add(pScoreboard);
+		pGameScene_Level1->Add(pLivesCounter);
 		pGameScene_Level1->Add(pLeftWall);
 		pGameScene_Level1->Add(pRightWall);
 		pGameScene_Level1->Add(pBottomWall);
@@ -214,13 +242,13 @@ int main()
 		AddGemToScene(pGameScene_Level1, 14 * scaledTileSize, 9 * scaledTileSize);
 
 		//GOLD BAGS
-		AddGoldBagToScene(pGameScene_Level1, 4 * scaledTileSize, 0 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level1, 12 * scaledTileSize, 1 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level1, 1 * scaledTileSize, 2 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level1, 5 * scaledTileSize, 3 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level1, 8 * scaledTileSize, 3 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level1, 6 * scaledTileSize, 6 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level1, 8 * scaledTileSize, 6 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 4 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 12 * scaledTileSize, 1 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 1 * scaledTileSize, 2 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 5 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 8 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 6 * scaledTileSize, 6 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 8 * scaledTileSize, 6 * scaledTileSize);
 
 		pLevelChangeObserver->AddGemGoal(30); //pick up 30 gems to proceed to next stage
 
@@ -233,11 +261,12 @@ int main()
 		pGameScene_Level2->Add(pFireball);
 		pGameScene_Level2->Add(pPlayerCharacter);
 		pGameScene_Level2->Add(pScoreboard);
+		pGameScene_Level2->Add(pLivesCounter);
 		pGameScene_Level2->Add(pLeftWall);
 		pGameScene_Level2->Add(pRightWall);
 		pGameScene_Level2->Add(pBottomWall);
 		pGameScene_Level2->Add(pTopWall);
-
+		//GEMS
 		AddGemToScene(pGameScene_Level2, 1 * scaledTileSize, 1 * scaledTileSize);
 		AddGemToScene(pGameScene_Level2, 2 * scaledTileSize, 1 * scaledTileSize);
 		AddGemToScene(pGameScene_Level2, 1 * scaledTileSize, 2 * scaledTileSize);
@@ -293,14 +322,14 @@ int main()
 		AddGemToScene(pGameScene_Level2, 0 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level2, 1 * scaledTileSize, 9 * scaledTileSize);
 		pLevelChangeObserver->AddGemGoal(41);
-
-		AddGoldBagToScene(pGameScene_Level2, 8 * scaledTileSize, 0 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level2, 10 * scaledTileSize, 0 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level2, 0 * scaledTileSize, 3 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level2, 3 * scaledTileSize, 3 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level2, 7 * scaledTileSize, 5 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level2, 1 * scaledTileSize, 7 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level2, 2 * scaledTileSize, 7 * scaledTileSize);
+		//GOLD BAGS
+		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 8 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 10 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 0 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 3 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 7 * scaledTileSize, 5 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 1 * scaledTileSize, 7 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 2 * scaledTileSize, 7 * scaledTileSize);
 
 		pGameScene_Level2->InitWorld("Tileset.png", "Level_2.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
 	}
@@ -311,11 +340,12 @@ int main()
 		pGameScene_Level3->Add(pFireball);
 		pGameScene_Level3->Add(pPlayerCharacter);
 		pGameScene_Level3->Add(pScoreboard);
+		pGameScene_Level3->Add(pLivesCounter);
 		pGameScene_Level3->Add(pLeftWall);
 		pGameScene_Level3->Add(pRightWall);
 		pGameScene_Level3->Add(pBottomWall);
 		pGameScene_Level3->Add(pTopWall);
-
+		//GEMS
 		AddGemToScene(pGameScene_Level3, 0 * scaledTileSize, 1 * scaledTileSize);
 		AddGemToScene(pGameScene_Level3, 1 * scaledTileSize, 1 * scaledTileSize);
 		AddGemToScene(pGameScene_Level3, 6 * scaledTileSize, 1 * scaledTileSize);
@@ -377,16 +407,35 @@ int main()
 		AddGemToScene(pGameScene_Level3, 14 * scaledTileSize, 9 * scaledTileSize);
 
 		pLevelChangeObserver->AddGemGoal(51);
-
-		AddGoldBagToScene(pGameScene_Level3, 5 * scaledTileSize, 0 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level3, 7 * scaledTileSize, 0 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level3, 9 * scaledTileSize, 0 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level3, 12 * scaledTileSize, 1 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level3, 13 * scaledTileSize, 1 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level3, 1 * scaledTileSize, 3 * scaledTileSize);
-		AddGoldBagToScene(pGameScene_Level3, 2 * scaledTileSize, 3 * scaledTileSize);
+		//GOLD BAGS
+		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 5 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 7 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 9 * scaledTileSize, 0 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 12 * scaledTileSize, 1 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 13 * scaledTileSize, 1 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 1 * scaledTileSize, 3 * scaledTileSize);
+		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 2 * scaledTileSize, 3 * scaledTileSize);
 
 		pGameScene_Level3->InitWorld("Tileset.png", "Level_3.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
+	}
+	Shining::Scene* pGameOverScreen{ sceneManager.CreateScene("GameOver") };
+	{		
+		pGameOverScreen->Add(pScoreboard);
+		const int textPosX{ 190 };
+
+		Shining::GameObject* const pBigTextObject{ new Shining::GameObject(textPosX, windowHeight / 2) };
+		const int bigTextSize{ 24 };
+		Shining::TextComponent* const pBigText{ new Shining::TextComponent("Game over", "Retro Gaming.ttf", SDL_Color{210, 140, 140},bigTextSize) };
+		pBigTextObject->AddComponent(pBigText);
+
+		const int offsetY{ 50 };
+		Shining::GameObject* const pSmallTextObject{ new Shining::GameObject(textPosX, windowHeight / 2 + offsetY) };
+		const int smallTextSize{ 18 };
+		Shining::TextComponent* const pSmallText{ new Shining::TextComponent("Thanks for playing!", "Retro Gaming.ttf", SDL_Color{210, 140, 140},smallTextSize) };
+		pSmallTextObject->AddComponent(pSmallText);
+
+		pGameOverScreen->Add(pBigTextObject);
+		pGameOverScreen->Add(pSmallTextObject);
 	}
 	
 	//setup input and commands
@@ -451,7 +500,7 @@ void AddGemToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const 
 	pSceneToAddTo->Add(pGem);
 }
 
-void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos)
+void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, Shining::HealthComponent* const pPlayerHealth, const float xPos, const float yPos)
 {
 	const int bagOffsetX{ 5 }; //better center the bag on the tile
 	const int bagOffsetY{ 2 }; //make sure the bag doesn't stick to a ceiling
@@ -463,9 +512,11 @@ void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, const float xPos, co
 
 	//state
 	BagIdleState* const pBagIdleState{ new BagIdleState{} };
-	BagFallingState* const pFallingState{ new BagFallingState() };
+	BagWarningState* const pBagWarningState{ new BagWarningState() };
+	BagFallingState* const pBagFallingState{ new BagFallingState() };
 	Shining::StateComponent* const pBagStates{ new Shining::StateComponent(pBagIdleState, pBag) };
-	pBagStates->AddState(pFallingState);
+	pBagStates->AddState(pBagWarningState);
+	pBagStates->AddState(pBagFallingState);
 	pBag->AddComponent(pBagStates);
 
 	//physics
@@ -474,7 +525,7 @@ void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, const float xPos, co
 
 	//collision
 	Shining::CollisionComponent* const pBagCollision{ new Shining::CollisionComponent(pBag, pBagRender, int(CollisionTags::goldBag), true, false) };
-	Shining::CollisionBehavior* const pBagCollisionBehavior{ new BagCollision() }; //this object keeps no variables or states, all bags could share 1 behavior painter, todo
+	Shining::CollisionBehavior* const pBagCollisionBehavior{ new BagCollision(pPlayerHealth) };
 	pBagCollision->SetBehavior(pBagCollisionBehavior);
 	pBagCollision->AddTargetTag(int(CollisionTags::player));
 	pBagCollision->AddTargetTag(int(CollisionTags::wall));
