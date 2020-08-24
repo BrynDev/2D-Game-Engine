@@ -100,6 +100,9 @@
     <ClCompile Include="DyingState.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyCollision.cpp">
+      <Filter>Collision behavior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MoveState.h">
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="DyingState.h">
       <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyCollision.h">
+      <Filter>Collision behavior</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -211,6 +211,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClCompile Include="BagIdleState.cpp" />
     <ClCompile Include="BagWarningState.cpp" />
     <ClCompile Include="DyingState.cpp" />
+    <ClCompile Include="EnemyCollision.cpp" />
     <ClCompile Include="FireballCollision.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IdleState.cpp" />
@@ -244,6 +245,7 @@ xcopy "$(SolutionDir)Data" "$(SolutionDir)Game\Output\Data\" /R /Y</Command>
     <ClInclude Include="BagIdleState.h" />
     <ClInclude Include="BagWarningState.h" />
     <ClInclude Include="DyingState.h" />
+    <ClInclude Include="EnemyCollision.h" />
     <ClInclude Include="FireballCollision.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="LevelChangeObserver.h" />

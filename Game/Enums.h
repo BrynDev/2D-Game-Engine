@@ -6,7 +6,6 @@ enum class ObservedEvents
 	enemyKill = 2,
 	playerHit = 3,
 	extraLifeEarned = 4,
-	outOfLives = 5
 };
 
 enum class CollisionTags
