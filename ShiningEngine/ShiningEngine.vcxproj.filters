@@ -100,6 +100,9 @@
     <ClCompile Include="NullHit.cpp">
       <Filter>HitBehavior</Filter>
     </ClCompile>
+    <ClCompile Include="Music.cpp">
+      <Filter>Resources\Music</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h" />
@@ -205,6 +208,9 @@
     <ClInclude Include="NullHit.h">
       <Filter>HitBehavior</Filter>
     </ClInclude>
+    <ClInclude Include="Music.h">
+      <Filter>Resources\Music</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameObject">
@@ -299,6 +305,9 @@
     </Filter>
     <Filter Include="HitBehavior">
       <UniqueIdentifier>{87ae9555-76cc-4166-a617-415a923f5852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Music">
+      <UniqueIdentifier>{1418528b-18b8-4dfa-8fbb-7d9b539ba71a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

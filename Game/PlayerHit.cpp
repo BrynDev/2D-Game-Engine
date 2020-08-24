@@ -27,7 +27,6 @@ void PlayerHit::OnHit(Shining::GameObject* const pHitObject, const int damageTak
 
 void PlayerHit::OnDeath(Shining::GameObject* const /*pDeadObject*/) const noexcept
 {
-	//pDeadObject->NotifyObservers(int(ObservedEvents::outOfLives));
 	//game over
 	Shining::AudioPlayer::GetInstance().StopAllEffects();
 	Shining::SceneManager::GetInstance().GoToFinalScene();

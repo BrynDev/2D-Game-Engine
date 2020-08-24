@@ -8,6 +8,7 @@
 #include "Texture2D.h"
 #include "Font.h"
 #include "SoundEffect.h"
+#include "Music.h"
 #include <algorithm>
 
 void Shining::ResourceManager::Init(const std::string& dataPath)
@@ -54,6 +55,11 @@ void Shining::ResourceManager::Destroy()
 	}
 
 	for (std::pair<const std::string, SoundEffect*> element : m_SoundEffectMap)
+	{
+		delete element.second;
+	}
+
+	for (std::pair<const std::string, Music*> element : m_MusicMap)
 	{
 		delete element.second;
 	}
@@ -129,6 +135,38 @@ Shining::SoundEffect* Shining::ResourceManager::LoadSoundEffect(const std::strin
 	Shining::SoundEffect* pSoundEffect{ new Shining::SoundEffect{pChunk} };
 	m_SoundEffectMap.insert(std::make_pair(file, pSoundEffect));
 	return pSoundEffect;
+}
+
+Shining::Music* Shining::ResourceManager::LoadMusic(const std::string& file)
+{
+	//check if this file has already been loaded
+	if (m_MusicMap.find(file) != m_MusicMap.cend())
+	{
+		return m_MusicMap.at(file);
+	}
+
+	//this is a new sound effect
+	const std::string fullPath{ m_DataPath + file };
+	Mix_Music* pMixMusic{ Mix_LoadMUS(fullPath.c_str()) };
+	try
+	{
+		if (pMixMusic == nullptr)
+		{
+			throw std::runtime_error(std::string("Failed to load music: ") + SDL_GetError());
+		}
+	}
+	catch (const std::runtime_error& exception)
+	{
+		//load a default sound instead and continue running
+		std::cout << exception.what() << std::endl;
+		const std::string defaultPath{ m_DataPath + "DefaultSound.wav" };
+		pMixMusic = Mix_LoadMUS(defaultPath.c_str());
+	}
+
+	//create the music, add it to the map and return it
+	Shining::Music* pMusic{ new Shining::Music{pMixMusic} };
+	m_MusicMap.insert(std::make_pair(file, pMusic));
+	return pMusic;
 }
 
 Shining::Font* Shining::ResourceManager::LoadFont(const std::string& file, unsigned int size)

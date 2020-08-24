@@ -11,6 +11,7 @@ Shining::InputContext Shining::Scene::m_NullInput{};
 
 Shining::Scene::Scene(const std::string& name, const int ID)
 	: m_Name(name)
+	, m_MusicFileName{}
 	, m_pWorld{ nullptr }
 	, m_ID{ ID }
 	, m_pInputContext{&m_NullInput}
@@ -100,6 +101,20 @@ void Shining::Scene::InitWorld(const std::string& textureFile, const std::string
 	m_pWorld = new World(textureFile, tilePlacementsCSV, worldScale, tileWidth, tileHeight, nrColsTexture, nrRowsTexture, nrColsWorld, nrRowsWorld);
 }
 
+void Shining::Scene::InitInputContext(InputContext* pInputContext) noexcept
+{
+	if (pInputContext != nullptr)
+	{
+		m_pInputContext = pInputContext;
+		pInputContext->IncreaseReferenceCount();
+	}
+}
+
+void Shining::Scene::InitMusic(const std::string& fileName) noexcept
+{
+	m_MusicFileName = fileName;
+}
+
 void Shining::Scene::ResetObjectsPos() noexcept
 {
 	for (Shining::GameObject* pObject : m_pGameObjects)
@@ -132,16 +147,17 @@ void Shining::Scene::SetWorldCollision() noexcept
 	}
 }
 
-void Shining::Scene::InitInputContext(InputContext* pInputContext) noexcept
-{
-	if (pInputContext != nullptr)
-	{
-		m_pInputContext = pInputContext;
-		pInputContext->IncreaseReferenceCount();
-	}
-}
-
 void Shining::Scene::SetInputContext() const noexcept
 {
 	Shining::InputManager::GetInstance().SetInputContext(m_pInputContext);
+}
+
+void Shining::Scene::PlayMusic() const noexcept
+{
+	Shining::AudioPlayer& audio{ Shining::AudioPlayer::GetInstance() };
+	audio.StopMusic();
+	if (!m_MusicFileName.empty())
+	{
+		audio.PlayMusicLooped(m_MusicFileName);
+	}	
 }
