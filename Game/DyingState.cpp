@@ -27,7 +27,13 @@ void DyingState::OnEntry(Shining::GameObject* const pOwner) noexcept
 	pRender->SetCurrentRow(2, true);
 	pRender->SetRotationAngle(0);
 	pRender->SetFlipFlag(Shining::RenderFlipFlag::none);
-	Shining::AudioPlayer::GetInstance().PlaySoundEffect("PlayerDeathSound.wav");
+	
+	Shining::PhysicsComponent* const pPhysics{ pOwner->GetComponent<Shining::PhysicsComponent>() };
+	pPhysics->SetIsMoving(false); //make sure the player stops moving
+
+	Shining::AudioPlayer& audio{ Shining::AudioPlayer::GetInstance() };
+	audio.StopAllEffects();
+	audio.PlayMusic("PlayerDeathSound.wav", 1);
 	//play music instead
 }
 

@@ -6,8 +6,6 @@
 #include "MoveDownCommand.h"
 #include "StartIdleCommand.h"
 #include "StartGameCommand.h"
-//#include "StartGameKeyboardCommand.h"  -- test these later
-//#include "StartGameControllerCommand.h"
 #include "ShootCommand.h"
 
 #include "MoveState.h"
@@ -37,6 +35,7 @@
 
 void AddGemToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos );
 void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, Shining::HealthComponent* const pPlayerHealth, const float xPos, const float yPos);
+void AddEnemyToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos);
 
 int main()
 {
@@ -253,6 +252,7 @@ int main()
 		pLevelChangeObserver->AddGemGoal(30); //pick up 30 gems to proceed to next stage
 
 		pGameScene_Level1->InitWorld("Tileset.png", "Level_1.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
+		pGameScene_Level1->InitMusic("DiggerMusic.mp3");
 	}
 
 	//game level 2 scene
@@ -332,6 +332,7 @@ int main()
 		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 2 * scaledTileSize, 7 * scaledTileSize);
 
 		pGameScene_Level2->InitWorld("Tileset.png", "Level_2.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
+		pGameScene_Level2->InitMusic("DiggerMusic.mp3");
 	}
 
 	//game level 3 scene
@@ -417,7 +418,9 @@ int main()
 		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 2 * scaledTileSize, 3 * scaledTileSize);
 
 		pGameScene_Level3->InitWorld("Tileset.png", "Level_3.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
+		pGameScene_Level3->InitMusic("DiggerMusic.mp3");
 	}
+
 	Shining::Scene* pGameOverScreen{ sceneManager.CreateScene("GameOver") };
 	{		
 		pGameOverScreen->Add(pScoreboard);
@@ -453,6 +456,7 @@ int main()
 		//set this context to the start menu
 		pMenuScene->InitInputContext(pMenuInput);
 	}
+
 	//game input
 	{	
 		const float playerMoveSpeed{ 100.f };
@@ -479,6 +483,7 @@ int main()
 	}
 
 	sceneManager.SetScene(pMenuScene);
+	Shining::AudioPlayer::GetInstance().SetMusicVolume(50);
 	engine.Run(); //here we go
 }
 
@@ -550,4 +555,9 @@ void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, Shining::HealthCompo
 	pBag->AddComponent(pGoldSpawn); //add to the bag, so the bag can spawn the gold
 	pSceneToAddTo->Add(pBag);
 	pSceneToAddTo->Add(pGold);
+}
+
+void AddEnemyToScene(Shining::Scene* const /*pSceneToAddTo*/, const float /*xPos*/, const float /*yPos*/)
+{
+	//Shining::GameObject* const pEnemy
 }

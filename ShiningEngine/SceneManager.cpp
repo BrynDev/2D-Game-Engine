@@ -28,6 +28,7 @@ void Shining::SceneManager::SwapBuffer() noexcept
 	m_pCurrentScene->SetWorldCollision();
 	m_pCurrentScene->SetObjectCollision();
 	m_pCurrentScene->SetInputContext();
+	m_pCurrentScene->PlayMusic();
 }
 
 void Shining::SceneManager::AdvanceScene()

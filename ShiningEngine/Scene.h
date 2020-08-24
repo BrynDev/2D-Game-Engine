@@ -17,11 +17,13 @@ namespace Shining
 		void Add(GameObject* pObject);
 		void InitWorld(const std::string& textureFile, const std::string& tilePlacementsCSV, const int worldScale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld);
 		void InitInputContext(InputContext* pInputContext) noexcept;
+		void InitMusic(const std::string& fileName) noexcept;
 
 		void ResetObjectsPos() noexcept;
 		void SetWorldCollision() noexcept;
 		void SetObjectCollision() const noexcept;
 		void SetInputContext() const noexcept;
+		void PlayMusic() const noexcept;
 		const int GetID() const noexcept;
 
 		~Scene();
@@ -32,9 +34,11 @@ namespace Shining
 
 	private:
 		explicit Scene(const std::string& name, const int ID);
+
 		static InputContext m_NullInput;
 		std::vector<Shining::GameObject*> m_pGameObjects;
-		std::string m_Name;
+		const std::string m_Name;
+		std::string m_MusicFileName;
 		World* m_pWorld;
 		InputContext* m_pInputContext;
 		const int m_ID;
