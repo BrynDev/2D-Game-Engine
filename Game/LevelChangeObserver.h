@@ -2,7 +2,6 @@
 #include "Observer.h"
 #include <vector>
 
-
 class LevelChangeObserver final : public Shining::Observer
 {
 public:

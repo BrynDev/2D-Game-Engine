@@ -21,7 +21,6 @@ void Shining::PhysicsComponent::Render(const glm::vec2& /*pos*/) const noexcept
 
 void Shining::PhysicsComponent::Update(const float timeStep) noexcept
 {
-	//relevant updates are executed in the state object instead
 	if (m_IsMoving)
 	{
 		const glm::vec2& oldPos{ m_pOwner->GetPosition() };
@@ -41,8 +40,6 @@ void Shining::PhysicsComponent::BlockMovement() noexcept
 
 void Shining::PhysicsComponent::SwapBuffer() noexcept
 {
-	//swap the pointers, can/should this be done atomically?
-	
 	if (m_NeedsSwap)
 	{
 		MoveInfo* pTemp{ m_pCurrentMoveInfo };

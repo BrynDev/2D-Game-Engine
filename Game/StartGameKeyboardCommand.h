@@ -1,5 +1,4 @@
 #pragma once
-//#include "Command.h"
 #include "ShiningEnginePCH.h"
 
 class StartGameKeyboardCommand final : public Shining::Command

@@ -24,7 +24,7 @@ Shining::RenderComponent::RenderComponent(const std::string& textureName, const 
 	, m_ElapsedTimeMs{0}
 	, m_IsOscillating{false}
 	, m_RotationAngle{0.f}
-	, m_FlipFlag{SDL_FLIP_NONE} //unable to surpress this warning in this version of visual studio
+	, m_FlipFlag{SDL_FLIP_NONE} //unable to surpress this warning in this version of visual studio due to a bug: https://developercommunity.visualstudio.com/content/problem/724840/no-option-to-suppress-c-code-analysis-warning-c268.html
 {
 	int textureWidth{};
 	int textureHeight{};

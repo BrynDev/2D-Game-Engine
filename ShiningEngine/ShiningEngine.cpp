@@ -1,16 +1,11 @@
 #include "ShiningEnginePCH.h"
 #include "ShiningEngine.h"
 #include <chrono>
-#include <thread>
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <SDL.h>
-#include "GameObject.h"
-#include "Scene.h"
-#include "RenderComponent.h"
-#include "TextComponent.h"
 #include <vector>
 
 using namespace std;

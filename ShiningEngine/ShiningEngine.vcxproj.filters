@@ -43,14 +43,8 @@
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Components\RenderComponent</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Components\Component</Filter>
-    </ClCompile>
     <ClCompile Include="StateComponent.cpp">
       <Filter>Components\StateComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>State</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComponent.cpp">
       <Filter>Components\PhysicsComponent</Filter>

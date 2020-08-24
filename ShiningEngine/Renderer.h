@@ -1,11 +1,7 @@
 #pragma once
 #include "Singleton.h"
 #include <SDL_Rect.h>
-
-//#pragma warning(push)
-//#pragma warning (disable:26812)
 #include <SDL_Render.h>
-//#pragma warning(pop)
 
 struct SDL_Window;
 struct SDL_Renderer;

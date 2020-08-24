@@ -55,6 +55,7 @@ void Shining::Renderer::RenderTexture(const Texture2D& texture, const SDL_Rect& 
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+//unable to surpress this warning: https://developercommunity.visualstudio.com/content/problem/724840/no-option-to-suppress-c-code-analysis-warning-c268.html
 void Shining::Renderer::RenderTexture(const Texture2D& texture, const SDL_Rect& srcRect, const SDL_Rect& destRect, const float angleDeg, const SDL_RendererFlip& flipFlag) const
 {	
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), &srcRect, &destRect, angleDeg, NULL, flipFlag);

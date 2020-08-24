@@ -246,7 +246,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="CollisionBehavior.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="Component.cpp" />
     <ClCompile Include="CSVParser.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -275,7 +274,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer\lib\x64\*.dll" "$(OutputPath)" /R /Y</C
     <ClCompile Include="SimpleException.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="SpawnComponent.cpp" />
-    <ClCompile Include="State.cpp" />
     <ClCompile Include="StateComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />

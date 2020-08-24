@@ -10,7 +10,7 @@ namespace Shining //class forward declaration of a class in a namespace
 class ScoreObserver final : public Shining::Observer 
 {
 public:
-	ScoreObserver(Shining::TextComponent* const pScoreText);
+	explicit ScoreObserver(Shining::TextComponent* const pScoreText);
 	virtual ~ScoreObserver() = default;
 
 	virtual void Notify(Shining::GameObject* const pSubject, const int eventID, void* pData) noexcept override;

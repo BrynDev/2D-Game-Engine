@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <vector>
-#include <unordered_map> //TEST
+#include <unordered_map>
 
 namespace Shining
 {
@@ -38,7 +38,6 @@ namespace Shining
 		struct Tile
 		{
 			const SharedTileInfo* pSharedInfo;
-			 //glm::vec2 worldPos;
 		};
 
 		std::vector<std::vector<Tile>> m_Tiles; //2D grid of tiles
