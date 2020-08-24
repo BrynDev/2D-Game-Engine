@@ -26,11 +26,8 @@ void BagCollision::ResolveCollision(Shining::GameObject* const pOwnerObject, con
 				m_pPlayerHealth->GetHit(1); //attempt to deal 1 damage to player
 			}
 			break;
-		case int(CollisionTags::enemy):
-			//kill
-			break;
-			case int(CollisionTags::wall) :
-				ResolveWorldCollision(pOwnerObject);
+		case int(CollisionTags::wall) :
+			ResolveWorldCollision(pOwnerObject);
 			break;
 		default:
 			break;

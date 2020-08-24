@@ -6,6 +6,9 @@ void PlayerCollision::ResolveCollision(Shining::GameObject* const pOwnerObject, 
 {
 	switch (collidedTag)
 	{
+		case int(CollisionTags::enemy) :
+			pOwnerObject->GetComponent<Shining::HealthComponent>()->GetHit(1);
+			break;
 		case int(CollisionTags::gem):
 			pOwnerObject->NotifyObservers(int(ObservedEvents::gemPickup));
 			break;	

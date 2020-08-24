@@ -26,6 +26,7 @@
 #include "PickupCollision.h"
 #include "BagCollision.h"
 #include "FireBallCollision.h"
+#include "EnemyCollision.h"
 #include "Enums.h"
 
 //"Perform every explicit resource allocation(e.g., new) in its own statement that immediately gives the
@@ -35,7 +36,7 @@
 
 void AddGemToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos );
 void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, Shining::HealthComponent* const pPlayerHealth, const float xPos, const float yPos);
-void AddEnemyToScene(Shining::Scene* const pSceneToAddTo, const float xPos, const float yPos);
+void AddEnemyToScene(Shining::Scene* const pSceneToAddTo, LevelChangeObserver* const pLevelChangeObs, ScoreObserver* const pScoreObs, const float xPos, const float yPos);
 
 int main()
 {
@@ -111,18 +112,19 @@ int main()
 		pPlayerCharacter->AddComponent(pPlayerHealth);
 
 	}
-	
+	//level change observer
+	LevelChangeObserver* pLevelChangeObserver{ new LevelChangeObserver() };
+	pPlayerCharacter->AddObserver(pLevelChangeObserver);
+
 	//scoreboard
 	Shining::GameObject* const pScoreboard{ new Shining::GameObject(50, worldHeight) };
-	{
-		//text component
-		Shining::TextComponent* const pScoreboardText{ new Shining::TextComponent("0", "Retro Gaming.ttf", SDL_Color{ 0,250,0 }, 25) };
-		pScoreboard->AddComponent(pScoreboardText);
-
-		//observer
-		ScoreObserver* pScoreObserver{ new ScoreObserver(pScoreboardText) };
-		pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
-	}
+	Shining::TextComponent* const pScoreboardText{ new Shining::TextComponent("0", "Retro Gaming.ttf", SDL_Color{ 0,250,0 }, 25) };
+	pScoreboard->AddComponent(pScoreboardText);
+	
+	//score observer
+	ScoreObserver* pScoreObserver{ new ScoreObserver(pScoreboardText) };
+	pPlayerCharacter->AddObserver(pScoreObserver); //observe the player character, modify the scoreboard
+	
 	//lives counter
 	Shining::GameObject* const pLivesCounter{ new Shining::GameObject(145, worldHeight + 5) }; //slight offset to make it look nicer
 	{
@@ -135,9 +137,7 @@ int main()
 		Shining::Observer* const pLifeObserver{ new LifeObserver(pLivesText) };
 		pPlayerCharacter->AddObserver(pLifeObserver);
 	}
-	//level change observer
-	LevelChangeObserver* pLevelChangeObserver{ new LevelChangeObserver() };
-	pPlayerCharacter->AddObserver(pLevelChangeObserver);
+	
 	
 	//walls
 	const int wallSize{ 10 };
@@ -199,6 +199,7 @@ int main()
 		pGameScene_Level1->Add(pTopWall);
 
 		//these objects are unique to this scene
+		
 		//GEMS
 		AddGemToScene(pGameScene_Level1, 3 * scaledTileSize, 1 * scaledTileSize); //this essentially puts the gem on top of the tile on column idx 3 row idx 1
 		AddGemToScene(pGameScene_Level1, 4 * scaledTileSize, 1 * scaledTileSize);
@@ -249,7 +250,11 @@ int main()
 		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 6 * scaledTileSize, 6 * scaledTileSize);
 		AddGoldBagToScene(pGameScene_Level1, pPlayerHealth, 8 * scaledTileSize, 6 * scaledTileSize);
 
+		//ENEMY
+		AddEnemyToScene(pGameScene_Level1, pLevelChangeObserver, pScoreObserver, 14 * scaledTileSize, 0 * scaledTileSize);
+
 		pLevelChangeObserver->AddGemGoal(30); //pick up 30 gems to proceed to next stage
+		pLevelChangeObserver->AddEnemyKillsGoal(1); // kill 1 enemy to proceed to next stage
 
 		pGameScene_Level1->InitWorld("Tileset.png", "Level_1.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
 		pGameScene_Level1->InitMusic("DiggerMusic.mp3");
@@ -321,7 +326,7 @@ int main()
 
 		AddGemToScene(pGameScene_Level2, 0 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level2, 1 * scaledTileSize, 9 * scaledTileSize);
-		pLevelChangeObserver->AddGemGoal(41);
+		
 		//GOLD BAGS
 		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 8 * scaledTileSize, 0 * scaledTileSize);
 		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 10 * scaledTileSize, 0 * scaledTileSize);
@@ -330,6 +335,11 @@ int main()
 		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 7 * scaledTileSize, 5 * scaledTileSize);
 		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 1 * scaledTileSize, 7 * scaledTileSize);
 		AddGoldBagToScene(pGameScene_Level2, pPlayerHealth, 2 * scaledTileSize, 7 * scaledTileSize);
+		//ENEMY
+		AddEnemyToScene(pGameScene_Level2, pLevelChangeObserver, pScoreObserver, 14 * scaledTileSize, 0 * scaledTileSize);
+
+		pLevelChangeObserver->AddGemGoal(41);
+		pLevelChangeObserver->AddEnemyKillsGoal(1);
 
 		pGameScene_Level2->InitWorld("Tileset.png", "Level_2.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
 		pGameScene_Level2->InitMusic("DiggerMusic.mp3");
@@ -407,7 +417,7 @@ int main()
 		AddGemToScene(pGameScene_Level3, 13 * scaledTileSize, 9 * scaledTileSize);
 		AddGemToScene(pGameScene_Level3, 14 * scaledTileSize, 9 * scaledTileSize);
 
-		pLevelChangeObserver->AddGemGoal(51);
+		
 		//GOLD BAGS
 		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 5 * scaledTileSize, 0 * scaledTileSize);
 		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 7 * scaledTileSize, 0 * scaledTileSize);
@@ -416,6 +426,12 @@ int main()
 		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 13 * scaledTileSize, 1 * scaledTileSize);
 		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 1 * scaledTileSize, 3 * scaledTileSize);
 		AddGoldBagToScene(pGameScene_Level3, pPlayerHealth, 2 * scaledTileSize, 3 * scaledTileSize);
+
+		//ENEMY
+		AddEnemyToScene(pGameScene_Level3, pLevelChangeObserver, pScoreObserver, 9 * scaledTileSize, 5 * scaledTileSize);
+
+		pLevelChangeObserver->AddEnemyKillsGoal(1);
+		pLevelChangeObserver->AddGemGoal(51);
 
 		pGameScene_Level3->InitWorld("Tileset.png", "Level_3.csv", worldScale, tileSize, tileSize, nrTilesetCols, nrTilesetRows, nrWorldCols, nrWorldRows);
 		pGameScene_Level3->InitMusic("DiggerMusic.mp3");
@@ -557,7 +573,25 @@ void AddGoldBagToScene(Shining::Scene* const pSceneToAddTo, Shining::HealthCompo
 	pSceneToAddTo->Add(pGold);
 }
 
-void AddEnemyToScene(Shining::Scene* const /*pSceneToAddTo*/, const float /*xPos*/, const float /*yPos*/)
+void AddEnemyToScene(Shining::Scene* const pSceneToAddTo, LevelChangeObserver* const pLevelChangeObs, ScoreObserver* const pScoreObs, const float xPos, const float yPos)
 {
-	//Shining::GameObject* const pEnemy
+	Shining::GameObject* const pEnemy{ new Shining::GameObject(xPos, yPos) };
+	//render
+	Shining::RenderComponent* const pRender{ new Shining::RenderComponent("Enemy.png", 2, 70, 1, 3) };
+	pEnemy->AddComponent(pRender);
+	//collision
+	Shining::CollisionComponent* const pCollision{ new Shining::CollisionComponent(pEnemy, pRender, int(CollisionTags::enemy), true, false) };
+	pCollision->AddTargetTag(int(CollisionTags::player));
+	Shining::CollisionBehavior* const pBehavior{ new EnemyCollision() };
+	pCollision->SetBehavior(pBehavior);
+	pEnemy->AddComponent(pCollision);
+	//physics
+	Shining::PhysicsComponent* const pPhysics{ new Shining::PhysicsComponent(pEnemy, false) };
+	pEnemy->AddComponent(pPhysics);
+
+	pEnemy->AddObserver(pLevelChangeObs);
+	pEnemy->AddObserver(pScoreObs);
+
+	pSceneToAddTo->Add(pEnemy);
+
 }

@@ -25,7 +25,7 @@ void LevelChangeObserver::Notify(Shining::GameObject* const /*pSubject*/, const 
 		break;
 	}
 
-	if (m_NrGemsPickedUp >= m_GemGoals[m_GoalIdx] /*|| m_NrEnemiesKilled >= m_EnemyKillGoals[m_GoalIdx]*/)
+	if (m_NrGemsPickedUp >= m_GemGoals[m_GoalIdx] || m_NrEnemiesKilled >= m_EnemyKillGoals[m_GoalIdx])
 	{
 		//change scene
 		m_NrGemsPickedUp = 0;
