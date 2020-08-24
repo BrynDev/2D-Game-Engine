@@ -32,7 +32,7 @@ namespace Shining
 			glm::vec2 speed;
 			glm::vec2 direction;
 		};
-		MoveInfo m_MoveInfo[2]; //used for double buffered update, I know I only need 2
+		MoveInfo m_MoveInfo[2]; //used for double buffered update, I know I only need 2 objects
 		GameObject* const m_pOwner;
 		MoveInfo* m_pNextMoveInfo;
 		MoveInfo* m_pCurrentMoveInfo;

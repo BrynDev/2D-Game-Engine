@@ -30,7 +30,6 @@ namespace Shining
 		const int m_MaxHealth;
 		int m_CurrentHealth;
 		int m_NextHealth;
-		bool m_IsDead;
 		bool m_NeedsSwap;
 	};
 

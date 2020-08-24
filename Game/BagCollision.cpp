@@ -1,13 +1,8 @@
 #include "BagCollision.h"
 #include "Enums.h"
-#include "ShiningEnginePCH.h"
 #include "BagFallingState.h"
 #include "BagIdleState.h"
-
-/*BagCollision::BagCollision(Shining::GameObject* const pPlayer)
-	:m_pPlayer{pPlayer}
-{
-}*/
+#include "ShiningEnginePCH.h"
 
 BagCollision::BagCollision(Shining::HealthComponent* const pPlayerHealth)
 	:CollisionBehavior()

@@ -1,6 +1,6 @@
 #include "ShotCooldownState.h"
-#include "ShiningEnginePCH.h"
 #include "ShotReadyState.h"
+#include "ShiningEnginePCH.h"
 
 ShotCooldownState::ShotCooldownState()
 	:m_CooldownMaxMs{8000} //8 seconds

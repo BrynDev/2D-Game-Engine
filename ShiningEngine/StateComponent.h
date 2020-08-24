@@ -1,9 +1,8 @@
 #pragma once
 #include "Component.h"
 #include <set>
-#include "State.h"
 #include <typeinfo>
-#include <vector> //TEST
+#include <vector>
 
 namespace Shining
 {
@@ -52,7 +51,6 @@ void Shining::StateComponent::ChangeState(const unsigned int layerToChangeIdx)
 		{
 			m_pNextStates[layerToChangeIdx] = pState; //change state
 			m_NeedsSwapVect[layerToChangeIdx] = true;
-			//m_NeedsSwap = true;
 			return;
 		}
 	}

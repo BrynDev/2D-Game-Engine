@@ -134,10 +134,9 @@ int main()
 		Shining::TextComponent* const pLivesText{ new Shining::TextComponent("x 3", "Retro Gaming.ttf", SDL_Color{ 0,250,0 }, 18, 35, 0) };
 		pLivesCounter->AddComponent(pLivesText);
 		//life observer
-		Shining::Observer* const pLifeObserver{ new LifeObserver(pLivesText) };
+		LifeObserver* const pLifeObserver{ new LifeObserver(pLivesText) };
 		pPlayerCharacter->AddObserver(pLifeObserver);
 	}
-	
 	
 	//walls
 	const int wallSize{ 10 };
@@ -437,6 +436,7 @@ int main()
 		pGameScene_Level3->InitMusic("DiggerMusic.mp3");
 	}
 
+	//game over screen
 	Shining::Scene* pGameOverScreen{ sceneManager.CreateScene("GameOver") };
 	{		
 		pGameOverScreen->Add(pScoreboard);
@@ -476,7 +476,7 @@ int main()
 	//game input
 	{	
 		const float playerMoveSpeed{ 100.f };
-		engine.SetPlayer(pPlayerCharacter);
+		engine.SetPlayer(pPlayerCharacter); //this character controlled by both controller and keyboard
 		//create the commands
 		MoveRightCommand* const pMoveRight{ new MoveRightCommand(playerMoveSpeed) };
 		MoveLeftCommand* const pMoveLeft{ new MoveLeftCommand(playerMoveSpeed) };

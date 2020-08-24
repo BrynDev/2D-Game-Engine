@@ -1,7 +1,6 @@
 #include "ShiningEnginePCH.h"
 #include "World.h"
 #include "TileComponent.h"
-//#include "RenderComponent.h"
 
 Shining::World::World(const std::string& textureFile, const std::string& tilePlacementsCSV, const int scale, const int tileWidth, const int tileHeight, const int nrColsTexture, const int nrRowsTexture, const int nrColsWorld, const int nrRowsWorld)
 	:m_pTileComponent{ nullptr }

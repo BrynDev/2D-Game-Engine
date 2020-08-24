@@ -12,6 +12,7 @@ Shining::StateComponent::StateComponent(State* pStartingState, GameObject* pOwne
 	, m_NeedsSwap{false}
 	, m_NeedsSwapVect{false}
 {
+	//start with 1 layer of states
 	std::set<State*> firstLayer{};
 	firstLayer.insert(pStartingState);
 	m_pStateLayers.push_back(firstLayer);
@@ -73,6 +74,7 @@ void Shining::StateComponent::AddNewStateLayer(State* pStateToAdd) noexcept
 {
 	std::set<State*> newLayer{};
 	newLayer.insert(pStateToAdd);
+	//update other vects
 	m_pStateLayers.push_back(newLayer);
 	m_pCurrentStates.push_back(pStateToAdd);
 	m_pNextStates.push_back(nullptr);
@@ -86,7 +88,7 @@ Shining::StateComponent::~StateComponent()
 	{
 		//for every state in this layer
 		std::for_each(m_pStateLayers.at(i).begin(), m_pStateLayers.at(i).end(), [](State* pState) {
-			delete pState;
+			delete pState; //delete state
 			});
 	
 	}

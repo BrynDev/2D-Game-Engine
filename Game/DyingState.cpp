@@ -1,6 +1,6 @@
 #include "DyingState.h"
-#include "ShiningEnginePCH.h"
 #include "IdleState.h"
+#include "ShiningEnginePCH.h"
 
 DyingState::DyingState()
 	:State()

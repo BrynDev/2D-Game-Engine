@@ -10,7 +10,7 @@ namespace Shining
 class LifeObserver final : public Shining::Observer
 {
 public:
-	LifeObserver(Shining::TextComponent* const pLivesText);
+	explicit LifeObserver(Shining::TextComponent* const pLivesText);
 	virtual ~LifeObserver() = default;
 	
 	virtual void Notify(Shining::GameObject* const pSubject, const int eventID, void* pData) noexcept override;

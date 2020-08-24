@@ -1,6 +1,6 @@
 #include "BagFallingState.h"
-#include "ShiningEnginePCH.h"
 #include "BagIdleState.h"
+#include "ShiningEnginePCH.h"
 
 void BagFallingState::Update(Shining::GameObject* const /*pOwner*/, const float /*timeStep*/) noexcept
 {

@@ -8,7 +8,6 @@ void FireballCollision::ResolveCollision(Shining::GameObject* const pOwnerObject
 	switch (collidedTag)
 	{
 		case int(CollisionTags::enemy) :
-			//kill enemy
 			hasHit = true;
 			break;
 		case int(CollisionTags::goldBag) :

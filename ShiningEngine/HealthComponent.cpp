@@ -16,7 +16,6 @@ Shining::HealthComponent::HealthComponent(GameObject* const pOwner, const int ma
 	, m_MaxHealth{maxHealth}
 	, m_CurrentHealth{currentHealth}
 	, m_NextHealth{m_CurrentHealth}
-	, m_IsDead{false}
 	, m_NeedsSwap{false}
 {
 }
@@ -51,11 +50,9 @@ void Shining::HealthComponent::SwapBuffer() noexcept
 
 	const int damageTaken{ m_CurrentHealth - m_NextHealth };
 	m_CurrentHealth = m_NextHealth; 
-	//m_pHitBehavior->OnHit(m_pOwner, damageTaken);
 
 	if (m_CurrentHealth <= 0)
 	{
-		m_IsDead = true;
 		m_pHitBehavior->OnDeath(m_pOwner);
 	}
 

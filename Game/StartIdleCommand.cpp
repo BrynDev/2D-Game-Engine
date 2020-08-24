@@ -1,7 +1,7 @@
 #include "StartIdleCommand.h"
 #include "IdleState.h"
-#include "ShiningEnginePCH.h"
 #include "DyingState.h"
+#include "ShiningEnginePCH.h"
 
 StartIdleCommand::StartIdleCommand()
 	:Command()
